@@ -7,6 +7,9 @@ def layout():
     for i in range(1, 17):
         liste.append([sg.Input(default_text=f"{i}. Player", key=f"{i}.1", disabled_readonly_background_color="grey"), sg.Input(default_text="", key=f"{i}.2", disabled_readonly_background_color="grey", enable_events=True), sg.Combo(values=["alive", "dead"], default_value="alive", key=f"{i}.3", enable_events=True)])
 
+        if i in [4,8,12]:
+            liste.append([sg.VSep()])
+
     liste.append([sg.Input(size=102)])
     liste.append([sg.Button(button_text="Info", key="info")])
 
