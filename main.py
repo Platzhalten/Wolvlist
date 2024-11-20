@@ -15,9 +15,22 @@ def layout():
 
     return liste
 
-layout = layout()
 
-w = sg.Window(title="werville", layout=layout)
+def layout_2():
+    liste = []
+    for i in range(1,17):
+        liste.append([sg.Input(f"{i}. Player", key=f"{i} name")])
+
+    liste.append([sg.Button("add the names", key="name_key")])
+
+    return liste
+
+tab1 = sg.Tab(title="Game", layout=layout())
+tab2 = sg.Tab(title="Names", layout=layout_2())
+
+tab = [[sg.TabGroup(layout=[[tab1, tab2]])]]
+
+w = sg.Window(title="werville", layout=tab)
 
 while True:
 
@@ -28,6 +41,12 @@ while True:
     if e is None:
         w.close()
         break
+
+    if e == "name_key":
+        for i in range(1,17):
+
+            w[f"{i}.1"](v[f"{i} name"])
+
 
     if e[-1] == "3":
         number = e.split(".")
