@@ -11,8 +11,7 @@ def layout():
         if i in [4,8,12]:
             liste.append([sg.VSep()])
 
-    liste.append([sg.Input(size=102)])
-    liste.append([sg.Button(button_text="Info", key="info")])
+    liste.append([sg.Input(size=116)])
 
     return liste
 
@@ -37,11 +36,3 @@ while True:
             w[f"{number[0]}.2"].update(disabled=True)
         elif v[e] == "alive":
             w[f"{number[0]}.2"].update(disabled=False)
-
-    if e == "info":
-        liste = []
-
-        for i in range(1, 17):
-            liste.append(v[f"{i}.2"])
-
-
