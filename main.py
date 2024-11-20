@@ -18,7 +18,7 @@ def layout():
 
 layout = layout()
 
-w = sg.Window(title="werville", layout=layout, icon="wolf.ico")
+w = sg.Window(title="werville", layout=layout)
 
 while True:
 
