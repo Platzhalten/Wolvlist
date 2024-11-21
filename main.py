@@ -2,13 +2,20 @@ import FreeSimpleGUI as sg
 
 sg.theme_global("DarkTeal9")
 
+# OPTION
+
+# change the order/name/add/remove theams
+#       village  solo    ww    unknown  not Village
+teams = ["gut", "solo", "ww", "ubk", "kein dorf"]
+
+
 def layout():
     liste = []
     for i in range(1, 17, 4):
-        liste.append([sg.Frame(title=f"{i}. Player", key=f"{i}.1", layout=[[sg.Input(default_text="", key=f"{i}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Combo(values=["alive", "dead"], default_value="alive", key=f"{i}.3", enable_events=True), sg.Combo(values=["gut", "ubk", "ww", "solo"], key=f"{i}.4", enable_events=True)]])])
-        liste[-1].append(sg.Frame(title=f"{i + 1}. Player", key=f"{i + 1}.1", layout=[[sg.Input(default_text="", key=f"{i + 1}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Combo(values=["alive", "dead"], default_value="alive", key=f"{i + 1}.3", enable_events=True), sg.Combo(values=["gut", "ubk", "ww", "solo"], key=f"{i + 1}.4", enable_events=True)]]))
-        liste[-1].append(sg.Frame(title=f"{i + 2}. Player", key=f"{i + 2}.1", layout=[[sg.Input(default_text="", key=f"{i + 2}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Combo(values=["alive", "dead"], default_value="alive", key=f"{i + 2}.3", enable_events=True), sg.Combo(values=["gut", "ubk", "ww", "solo"], key=f"{i + 2}.4", enable_events=True)]]))
-        liste[-1].append(sg.Frame(title=f"{i + 3}. Player", key=f"{i + 3}.1", layout=[[sg.Input(default_text="", key=f"{i + 3}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Combo(values=["alive", "dead"], default_value="alive", key=f"{i + 3}.3", enable_events=True), sg.Combo(values=["gut", "ubk", "ww", "solo"], key=f"{i + 3}.4", enable_events=True)]]))
+        liste.append([sg.Frame(title=f"{i}. Player", key=f"{i}.1", layout=[[sg.Input(default_text="", key=f"{i}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Combo(values=["alive", "dead"], default_value="alive", key=f"{i}.3", enable_events=True), sg.Combo(values=teams, key=f"{i}.4", enable_events=True)]])])
+        liste[-1].append(sg.Frame(title=f"{i + 1}. Player", key=f"{i + 1}.1", layout=[[sg.Input(default_text="", key=f"{i + 1}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Combo(values=["alive", "dead"], default_value="alive", key=f"{i + 1}.3", enable_events=True), sg.Combo(values=teams, key=f"{i + 1}.4", enable_events=True)]]))
+        liste[-1].append(sg.Frame(title=f"{i + 2}. Player", key=f"{i + 2}.1", layout=[[sg.Input(default_text="", key=f"{i + 2}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Combo(values=["alive", "dead"], default_value="alive", key=f"{i + 2}.3", enable_events=True), sg.Combo(values=teams, key=f"{i + 2}.4", enable_events=True)]]))
+        liste[-1].append(sg.Frame(title=f"{i + 3}. Player", key=f"{i + 3}.1", layout=[[sg.Input(default_text="", key=f"{i + 3}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Combo(values=["alive", "dead"], default_value="alive", key=f"{i + 3}.3", enable_events=True), sg.Combo(values=teams, key=f"{i + 3}.4", enable_events=True)]]))
 
     liste.append([sg.Input(size=116)])
     liste.append([sg.Input(size=116, key="info out")])
@@ -57,10 +64,13 @@ while True:
         elif v[e] == "alive":
             w[f"{number[0]}.2"].update(disabled=False)
             
-    if e[-1] == "4":
+    if e[-1] == "4" or e[-1] == "3":
 
+        aura_dict = {}
+        # aura_dict = dict.fromkeys(teams, [])
+        for i in teams:
+            aura_dict[i] = []
 
-        aura_dict = {"gut": [], "ubk": [], "ww": [], "solo": []}
         player_list = range(1,17)
 
         for i in range(1, 17):
