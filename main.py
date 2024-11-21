@@ -12,6 +12,7 @@ def layout():
 
     liste.append([sg.Input(size=116)])
     liste.append([sg.Input(size=116, key="info out")])
+    liste.append([sg.Input(size=116, key="info left")])
 
     return liste
 
@@ -60,6 +61,7 @@ while True:
 
 
         aura_dict = {"gut": [], "ubk": [], "ww": [], "solo": []}
+        player_list = range(1,17)
 
         for i in range(1, 17):
             wert = v[f"{i}.4"]
@@ -73,11 +75,11 @@ while True:
             temp_list = []
 
             for k in aura_dict[i]:
-
-                if not temp_list == []:
-                    temp_list.append(", ")
-
                 if v[f"{k}.3"] == "alive":
+
+                    if not temp_list == []:
+                        temp_list.append(", ")
+
                     temp_list.append(str(k))
 
             if not temp_list == []:
