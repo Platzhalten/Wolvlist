@@ -83,7 +83,7 @@ while True:
             if not temp_list == []:
                 temp_list.append(" " + i + " | ")
 
-            info_list.append("".join(temp_list))
+            info_list.append("".join(temp_list).replace(", ,", ","))
 
         info = "".join(info_list).removesuffix(" | ")
 
