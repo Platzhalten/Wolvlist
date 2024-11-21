@@ -77,11 +77,11 @@ while True:
                 if not temp_list == []:
                     temp_list.append(", ")
 
-                temp_list.append(str(k))
+                if v[f"{k}.3"] == "alive":
+                    temp_list.append(str(k))
 
             if not temp_list == []:
-                temp_list.append(" ")
-                temp_list.append(i + " | ")
+                temp_list.append(" " + i + " | ")
 
             info_list.append("".join(temp_list))
 
