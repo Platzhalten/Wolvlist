@@ -5,15 +5,13 @@ sg.theme_global("DarkTeal9")
 def layout():
     liste = []
     for i in range(1, 17, 4):
-        liste.append([sg.Frame(title=f"{i}. Player", key=f"{i}.1", layout=[[sg.Input(default_text="", key=f"{i}.2", disabled_readonly_background_color="grey", enable_events=True, size=20), sg.Combo(values=["alive", "dead"], default_value="alive", key=f"{i}.3", enable_events=True)]])])
-        liste[-1].append(sg.Frame(title=f"{i + 1}. Player", key=f"{i + 1}.1", layout=[[sg.Input(default_text="", key=f"{i + 1}.2", disabled_readonly_background_color="grey", enable_events=True, size=20), sg.Combo(values=["alive", "dead"], default_value="alive", key=f"{i + 1}.3", enable_events=True)]]))
-        liste[-1].append(sg.Frame(title=f"{i + 2}. Player", key=f"{i + 2}.1", layout=[[sg.Input(default_text="", key=f"{i + 2}.2", disabled_readonly_background_color="grey", enable_events=True, size=20), sg.Combo(values=["alive", "dead"], default_value="alive", key=f"{i + 2}.3", enable_events=True)]]))
-        liste[-1].append(sg.Frame(title=f"{i + 3}. Player", key=f"{i + 3}.1", layout=[[sg.Input(default_text="", key=f"{i + 3}.2", disabled_readonly_background_color="grey", enable_events=True, size=20), sg.Combo(values=["alive", "dead"], default_value="alive", key=f"{i + 3}.3", enable_events=True)]]))
-
-        if i in [4,8,12]:
-            liste.append([sg.VSep()])
+        liste.append([sg.Frame(title=f"{i}. Player", key=f"{i}.1", layout=[[sg.Input(default_text="", key=f"{i}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Combo(values=["alive", "dead"], default_value="alive", key=f"{i}.3", enable_events=True), sg.Combo(values=["gut", "ubk", "ww", "solo"], key=f"{i}.4", enable_events=True)]])])
+        liste[-1].append(sg.Frame(title=f"{i + 1}. Player", key=f"{i + 1}.1", layout=[[sg.Input(default_text="", key=f"{i + 1}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Combo(values=["alive", "dead"], default_value="alive", key=f"{i + 1}.3", enable_events=True), sg.Combo(values=["gut", "ubk", "ww", "solo"], key=f"{i + 1}.4", enable_events=True)]]))
+        liste[-1].append(sg.Frame(title=f"{i + 2}. Player", key=f"{i + 2}.1", layout=[[sg.Input(default_text="", key=f"{i + 2}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Combo(values=["alive", "dead"], default_value="alive", key=f"{i + 2}.3", enable_events=True), sg.Combo(values=["gut", "ubk", "ww", "solo"], key=f"{i + 2}.4", enable_events=True)]]))
+        liste[-1].append(sg.Frame(title=f"{i + 3}. Player", key=f"{i + 3}.1", layout=[[sg.Input(default_text="", key=f"{i + 3}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Combo(values=["alive", "dead"], default_value="alive", key=f"{i + 3}.3", enable_events=True), sg.Combo(values=["gut", "ubk", "ww", "solo"], key=f"{i + 3}.4", enable_events=True)]]))
 
     liste.append([sg.Input(size=116)])
+    liste.append([sg.Input(size=116, key="info out")])
 
     return liste
 
@@ -57,3 +55,37 @@ while True:
             w[f"{number[0]}.2"].update(disabled=True)
         elif v[e] == "alive":
             w[f"{number[0]}.2"].update(disabled=False)
+            
+    if e[-1] == "4":
+
+
+        aura_dict = {"gut": [], "ubk": [], "ww": [], "solo": []}
+
+        for i in range(1, 17):
+            wert = v[f"{i}.4"]
+
+            if wert:
+                aura_dict[wert].append(i)
+
+        info_list = []
+
+        for i in aura_dict:
+            temp_list = []
+
+            for k in aura_dict[i]:
+
+                if not temp_list == []:
+                    temp_list.append(", ")
+
+                temp_list.append(str(k))
+
+            if not temp_list == []:
+                temp_list.append(" ")
+                temp_list.append(i + " | ")
+
+            info_list.append("".join(temp_list))
+
+        info = "".join(info_list).removesuffix(" | ")
+
+        w["info out"](info)
+
