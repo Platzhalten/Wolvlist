@@ -5,8 +5,8 @@ sg.theme_global("DarkTeal9")
 # OPTION
 
 # change the order/name/add/remove theams
-#       village  solo    ww    unknown  not Village
-teams = ["gut", "solo", "ww", "ubk", "kein dorf"]
+#       village  solo killer   unknown  ww    not Village   voting role
+teams = ["gut", "solo killer", "ubk",   "ww", "kein dorf", "voting role"]
 
 
 def layout():
@@ -20,6 +20,7 @@ def layout():
     liste.append([sg.Input(size=116)])
     liste.append([sg.Input(size=116, key="info out")])
     liste.append([sg.Input(size=116, key="info left")])
+    liste.append([sg.T("Welche voting role ig: "), sg.Combo(key="narr", values=["Narr", "hh", "Anarchist"])])
 
     return liste
 
@@ -38,7 +39,7 @@ tab2 = sg.Tab(title="Names", layout=layout_2())
 
 tab = [[sg.TabGroup(layout=[[tab1, tab2]])]]
 
-w = sg.Window(title="werville", layout=tab)
+w = sg.Window(title="werville", layout=tab, resizable=True)
 
 while True:
 
@@ -98,6 +99,9 @@ while True:
             info_list.append("".join(temp_list))
 
         info = "".join(info_list).removesuffix(" | ")
+
+        if v["narr"]:
+            info = info.replace("narr/hh/ana", v["narr"])
 
         w["info out"](info)
 
