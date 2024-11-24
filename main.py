@@ -101,7 +101,7 @@ while True:
         info = "".join(info_list).removesuffix(" | ")
 
         if v["narr"]:
-            info = info.replace("narr/hh/ana", v["narr"])
+            info = info.replace("voting role", v["narr"])
 
         w["info out"](info)
 
