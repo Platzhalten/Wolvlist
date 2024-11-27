@@ -7,7 +7,7 @@ sg.theme_global("DarkTeal9")
 # change the order/name/add/remove theams
 #       village  solo killer   unknown  ww    not Village   voting role
 teams = ["gut", "solo killer", "ubk",   "ww", "kein dorf", "voting role"]
-
+voting_roles = ["Narr", "hh", "Anarchist"]
 
 def layout():
     liste = []
@@ -20,7 +20,7 @@ def layout():
     liste.append([sg.Input(size=116)])
     liste.append([sg.Input(size=116, key="info out")])
     liste.append([sg.Input(size=116, key="info left")])
-    liste.append([sg.T("Welche voting role ig: "), sg.Combo(key="narr", values=["Narr", "hh", "Anarchist"])])
+    liste.append([sg.T("Welche voting role ig: "), sg.Combo(key="narr", values=voting_roles)])
 
     return liste
 
@@ -74,13 +74,19 @@ while True:
 
         player_list = range(1,17)
 
+        no_info = []
+
         for i in range(1, 17):
             wert = v[f"{i}.4"]
 
             if wert:
                 aura_dict[wert].append(i)
+            elif not wert and v[f"{i}.3"] == "alive":
+                no_info.append(str(i) + " ")
 
         info_list = []
+
+        w["info left"]("".join(no_info) + "übrig")
 
         for i in aura_dict:
             temp_list = []
