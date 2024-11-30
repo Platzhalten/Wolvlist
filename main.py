@@ -60,9 +60,9 @@ while True:
     if e[-1] == "3":
         number = e.split(".")
 
-        if v[e] == "dead":
+        if v[e]:
             w[f"{number[0]}.2"].update(disabled=True)
-        elif v[e] == "alive":
+        elif not v[e]:
             w[f"{number[0]}.2"].update(disabled=False)
             
     if e[-1] == "4" or e[-1] == "3":
