@@ -12,10 +12,16 @@ voting_roles = ["Narr", "hh", "Anarchist"]
 def layout():
     liste = []
     for i in range(1, 17, 4):
-        liste.append([sg.Frame(title=f"{i}. Player", key=f"{i}.1", layout=[[sg.Input(default_text="", key=f"{i}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Checkbox(text="Dead" , key=f"{i}.3", enable_events=True), sg.Combo(values=teams, key=f"{i}.4", enable_events=True)]])])
-        liste[-1].append(sg.Frame(title=f"{i + 1}. Player", key=f"{i + 1}.1", layout=[[sg.Input(default_text="", key=f"{i + 1}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Checkbox(text="Dead" , key=f"{i + 1}.3", enable_events=True), sg.Combo(values=teams, key=f"{i + 1}.4", enable_events=True)]]))
-        liste[-1].append(sg.Frame(title=f"{i + 2}. Player", key=f"{i + 2}.1", layout=[[sg.Input(default_text="", key=f"{i + 2}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Checkbox(text="Dead" , key=f"{i + 2}.3", enable_events=True), sg.Combo(values=teams, key=f"{i + 2}.4", enable_events=True)]]))
-        liste[-1].append(sg.Frame(title=f"{i + 3}. Player", key=f"{i + 3}.1", layout=[[sg.Input(default_text="", key=f"{i + 3}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Checkbox(text="Dead" , key=f"{i + 3}.3", enable_events=True), sg.Combo(values=teams, key=f"{i + 3}.4", enable_events=True)]]))
+        liste.append([])
+
+        for k in range(0 ,3):
+            liste[-1].append(sg.Frame(title=f"{i + k}. Player", layout=[[sg.Button(image_source="images/generic/Good.png", size=(5,5))]]))
+
+
+        # liste.append([sg.Frame(title=f"{i}. Player", key=f"{i}.1", layout=[[sg.Input(default_text="", key=f"{i}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Checkbox(text="Dead" , key=f"{i}.3", enable_events=True), sg.Combo(values=teams, key=f"{i}.4", enable_events=True)]])])
+        # liste[-1].append(sg.Frame(title=f"{i + 1}. Player", key=f"{i + 1}.1", layout=[[sg.Input(default_text="", key=f"{i + 1}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Checkbox(text="Dead" , key=f"{i + 1}.3", enable_events=True), sg.Combo(values=teams, key=f"{i + 1}.4", enable_events=True)]]))
+        # liste[-1].append(sg.Frame(title=f"{i + 2}. Player", key=f"{i + 2}.1", layout=[[sg.Input(default_text="", key=f"{i + 2}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Checkbox(text="Dead" , key=f"{i + 2}.3", enable_events=True), sg.Combo(values=teams, key=f"{i + 2}.4", enable_events=True)]]))
+        # liste[-1].append(sg.Frame(title=f"{i + 3}. Player", key=f"{i + 3}.1", layout=[[sg.Input(default_text="", key=f"{i + 3}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Checkbox(text="Dead" , key=f"{i + 3}.3", enable_events=True), sg.Combo(values=teams, key=f"{i + 3}.4", enable_events=True)]]))
 
     liste.append([sg.Input(size=116)])
     liste.append([sg.Input(size=116, key="info out")])
