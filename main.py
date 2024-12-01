@@ -31,6 +31,7 @@ def layout():
         for k in range(0 ,3):
             liste[-1].append(sg.Frame(title=f"{i + k}. Player", layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but")]]))
 
+    liste.append([sg.Radio(text="Good", group_id="choose", key="choose Good"), sg.Radio(text="ubk", group_id="choose"), sg.Radio(text="evil", group_id="choose"), sg.Radio(text="unchecked", group_id="choose")])
 
     liste.append([sg.Input(size=116)])
     liste.append([sg.Input(size=116, key="info out")])
@@ -69,6 +70,8 @@ while True:
     e, v = w.read()
 
     e: str = e
+
+    print(v["choose Good"])
 
     if e is None:
         w.close()
