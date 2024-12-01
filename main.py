@@ -34,8 +34,16 @@ def layout_2():
 
     return liste
 
+
+def layout_settings():
+    return [[sg.T("At the Moment there are no Settings here")]
+    ]
+
 tab1 = sg.Tab(title="Game", layout=layout())
-tab2 = sg.Tab(title="Names", layout=layout_2())
+tab2_1 = sg.Tab(title="Names", layout=layout_2())
+tab2_2 = sg.Tab(title="Settings", layout=layout_settings())
+
+tab2 = sg.Tab(title="Settings", layout=[[sg.TabGroup(layout=[[tab2_1, tab2_2]])]])
 
 tab = [[sg.TabGroup(layout=[[tab1, tab2]])]]
 
@@ -68,7 +76,6 @@ while True:
     if e[-1] == "4" or e[-1] == "3":
 
         aura_dict = {}
-        # aura_dict = dict.fromkeys(teams, [])
         for i in teams:
             aura_dict[i] = []
 
@@ -95,7 +102,7 @@ while True:
             temp_list = []
 
             for k in aura_dict[i]:
-                if v[f"{k}.3"] == "alive":
+                if not v[f"{k}.3"]:
 
                     if not temp_list == []:
                         temp_list.append(", ")
