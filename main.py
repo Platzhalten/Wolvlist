@@ -5,6 +5,14 @@ sg.theme_global("DarkTeal9")
 # GLOBAL VARIABEL
 choosen = None
 
+image_path = {
+    "generic": {
+        "evil": "images/generic/Evil.png",
+        "good": "images/generic/Good.png",
+        "unchecked": "images/generic/Unchecked.png",
+        "unknow": "images/generic/Unknown.png"
+    }
+}
 
 # OPTION
 
@@ -21,7 +29,7 @@ def layout():
         liste.append([])
 
         for k in range(0 ,3):
-            liste[-1].append(sg.Frame(title=f"{i + k}. Player", layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but"))]])
+            liste[-1].append(sg.Frame(title=f"{i + k}. Player", layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but")]]))
 
 
     liste.append([sg.Input(size=116)])
@@ -77,6 +85,9 @@ while True:
             if f"choose {i}" == True:
                 
                 choosen = i
+
+    if e[-3:0].strip() == "but":
+        pass
 
 
     if e[-1] == "3":
