@@ -2,6 +2,10 @@ import FreeSimpleGUI as sg
 
 sg.theme_global("DarkTeal9")
 
+# GLOBAL VARIABEL
+choosen = None
+
+
 # OPTION
 
 # change the order/name/add/remove theams
@@ -9,18 +13,28 @@ sg.theme_global("DarkTeal9")
 teams = ["gut", "solo killer", "ubk",   "ww", "kein dorf", "voting role"]
 voting_roles = ["Narr", "hh", "Anarchist"]
 
+choose_posibily = ["gut", "ubk", "evil"]
+
 def layout():
     liste = []
     for i in range(1, 17, 4):
         liste.append([])
 
         for k in range(0 ,3):
-            liste[-1].append(sg.Frame(title=f"{i + k}. Player", layout=[[sg.Button(image_source="images/generic/Unchecked.png")]]))
+            liste[-1].append(sg.Frame(title=f"{i + k}. Player", layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but"))]])
 
 
     liste.append([sg.Input(size=116)])
     liste.append([sg.Input(size=116, key="info out")])
     liste.append([sg.Input(size=116, key="info left")])
+
+    adding_list = []
+
+    for i in choose_posibily:
+        adding_list.append(sg.Radio(name=i, group_id="choose", key=f"choose {i}"))
+
+    liste.append(adding_list)
+
     liste.append([sg.T("Welche voting role ig: "), sg.Combo(key="narr", values=voting_roles)])
 
     return liste
@@ -56,6 +70,13 @@ while True:
         for i in range(1,17):
 
             w[f"{i}.1"](v[f"{i} name"])
+
+    
+    if e[0:5] == "choose":
+        for i in choose_posibily:
+            if f"choose {i}" == True:
+                
+                choosen = i
 
 
     if e[-1] == "3":
