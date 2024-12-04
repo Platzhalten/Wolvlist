@@ -7,10 +7,10 @@ choosen = None
 
 image_path = {
     "generic": {
-        "evil": "images/generic/Evil.png",
-        "good": "images/generic/Good.png",
+        "böse": "images/generic/Evil.png",
+        "gut": "images/generic/Good.png",
         "unchecked": "images/generic/Unchecked.png",
-        "unknow": "images/generic/Unknown.png"
+        "ubk": "images/generic/Unknown.png"
     }
 }
 
@@ -21,7 +21,13 @@ image_path = {
 teams = ["gut", "solo killer", "ubk",   "ww", "kein dorf", "voting role"]
 voting_roles = ["Narr", "hh", "Anarchist"]
 
-choose_posibily = ["gut", "ubk", "evil"]
+choose_posibily = ["gut", "ubk", "böse", "unchecked"]
+
+
+def get_image_path(image: str, type: str = "generic"):
+
+    return image_path[type][image]
+
 
 def layout():
     liste = []
@@ -29,20 +35,22 @@ def layout():
         liste.append([])
 
         for k in range(0 ,3):
-            liste[-1].append(sg.Frame(title=f"{i + k}. Player", layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but")]]))
+            liste[-1].append(sg.Frame(title=f"{i + k}. Player", size=(125, 125), layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but")]]))
 
-    liste.append([sg.Radio(text="Good", group_id="choose", key="choose Good"), sg.Radio(text="ubk", group_id="choose"), sg.Radio(text="evil", group_id="choose"), sg.Radio(text="unchecked", group_id="choose")])
+    # liste.append([sg.Radio(text="Good", group_id="choose", key="choose Good"), sg.Radio(text="ubk", group_id="choose"), sg.Radio(text="evil", group_id="choose"), sg.Radio(text="unchecked", group_id="choose")])
+
+    adding_list = []
+
+    for i in choose_posibily:
+        adding_list.append(sg.Radio(text=i, group_id="choose", key=f"choose {i}"))
+
+    liste.append(adding_list)
+
 
     liste.append([sg.Input(size=116)])
     liste.append([sg.Input(size=116, key="info out")])
     liste.append([sg.Input(size=116, key="info left")])
 
-    adding_list = []
-
-    for i in choose_posibily:
-        adding_list.append(sg.Radio(name=i, group_id="choose", key=f"choose {i}"))
-
-    liste.append(adding_list)
 
     liste.append([sg.T("Welche voting role ig: "), sg.Combo(key="narr", values=voting_roles)])
 
@@ -71,8 +79,6 @@ while True:
 
     e: str = e
 
-    print(v["choose Good"])
-
     if e is None:
         w.close()
         break
@@ -82,15 +88,23 @@ while True:
 
             w[f"{i}.1"](v[f"{i} name"])
 
-    
-    if e[0:5] == "choose":
-        for i in choose_posibily:
-            if f"choose {i}" == True:
-                
-                choosen = i
 
-    if e[-3:0].strip() == "but":
-        pass
+    if e[-3:] == "but":
+
+        print("fw")
+
+        set_value = "RAISE ERROR"
+
+        for i in choose_posibily:
+            print(v[f"choose {i}"])
+
+            if v[f"choose {i}"]:
+                set_value = i
+
+                break
+
+        w[e].update(image_source=get_image_path(image=set_value))
+
 
 
     if e[-1] == "3":
