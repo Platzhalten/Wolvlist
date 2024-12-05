@@ -67,7 +67,7 @@ def layout_2():
     return liste
 
 tab1 = sg.Tab(title="Game", layout=layout())
-tab2 = sg.Tab(title="Names", layout=layout_2())
+tab2 = sg.Tab(title="Settings", layout=layout_2())
 
 tab = [[sg.TabGroup(layout=[[tab1, tab2]])]]
 
@@ -90,21 +90,18 @@ while True:
 
 
     if e[-3:] == "but":
-
-        print("fw")
-
-        set_value = "RAISE ERROR"
+        set_value = ""
 
         for i in choose_posibily:
-            print(v[f"choose {i}"])
-
             if v[f"choose {i}"]:
                 set_value = i
 
                 break
 
-        w[e].update(image_source=get_image_path(image=set_value))
+        if set_value:
 
+            w[e].update(image_source=get_image_path(image=set_value))
+            set_value = ""
 
 
     if e[-1] == "3":
