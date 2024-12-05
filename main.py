@@ -11,6 +11,13 @@ image_path = {
         "gut": "images/generic/Good.png",
         "unchecked": "images/generic/Unchecked.png",
         "ubk": "images/generic/Unknown.png"
+    },
+
+    "voting": {
+        "generic": "images/voting/Generic.png",
+        "anarchist": "images/voting/Anarchist.png",
+        "fool": "images/voting/Fool.png",
+        "hh": "images/voting/Headhunter.png"
     }
 }
 
@@ -21,7 +28,7 @@ image_path = {
 teams = ["gut", "solo killer", "ubk",   "ww", "kein dorf", "voting role"]
 voting_roles = ["Narr", "hh", "Anarchist"]
 
-choose_posibily = ["gut", "ubk", "böse", "unchecked"]
+choose_posibily = ["gut", "ubk", "böse", "Narr/HH", "unchecked"]
 
 
 def get_image_path(image: str, type: str = "generic"):
@@ -34,8 +41,8 @@ def layout():
     for i in range(1, 17, 4):
         liste.append([])
 
-        for k in range(0 ,3):
-            liste[-1].append(sg.Frame(title=f"{i + k}. Player", size=(125, 125), layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but")]]))
+        for k in range(0, 4):
+            liste[-1].append(sg.Frame(title=f"{i + k}. Player", size=(125, 125), layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but", metadata="Unchecked")]]))
 
     # liste.append([sg.Radio(text="Good", group_id="choose", key="choose Good"), sg.Radio(text="ubk", group_id="choose"), sg.Radio(text="evil", group_id="choose"), sg.Radio(text="unchecked", group_id="choose")])
 
@@ -58,13 +65,23 @@ def layout():
 
 
 def layout_2():
+    name_layout = []
     liste = []
     for i in range(1,17):
         liste.append([sg.Input(f"{i}. Player", key=f"{i} name")])
 
     liste.append([sg.Button("add the names", key="name_key")])
 
-    return liste
+    name_layout.append(sg.Frame(title="Names", layout=liste))
+
+
+
+    game_layout = [[sg.T("Welche Voting Roles gibt es")]]
+
+    game_layout = [[sg.Frame(title="Game Settings", layout=game_layout)]]
+
+
+    return [name_layout]
 
 tab1 = sg.Tab(title="Game", layout=layout())
 tab2 = sg.Tab(title="Settings", layout=layout_2())
@@ -100,22 +117,17 @@ while True:
 
         if set_value:
 
-            w[e].update(image_source=get_image_path(image=set_value))
+            wert1 = "generic"
+
+            if set_value == "Narr/HH":
+                wert1 = "voting"
+                set_value="generic"
+
+            w[e].update(image_source=get_image_path(image=set_value, type=wert1))
             set_value = ""
 
-
-    if e[-1] == "3":
-        number = e.split(".")
-
-        if v[e]:
-            w[f"{number[0]}.2"].update(disabled=True)
-        elif not v[e]:
-            w[f"{number[0]}.2"].update(disabled=False)
-            
-    if e[-1] == "4" or e[-1] == "3":
-
+"""
         aura_dict = {}
-        # aura_dict = dict.fromkeys(teams, [])
         for i in teams:
             aura_dict[i] = []
 
@@ -161,3 +173,4 @@ while True:
 
         w["info out"](info)
 
+"""
