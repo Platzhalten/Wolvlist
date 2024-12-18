@@ -6,19 +6,15 @@ sg.theme_global("DarkTeal9")
 choosen = None
 
 image_path = {
-    "generic": {
-        "böse": "images/generic/Evil.png",
-        "gut": "images/generic/Good.png",
-        "unchecked": "images/generic/Unchecked.png",
-        "ubk": "images/generic/Unknown.png"
-    },
-
-    "voting": {
-        "generic": "images/voting/Generic.png",
-        "anarchist": "images/voting/Anarchist.png",
-        "fool": "images/voting/Fool.png",
-        "hh": "images/voting/Headhunter.png"
-    }
+    "böse": "images/generic/Evil.png",
+    "gut": "images/generic/Good.png",
+    "unchecked": "images/generic/Unchecked.png",
+    "ubk": "images/generic/Unknown.png",
+    "Narr/HH": "images/voting/Generic.png",
+    "Anarchist": "images/voting/Anarchist.png",
+    "Narr": "images/voting/Fool.png",
+    "hh": "images/voting/Headhunter.png",
+    "dead": "images/generic/dead.png"
 }
 
 # OPTION
@@ -28,12 +24,12 @@ image_path = {
 teams = ["gut", "solo killer", "ubk",   "ww", "kein dorf", "voting role"]
 voting_roles = ["Narr", "hh", "Anarchist"]
 
-choose_posibily = ["gut", "ubk", "böse", "Narr/HH", "unchecked"]
+choose_posibily = ["gut", "ubk", "böse", "Narr/HH", "unchecked", "dead"]
 
 
-def get_image_path(image: str, type: str = "generic"):
+def get_image_path(image: str):
 
-    return image_path[type][image]
+    return image_path[image]
 
 
 def layout():
@@ -83,6 +79,10 @@ def layout_2():
 
     return [name_layout]
 
+
+def get_extra_info():
+    pass
+
 tab1 = sg.Tab(title="Game", layout=layout())
 tab2 = sg.Tab(title="Settings", layout=layout_2())
 
@@ -116,61 +116,10 @@ while True:
                 break
 
         if set_value:
+            if v["narr"]:
+                set_value = v["narr"]
 
-            wert1 = "generic"
+            w[e].update(image_source=get_image_path(image=set_value))
+           #  w[e].update(metadata=set_value)
 
-            if set_value == "Narr/HH":
-                wert1 = "voting"
-                set_value="generic"
-
-            w[e].update(image_source=get_image_path(image=set_value, type=wert1))
             set_value = ""
-
-"""
-        aura_dict = {}
-        for i in teams:
-            aura_dict[i] = []
-
-        player_list = range(1,17)
-
-        no_info = []
-
-        for i in range(1, 17):
-            wert = v[f"{i}.4"]
-
-            if wert:
-                aura_dict[wert].append(i)
-            elif not wert and v[f"{i}.3"] == False:
-                no_info.append(str(i) + " ")
-
-        info_list = []
-
-        if no_info:
-            w["info left"]("".join(no_info) + "übrig")
-        else:
-            w["info left"]("Alle wurden überprüft")
-
-        for i in aura_dict:
-            temp_list = []
-
-            for k in aura_dict[i]:
-                if v[f"{k}.3"] == "alive":
-
-                    if not temp_list == []:
-                        temp_list.append(", ")
-
-                    temp_list.append(str(k))
-
-            if not temp_list == []:
-                temp_list.append(" " + i + " | ")
-
-            info_list.append("".join(temp_list))
-
-        info = "".join(info_list).removesuffix(" | ")
-
-        if v["narr"]:
-            info = info.replace("voting role", v["narr"])
-
-        w["info out"](info)
-
-"""
