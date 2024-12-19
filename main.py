@@ -2,37 +2,81 @@ import FreeSimpleGUI as sg
 
 sg.theme_global("DarkTeal9")
 
+# GLOBAL VARIABEL
+choosen = None
+
+image_path = {
+    "böse": "images/generic/Evil.png",
+    "gut": "images/generic/Good.png",
+    "unchecked": "images/generic/Unchecked.png",
+    "ubk": "images/generic/Unknown.png",
+    "Narr/HH": "images/voting/Generic.png",
+    "Anarchist": "images/voting/Anarchist.png",
+    "Narr": "images/voting/Fool.png",
+    "hh": "images/voting/Headhunter.png",
+    "dead": "images/generic/dead.png"
+}
+
 # OPTION
 
-# change the order/name/add/remove theams
-#       village  solo killer   unknown  ww    not Village   voting role
-teams = ["gut", "solo killer", "ubk",   "ww", "kein dorf", "voting role"]
 voting_roles = ["Narr", "hh", "Anarchist"]
+choose_posibily = ["gut", "ubk", "böse", "Narr/HH", "unchecked", "dead"]
+
+team_dict = dict.fromkeys(range(1,17), "unchecked")
+
+
+def get_image_path(image: str):
+    return image_path[image]
+
 
 def layout():
     liste = []
     for i in range(1, 17, 4):
-        liste.append([sg.Frame(title=f"{i}. Player", key=f"{i}.1", layout=[[sg.Input(default_text="", key=f"{i}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Checkbox(text="Dead" , key=f"{i}.3", enable_events=True), sg.Combo(values=teams, key=f"{i}.4", enable_events=True)]])])
-        liste[-1].append(sg.Frame(title=f"{i + 1}. Player", key=f"{i + 1}.1", layout=[[sg.Input(default_text="", key=f"{i + 1}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Checkbox(text="Dead" , key=f"{i + 1}.3", enable_events=True), sg.Combo(values=teams, key=f"{i + 1}.4", enable_events=True)]]))
-        liste[-1].append(sg.Frame(title=f"{i + 2}. Player", key=f"{i + 2}.1", layout=[[sg.Input(default_text="", key=f"{i + 2}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Checkbox(text="Dead" , key=f"{i + 2}.3", enable_events=True), sg.Combo(values=teams, key=f"{i + 2}.4", enable_events=True)]]))
-        liste[-1].append(sg.Frame(title=f"{i + 3}. Player", key=f"{i + 3}.1", layout=[[sg.Input(default_text="", key=f"{i + 3}.2", disabled_readonly_background_color="grey", enable_events=True, size=20)], [sg.Checkbox(text="Dead" , key=f"{i + 3}.3", enable_events=True), sg.Combo(values=teams, key=f"{i + 3}.4", enable_events=True)]]))
+        liste.append([])
+
+        for k in range(0, 4):
+            liste[-1].append(sg.Frame(title=f"{i + k}. Player", size=(125, 125), layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but", metadata="Unchecked")]]))
+
+    adding_list = []
+
+    for i in choose_posibily:
+        adding_list.append(sg.Radio(text=i, group_id="choose", key=f"choose {i}"))
+
+    liste.append(adding_list)
+
 
     liste.append([sg.Input(size=116)])
     liste.append([sg.Input(size=116, key="info out")])
     liste.append([sg.Input(size=116, key="info left")])
+
+
     liste.append([sg.T("Welche voting role ig: "), sg.Combo(key="narr", values=voting_roles)])
 
     return liste
 
 
 def layout_2():
+    name_layout = []
     liste = []
     for i in range(1,17):
         liste.append([sg.Input(f"{i}. Player", key=f"{i} name")])
 
     liste.append([sg.Button("add the names", key="name_key")])
 
-    return liste
+    name_layout.append(sg.Frame(title="Names", layout=liste))
+
+
+
+    game_layout = [[sg.T("Welche Voting Roles gibt es")]]
+
+    game_layout = [[sg.Frame(title="Game Settings", layout=game_layout)]]
+
+
+    return [name_layout]
+
+
+def get_extra_info():
+    pass
 
 
 def layout_settings():
@@ -40,10 +84,8 @@ def layout_settings():
     ]
 
 tab1 = sg.Tab(title="Game", layout=layout())
-tab2_1 = sg.Tab(title="Names", layout=layout_2())
-tab2_2 = sg.Tab(title="Settings", layout=layout_settings())
+tab2 = sg.Tab(title="Settings", layout=layout_2())
 
-tab2 = sg.Tab(title="Settings", layout=[[sg.TabGroup(layout=[[tab2_1, tab2_2]])]])
 
 tab = [[sg.TabGroup(layout=[[tab1, tab2]])]]
 
@@ -65,59 +107,40 @@ while True:
             w[f"{i}.1"](v[f"{i} name"])
 
 
-    if e[-1] == "3":
-        number = e.split(".")
 
-        if v[e]:
-            w[f"{number[0]}.2"].update(disabled=True)
-        elif not v[e]:
-            w[f"{number[0]}.2"].update(disabled=False)
-            
-    if e[-1] == "4" or e[-1] == "3":
+    if e[-3:] == "but":
+        set_value = ""
 
-        aura_dict = {}
-        for i in teams:
-            aura_dict[i] = []
+        for i in choose_posibily:
+            if v[f"choose {i}"]:
+                set_value = i
 
-        player_list = range(1,17)
+                break
 
-        no_info = []
+        if set_value:
+            if v["narr"]:
+                set_value = v["narr"]
 
-        for i in range(1, 17):
-            wert = v[f"{i}.4"]
+            w[e].update(image_source=get_image_path(image=set_value))
 
-            if wert:
-                aura_dict[wert].append(i)
-            elif not wert and v[f"{i}.3"] == False:
-                no_info.append(str(i) + " ")
+            e = e.split(" ")
 
-        info_list = []
+            e: int = int(e[0]) + int(e[1])
 
-        if no_info:
-            w["info left"]("".join(no_info) + "übrig")
-        else:
-            w["info left"]("Alle wurden überprüft")
+            team_dict[e] = set_value
 
-        for i in aura_dict:
-            temp_list = []
 
-            for k in aura_dict[i]:
-                if not v[f"{k}.3"]:
+            unchecked = ""
 
-                    if not temp_list == []:
-                        temp_list.append(", ")
 
-                    temp_list.append(str(k))
+            for i in team_dict:
 
-            if not temp_list == []:
-                temp_list.append(" " + i + " | ")
+                if team_dict[i] == "unchecked":
+                    unchecked += (str(i) + " ")
 
-            info_list.append("".join(temp_list))
 
-        info = "".join(info_list).removesuffix(" | ")
+            unchecked += "übrig"
 
-        if v["narr"]:
-            info = info.replace("voting role", v["narr"])
+            w["info left"](unchecked)
 
-        w["info out"](info)
-
+            set_value = ""
