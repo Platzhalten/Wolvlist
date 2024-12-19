@@ -78,8 +78,14 @@ def layout_2():
 def get_extra_info():
     pass
 
+
+def layout_settings():
+    return [[sg.T("At the Moment there are no Settings here")]
+    ]
+
 tab1 = sg.Tab(title="Game", layout=layout())
 tab2 = sg.Tab(title="Settings", layout=layout_2())
+
 
 tab = [[sg.TabGroup(layout=[[tab1, tab2]])]]
 
@@ -99,6 +105,7 @@ while True:
         for i in range(1,17):
 
             w[f"{i}.1"](v[f"{i} name"])
+
 
 
     if e[-3:] == "but":
@@ -121,6 +128,7 @@ while True:
             e: int = int(e[0]) + int(e[1])
 
             team_dict[e] = set_value
+
 
             unchecked = ""
 
