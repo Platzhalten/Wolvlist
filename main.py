@@ -19,16 +19,13 @@ image_path = {
 
 # OPTION
 
-# change the order/name/add/remove theams
-#       village  solo killer   unknown  ww    not Village   voting role
-teams = ["gut", "solo killer", "ubk",   "ww", "kein dorf", "voting role"]
 voting_roles = ["Narr", "hh", "Anarchist"]
-
 choose_posibily = ["gut", "ubk", "böse", "Narr/HH", "unchecked", "dead"]
+
+team_dict = dict.fromkeys(range(1,17), "unchecked")
 
 
 def get_image_path(image: str):
-
     return image_path[image]
 
 
@@ -39,8 +36,6 @@ def layout():
 
         for k in range(0, 4):
             liste[-1].append(sg.Frame(title=f"{i + k}. Player", size=(125, 125), layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but", metadata="Unchecked")]]))
-
-    # liste.append([sg.Radio(text="Good", group_id="choose", key="choose Good"), sg.Radio(text="ubk", group_id="choose"), sg.Radio(text="evil", group_id="choose"), sg.Radio(text="unchecked", group_id="choose")])
 
     adding_list = []
 
@@ -120,6 +115,24 @@ while True:
                 set_value = v["narr"]
 
             w[e].update(image_source=get_image_path(image=set_value))
-           #  w[e].update(metadata=set_value)
+
+            e = e.split(" ")
+
+            e: int = int(e[0]) + int(e[1])
+
+            team_dict[e] = set_value
+
+            unchecked = ""
+
+
+            for i in team_dict:
+
+                if team_dict[i] == "unchecked":
+                    unchecked += (str(i) + " ")
+
+
+            unchecked += "übrig"
+
+            w["info left"](unchecked)
 
             set_value = ""
