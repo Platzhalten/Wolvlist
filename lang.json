@@ -1,0 +1,79 @@
+{
+  "placeholder": {
+    "language_full_name": "placeholder",
+
+    "team_selector": {
+      "good": "",
+      "unknown": "",
+      "evil": "",
+      "voting_role": "",
+      "unchecked": "",
+      "dead": ""
+    },
+    "roles": {
+      "fool": "",
+      "headhunter": "",
+      "anarchist": ""
+    },
+    "settings": {
+      "settings": "",
+      "names": "",
+      "change_names": ""
+    },
+    "player": "",
+    "what_voting_role": "",
+    "left": ""
+  },
+
+  "de": {
+    "language_full_name": "Deutsch",
+
+    "team_selector": {
+      "good": "gut",
+      "unknown": "ubk",
+      "evil": "böse",
+      "voting_role": "Narr/hh",
+      "unchecked": "unchecked",
+      "dead": "tot"
+    },
+    "roles": {
+      "fool": "Narr",
+      "headhunter": "hh",
+      "anarchist": "anarchist"
+    },
+    "settings": {
+      "settings": "Einstellungen",
+      "names": "Namen",
+      "change_names": "Ändern"
+    },
+    "player": "Spieler",
+    "what_voting_role": "Welche voting role ig: ",
+    "left": "übrig"
+  },
+
+  "en": {
+    "language_full_name": "english",
+
+    "team_selector": {
+      "good": "good",
+      "unknown": "unk",
+      "evil": "evil",
+      "voting_role": "Voting Role",
+      "unchecked": "unchecked",
+      "dead": "dead"
+    },
+    "roles": {
+      "fool": "Fool",
+      "headhunter": "Headhunter",
+      "anarchist": "Anarchrist"
+    },
+    "settings": {
+      "settings": "Settings",
+      "names": "names",
+      "change_names": "Change the Names"
+    },
+    "player": "Player",
+    "what_voting_role": "What Voting role is ig",
+    "left": "left"
+  }
+}
