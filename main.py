@@ -1,6 +1,7 @@
 import FreeSimpleGUI as sg
 
-sg.theme_global("DarkTeal9")
+sg.theme_global("DarkGrey11")
+
 
 # GLOBAL VARIABEL
 choosen = None
@@ -35,7 +36,7 @@ def layout():
         liste.append([])
 
         for k in range(0, 4):
-            liste[-1].append(sg.Frame(title=f"{i + k}. Player", size=(125, 125), layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but", metadata="Unchecked")]]))
+            liste[-1].append(sg.Frame(title=f"{i + k}. Player", size=(125, 125), layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but")]]))
 
     adding_list = []
 
@@ -118,7 +119,7 @@ while True:
                 break
 
         if set_value:
-            if v["narr"]:
+            if v["narr"] == set_value == "Narr/HH":
                 set_value = v["narr"]
 
             w[e].update(image_source=get_image_path(image=set_value))
