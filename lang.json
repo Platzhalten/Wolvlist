@@ -1,0 +1,79 @@
+{
+   "selected": "en",
+   "placeholder": {
+      "message": "PLACEHOLDER MUST BE EVER ON TOP OF THE FILE",
+      "language_full_name": "placeholder",
+      "team_selector": {
+         "good": "",
+         "unknown": "",
+         "evil": "",
+         "voting_role": "",
+         "unchecked": "",
+         "dead": ""
+      },
+      "roles": {
+         "fool": "",
+         "headhunter": "",
+         "anarchist": ""
+      },
+      "settings": {
+         "settings": "",
+         "games_settings": "",
+         "names": "",
+         "change_names": ""
+      },
+      "player": "",
+      "what_voting_role": "",
+      "left": ""
+   },
+   "de": {
+      "language_full_name": "Deutsch",
+      "team_selector": {
+         "good": "gut",
+         "unknown": "ubk",
+         "evil": "b\u00f6se",
+         "voting_role": "Narr/hh",
+         "unchecked": "unchecked",
+         "dead": "tot"
+      },
+      "roles": {
+         "fool": "Narr",
+         "headhunter": "hh",
+         "anarchist": "anarchist"
+      },
+      "settings": {
+         "settings": "Einstellungen",
+         "games_settings": "Spieleeinstellungen",
+         "names": "Namen",
+         "change_names": "\u00c4ndern"
+      },
+      "player": "Spieler",
+      "what_voting_role": "Welche voting role ig: ",
+      "left": "\u00fcbrig"
+   },
+   "en": {
+      "language_full_name": "english",
+      "team_selector": {
+         "good": "good",
+         "unknown": "unk",
+         "evil": "evil",
+         "voting_role": "Voting Role",
+         "unchecked": "unchecked",
+         "dead": "dead"
+      },
+      "roles": {
+         "fool": "Fool",
+         "headhunter": "Headhunter",
+         "anarchist": "Anarchrist"
+      },
+      "settings": {
+         "settings": "Settings",
+         "games_settings": "Games Settings",
+         "names": "names",
+         "change_names": "Change the Names"
+      },
+      "player": "Player",
+      "what_voting_role": "What Voting role is ig",
+      "left": "left"
+   }
+}

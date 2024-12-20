@@ -17,30 +17,36 @@
 #      along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import FreeSimpleGUI as sg
+import settings
 
-sg.theme_global("DarkTeal9")
+sg.theme_global("DarkGrey11")
+
 
 # GLOBAL VARIABEL
 choosen = None
 
+trans = settings.get_settings()
+team = trans["team_selector"]
+role = trans["roles"]
+
 image_path = {
-    "böse": "images/generic/Evil.png",
-    "gut": "images/generic/Good.png",
-    "unchecked": "images/generic/Unchecked.png",
-    "ubk": "images/generic/Unknown.png",
-    "Narr/HH": "images/voting/Generic.png",
-    "Anarchist": "images/voting/Anarchist.png",
-    "Narr": "images/voting/Fool.png",
-    "hh": "images/voting/Headhunter.png",
-    "dead": "images/generic/dead.png"
+    team["evil"]: "images/generic/Evil.png",
+    team["good"]: "images/generic/Good.png",
+    team["unchecked"]: "images/generic/Unchecked.png",
+    team["unknown"]: "images/generic/Unknown.png",
+    team["voting_role"]: "images/voting/Generic.png",
+    role["anarchist"]: "images/voting/Anarchist.png",
+    role["fool"]: "images/voting/Fool.png",
+    role["headhunter"]: "images/voting/Headhunter.png",
+    team["dead"]: "images/generic/dead.png"
 }
 
 # OPTION
 
-voting_roles = ["Narr", "hh", "Anarchist"]
-choose_posibily = ["gut", "ubk", "böse", "Narr/HH", "unchecked", "dead"]
+voting_roles = [role["fool"], role["headhunter"], role["anarchist"]]
+choose_posibily = [team["good"], team["unknown"] , team["evil"], team["voting_role"], team["unchecked"], team["dead"]]
 
-team_dict = dict.fromkeys(range(1,17), "unchecked")
+team_dict = dict.fromkeys(range(1,17), team["unchecked"])
 
 
 def get_image_path(image: str):
@@ -53,7 +59,7 @@ def layout():
         liste.append([])
 
         for k in range(0, 4):
-            liste[-1].append(sg.Frame(title=f"{i + k}. Player", size=(125, 125), layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but", metadata="Unchecked")]]))
+            liste[-1].append(sg.Frame(title=f"{i + k}. {trans["player"]}", size=(125, 125), layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but")]]))
 
     adding_list = []
 
@@ -67,42 +73,33 @@ def layout():
     liste.append([sg.Input(size=116, key="info out")])
     liste.append([sg.Input(size=116, key="info left")])
 
-
-    liste.append([sg.T("Welche voting role ig: "), sg.Combo(key="narr", values=voting_roles)])
-
     return liste
 
 
-def layout_2():
+def layout_settings():
     name_layout = []
     liste = []
     for i in range(1,17):
-        liste.append([sg.Input(f"{i}. Player", key=f"{i} name")])
+        liste.append([sg.Input(f"{i}. {trans["player"]}", key=f"{i} name")])
 
-    liste.append([sg.Button("add the names", key="name_key")])
+    liste.append([sg.Button(trans["settings"]["change_names"], key="name_key")])
 
-    name_layout.append(sg.Frame(title="Names", layout=liste))
+    name_layout.append(sg.Frame(title=trans["settings"]["names"], layout=liste))
 
+    languafe = settings.get_avaible_languages()
 
+    game_layout = [[sg.T("Language (needs restarting)")],
+                   [sg.Combo(key="lang", values=languafe[0], default_value=languafe[1], enable_events=True)],
+                   [sg.T(trans["what_voting_role"])],
+                   [sg.Combo(key="narr", values=voting_roles)]]
 
-    game_layout = [[sg.T("Welche Voting Roles gibt es")]]
-
-    game_layout = [[sg.Frame(title="Game Settings", layout=game_layout)]]
-
-
-    return [name_layout]
-
-
-def get_extra_info():
-    pass
+    game_layout = [sg.Frame(title=trans["settings"]["games_settings"], layout=game_layout)]
 
 
-def layout_settings():
-    return [[sg.T("At the Moment there are no Settings here")]
-    ]
+    return [name_layout, game_layout]
 
 tab1 = sg.Tab(title="Game", layout=layout())
-tab2 = sg.Tab(title="Settings", layout=layout_2())
+tab2 = sg.Tab(title="Settings", layout=layout_settings())
 
 
 tab = [[sg.TabGroup(layout=[[tab1, tab2]])]]
@@ -115,18 +112,19 @@ while True:
 
     e: str = e
 
+    print(e)
+
     if e is None:
         w.close()
         break
 
-    if e == "name_key":
+    elif e == "name_key":
         for i in range(1,17):
 
             w[f"{i}.1"](v[f"{i} name"])
 
 
-
-    if e[-3:] == "but":
+    elif e[-3:] == "but":
         set_value = ""
 
         for i in choose_posibily:
@@ -162,3 +160,6 @@ while True:
             w["info left"](unchecked)
 
             set_value = ""
+
+    elif e == "lang":
+        settings.change_selected_lang(v["lang"][0:3].strip())
