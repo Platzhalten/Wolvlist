@@ -13,7 +13,7 @@ def get_avaible_languages():
     for i in f:
         liste.append(f"{i} - {f[i]["language_full_name"]}")
 
-    return liste
+    return liste[1:]
 
 def check_for_lang_file():
 

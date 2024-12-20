@@ -1,4 +1,5 @@
 import FreeSimpleGUI as sg
+import settings
 
 sg.theme_global("DarkGrey11")
 
@@ -50,13 +51,10 @@ def layout():
     liste.append([sg.Input(size=116, key="info out")])
     liste.append([sg.Input(size=116, key="info left")])
 
-
-    liste.append([sg.T("Welche voting role ig: "), sg.Combo(key="narr", values=voting_roles)])
-
     return liste
 
 
-def layout_2():
+def layout_settings():
     name_layout = []
     liste = []
     for i in range(1,17):
@@ -67,25 +65,23 @@ def layout_2():
     name_layout.append(sg.Frame(title="Names", layout=liste))
 
 
+    game_layout = [[sg.T("What Language?")],
+                   [sg.Combo(key="lang", values=settings.get_avaible_languages())],
+                   [sg.T("Welche Voting Roles gibt es")],
+                   [sg.Combo(key="narr", values=voting_roles)]]
 
-    game_layout = [[sg.T("Welche Voting Roles gibt es")]]
-
-    game_layout = [[sg.Frame(title="Game Settings", layout=game_layout)]]
+    game_layout = [sg.Frame(title="Game Settings", layout=game_layout)]
 
 
-    return [name_layout]
+    return [name_layout, game_layout]
 
 
 def get_extra_info():
     pass
 
 
-def layout_settings():
-    return [[sg.T("At the Moment there are no Settings here")]
-    ]
-
 tab1 = sg.Tab(title="Game", layout=layout())
-tab2 = sg.Tab(title="Settings", layout=layout_2())
+tab2 = sg.Tab(title="Settings", layout=layout_settings())
 
 
 tab = [[sg.TabGroup(layout=[[tab1, tab2]])]]
