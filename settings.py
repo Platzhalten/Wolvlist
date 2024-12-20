@@ -37,10 +37,7 @@ def change_selected_lang(lang: str):
 
         l["selected"] = lang
 
-        print(l)
-
     with open("lang.json", "w") as f:
-        print(json.dumps(l))
         f.write(json.dumps(l, indent=3))
 
 def check_for_lang_file():
