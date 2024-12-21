@@ -112,8 +112,6 @@ while True:
 
     e: str = e
 
-    print(e)
-
     if e is None:
         w.close()
         break
