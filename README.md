@@ -1,7 +1,7 @@
-It is a list program for the online game [Wolvesville] (https://www.wolvesville.com/) 
+It is a list program for the online game [Wolvesville](https://www.wolvesville.com/) 
 
 # to run 
-You need [Python] (https://www.python.org/) and FreeSimpleGUI (if Tkinter is not pre-installed also Tkinter). 
+You need [Python](https://www.python.org/) and FreeSimpleGUI (if Tkinter is not pre-installed also Tkinter). 
 
 
 then just run the main.py file
