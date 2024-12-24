@@ -132,8 +132,9 @@ while True:
                 break
 
         if set_value:
-            if v["narr"] and set_value == "Narr/HH":
+            if v["narr"] and set_value == "Narr/hh":
                 set_value = v["narr"]
+
 
             w[e].update(image_source=get_image_path(image=set_value))
 
