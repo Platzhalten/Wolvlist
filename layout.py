@@ -1,6 +1,5 @@
 import FreeSimpleGUI as sg
 
-from main import choose_posibily, trans, voting_roles
 import settings
 
 
@@ -14,6 +13,8 @@ def entire_layout():
 
 
 def layout():
+    from main import trans, choose_posibily
+
     liste = []
     for i in range(1, 17, 4):
         liste.append([])
@@ -37,6 +38,8 @@ def layout():
 
 
 def layout_settings():
+    from main import trans, voting_roles
+
     name_layout = []
     liste = []
     for i in range(1,17):
