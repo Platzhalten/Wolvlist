@@ -58,15 +58,21 @@ def get_image_path(image: str):
 
 w = entire_layout()
 
+
 while True:
 
     e, v = w.read()
 
     e: str = e
 
+    if e == '<Double-Click>':
+        print("w")
+
     if e is None:
         w.close()
         break
+
+
 
     elif e == "name_key":
         for i in range(1,17):

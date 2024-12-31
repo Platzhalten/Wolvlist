@@ -9,7 +9,7 @@ def entire_layout():
 
     tab = [[sg.TabGroup(layout=[[tab1, tab2]])]]
 
-    return sg.Window(title="werville", layout=tab, resizable=True)
+    return sg.Window(title="werville", layout=tab, resizable=True, finalize=True)
 
 
 def layout():
@@ -20,7 +20,7 @@ def layout():
         liste.append([])
 
         for k in range(0, 4):
-            liste[-1].append(sg.Frame(title=f"{i + k}. {trans["player"]}", size=(125, 125), layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but")]]))
+            liste[-1].append(sg.Frame(title=f"{i + k}. {trans["player"]}", size=(125, 125), layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but", bind_return_key='<Double-1>')]]))
 
     adding_list = []
 
