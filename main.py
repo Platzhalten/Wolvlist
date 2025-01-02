@@ -75,9 +75,10 @@ while True:
 
 
     elif e == "name_key":
-        for i in range(1,17):
+        for i in range(1, 17, 4):
+            for k in range(0, 4):
 
-            w[f"{i}.1"](v[f"{i} name"])
+                w[f"{i} {k} frame"](v[f"{i + k} name"])
 
 
     elif e[-3:] == "but":
