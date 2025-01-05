@@ -17,7 +17,7 @@
 #      along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import FreeSimpleGUI as sg
-
+import time
 
 import settings
 from layout import entire_layout
@@ -27,6 +27,9 @@ sg.theme_global("DarkGrey11")
 
 # GLOBAL VARIABEL
 choosen = None
+times = False
+start = "ERROR"
+override = False
 
 trans = settings.get_settings()
 team = trans["team_selector"]
@@ -47,7 +50,7 @@ image_path = {
 # OPTION
 
 voting_roles = [role["fool"], role["headhunter"], role["anarchist"]]
-choose_posibily = [team["good"], team["unknown"] , team["evil"], team["voting_role"], team["unchecked"], team["dead"]]
+choose_posibily = [team["good"], team["unknown"] , team["evil"], team["voting_role"], team["unchecked"]]
 
 team_dict = dict.fromkeys(range(1,17), team["unchecked"])
 
@@ -65,9 +68,6 @@ while True:
 
     e: str = e
 
-    if e == '<Double-Click>':
-        print("w")
-
     if e is None:
         w.close()
         break
@@ -84,8 +84,20 @@ while True:
     elif e[-3:] == "but":
         set_value = ""
 
+        if not times:
+            start = time.time()
+            times = True
+            override = False
+        elif times:
+            if time.time() - start <= 0.5:
+                override = True
+                times = False
+
+                set_value = team["dead"]
+
+
         for i in choose_posibily:
-            if v[f"choose {i}"]:
+            if v[f"choose {i}"] and not override:
                 set_value = i
 
                 break
