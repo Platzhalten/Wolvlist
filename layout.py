@@ -9,7 +9,7 @@ def entire_layout():
 
     tab = [[sg.TabGroup(layout=[[tab1, tab2]])]]
 
-    return sg.Window(title="werville", layout=tab, resizable=True)
+    return sg.Window(title="werville", layout=tab, resizable=True, finalize=True)
 
 
 def layout():
@@ -20,7 +20,7 @@ def layout():
         liste.append([])
 
         for k in range(0, 4):
-            liste[-1].append(sg.Frame(title=f"{i + k}. {trans["player"]}", size=(125, 125), layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but")]]))
+            liste[-1].append(sg.Frame(title=f"{i + k}. {trans["player"]}", key=f"{i} {k} frame", size=(125, 125), layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but", bind_return_key='<Double-1>')]]))
 
     adding_list = []
 
@@ -29,10 +29,8 @@ def layout():
 
     liste.append(adding_list)
 
-
-    liste.append([sg.Input(size=116)])
-    liste.append([sg.Input(size=116, key="info out")])
-    liste.append([sg.Input(size=116, key="info left")])
+    liste.append([sg.Input(size=75, key="info out")])
+    liste.append([sg.Input(size=75, key="info left", default_text=f"{str(list(range(1, 17))).replace("[", "").replace("]", "").replace(",", "")} übrig")])
 
     return liste
 
@@ -47,7 +45,7 @@ def layout_settings():
 
     liste.append([sg.Button(trans["settings"]["change_names"], key="name_key")])
 
-    name_layout.append(sg.Frame(title=trans["settings"]["names"], layout=liste))
+    name_layout = sg.Frame(title=trans["settings"]["names"], layout=liste)
 
     languafe = settings.get_avaible_languages()
 
@@ -56,8 +54,8 @@ def layout_settings():
                    [sg.T(trans["what_voting_role"])],
                    [sg.Combo(key="narr", values=voting_roles)]]
 
-    game_layout = [sg.Frame(title=trans["settings"]["games_settings"], layout=game_layout)]
+    game_layout = sg.Frame(title=trans["settings"]["games_settings"], layout=game_layout)
 
 
-    return [name_layout, game_layout]
+    return [[name_layout], [game_layout]]
 
