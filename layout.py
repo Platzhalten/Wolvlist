@@ -9,7 +9,7 @@ def entire_layout():
 
     tab = [[sg.TabGroup(layout=[[tab1, tab2]])]]
 
-    return sg.Window(title="werville", layout=tab, resizable=True, finalize=True)
+    return tab
 
 
 def layout():
