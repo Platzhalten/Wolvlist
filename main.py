@@ -87,7 +87,6 @@ while True:
         if not times:
             start = time.time()
             times = True
-            override = False
         elif times:
             if time.time() - start <= 0.5:
                 override = True
@@ -101,6 +100,9 @@ while True:
                 set_value = i
 
                 break
+
+
+        override = False
 
         if set_value:
             if v["narr"] and set_value == "Narr/hh":
