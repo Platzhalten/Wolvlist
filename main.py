@@ -95,13 +95,15 @@ if __name__ == '__main__':
             elif times:
                 if time.time() - start <= 0.5:
                     override = True
-                    times = False
-
-                    set_value = team["dead"]
-
+                    times = False         
 
             for i in choose_posibily:
-                if v[f"choose {i}"] and not override:
+                if override:
+                    set_value = team["dead"]
+
+                    break
+
+                elif v[f"choose {i}"]:
                     set_value = i
 
                     break
