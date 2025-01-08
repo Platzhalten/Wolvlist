@@ -59,77 +59,85 @@ def get_image_path(image: str):
     return image_path[image]
 
 
-w = entire_layout()
+if __name__ == '__main__':
+
+    w = sg.Window(title="werville", layout=entire_layout(), finalize=True)
 
 
-while True:
+    while True:
 
-    e, v = w.read()
+        e, v = w.read()
 
-    e: str = e
+        print(e)
 
-    if e is None:
-        w.close()
-        break
+        if e is None:
+            w.close()
+            break
 
-
-
-    elif e == "name_key":
-        for i in range(1, 17, 4):
-            for k in range(0, 4):
-
-                w[f"{i} {k} frame"](v[f"{i + k} name"])
+        e: str = e
 
 
-    elif e[-3:] == "but":
-        set_value = ""
+        if e == "name_key":
+            for i in range(1, 17, 4):
+                for k in range(0, 4):
 
-        if not times:
-            start = time.time()
-            times = True
-            override = False
-        elif times:
-            if time.time() - start <= 0.5:
-                override = True
-                times = False
-
-                set_value = team["dead"]
+                    w[f"{i} {k} frame"](v[f"{i + k} name"])
 
 
-        for i in choose_posibily:
-            if v[f"choose {i}"] and not override:
-                set_value = i
-
-                break
-
-        if set_value:
-            if v["narr"] and set_value == "Narr/hh":
-                set_value = v["narr"]
-
-
-            w[e].update(image_source=get_image_path(image=set_value))
-
-            e = e.split(" ")
-
-            e: int = int(e[0]) + int(e[1])
-
-            team_dict[e] = set_value
-
-
-            unchecked = ""
-
-
-            for i in team_dict:
-
-                if team_dict[i] == "unchecked":
-                    unchecked += (str(i) + " ")
-
-
-            unchecked += "übrig"
-
-            w["info left"](unchecked)
-
+        elif e[-3:] == "but":
             set_value = ""
 
-    elif e == "lang":
-        settings.change_selected_lang(v["lang"][0:3].strip())
+            if not times:
+                start = time.time()
+                times = True
+                override = False
+
+            elif times:
+                if time.time() - start <= 0.5:
+                    override = True
+                    times = False         
+
+            for i in choose_posibily:
+                if override:
+                    set_value = team["dead"]
+
+                    break
+
+                elif v[f"choose {i}"]:
+                    set_value = i
+
+                    break
+
+
+            if set_value:
+                if v["narr"] and set_value == "Narr/hh":
+                    set_value = v["narr"]
+
+
+                w[e].update(image_source=get_image_path(image=set_value))
+
+                e = e.split(" ")
+
+                e: int = int(e[0]) + int(e[1])
+
+                team_dict[e] = set_value
+
+
+                unchecked = ""
+
+
+                for i in team_dict:
+
+                    if team_dict[i] == "unchecked":
+                        unchecked += (str(i) + " ")
+
+
+                unchecked += "übrig"
+
+                w["info left"](unchecked)
+
+                set_value = ""
+
+        elif e == "lang":
+            settings.change_selected_lang(v["lang"][0:3].strip())
+
