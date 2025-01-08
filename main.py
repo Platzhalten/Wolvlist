@@ -30,6 +30,7 @@ choosen = None
 times = False
 start = "ERROR"
 override = False
+temp = 0
 
 trans = settings.get_settings()
 team = trans["team_selector"]
@@ -48,7 +49,6 @@ image_path = {
 }
 
 # OPTION
-
 voting_roles = [role["fool"], role["headhunter"], role["anarchist"]]
 choose_posibily = [team["good"], team["unknown"] , team["evil"], team["voting_role"], team["unchecked"]]
 
@@ -63,12 +63,9 @@ if __name__ == '__main__':
 
     w = sg.Window(title="werville", layout=entire_layout(), finalize=True)
 
-
     while True:
 
         e, v = w.read()
-
-        print(e)
 
         if e is None:
             w.close()
@@ -91,11 +88,16 @@ if __name__ == '__main__':
                 start = time.time()
                 times = True
                 override = False
+                temp = e
 
             elif times:
-                if time.time() - start <= 0.5:
+                end = time.time()
+
+                if end - start <= 0.2:
                     override = True
-                    times = False         
+                    times = False
+
+            start = time.time()
 
             for i in choose_posibily:
                 if override:
