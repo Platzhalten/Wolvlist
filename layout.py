@@ -25,7 +25,7 @@ def layout():
     adding_list = []
 
     for i in choose_posibily:
-        adding_list.append(sg.Radio(text=i, group_id="choose", key=f"choose {i}"))
+        adding_list.append(sg.Radio(text=i, group_id="choose", key=f"choose {i}", default=choose_posibily[0] == i))
 
     liste.append(adding_list)
 
