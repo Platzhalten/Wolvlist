@@ -20,8 +20,10 @@
          "settings": "",
          "games_settings": "",
          "names": "",
-         "change_names": ""
+         "change_names": "",
          "language": "",
+         "reset": "",
+         "reset_name": ""
       },
       "player": "",
       "what_voting_role": "",
@@ -46,8 +48,10 @@
          "settings": "Einstellungen",
          "games_settings": "Spieleeinstellungen",
          "names": "Namen",
-         "change_names": "\u00c4ndern"
+         "change_names": "\u00c4ndern",
          "language": "Sprache",
+         "reset": "Board zur\u00c3\u00bccksetzen",
+         "reset_name": "Zur\u00c3\u00bccksetzten"
       },
       "player": "Spieler",
       "what_voting_role": "Welche voting role ig: ",
@@ -72,8 +76,10 @@
          "settings": "Settings",
          "games_settings": "Games Settings",
          "names": "names",
-         "change_names": "Change the Names"
+         "change_names": "Change the Names",
          "language": "language",
+         "reset": "reset the board",
+         "reset_name": "reset"
       },
       "player": "Player",
       "what_voting_role": "What Voting role is ig",

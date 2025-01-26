@@ -56,6 +56,7 @@ def layout_settings():
 
     game_layout = sg.Frame(title=trans["settings"]["games_settings"], layout=game_layout)
 
+    reset_layout = sg.Frame(title=trans["settings"]["reset_name"], layout=[[sg.Button(trans["settings"]["reset"], key="reset")]])
 
-    return [[name_layout], [game_layout]]
+    return [[name_layout], [game_layout, reset_layout]]
 

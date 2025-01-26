@@ -59,6 +59,18 @@ def get_image_path(image: str):
     return image_path[image]
 
 
+def get_unchecked():
+    unchecked = ""
+    for i in team_dict:
+
+        if team_dict[i] == "unchecked":
+            unchecked += (str(i) + " ")
+
+    unchecked += trans["left"]
+
+    w["info left"](unchecked)
+
+
 if __name__ == '__main__':
 
     w = sg.Window(title="werville", layout=entire_layout(), finalize=True)
@@ -80,6 +92,15 @@ if __name__ == '__main__':
 
                     w[f"{i} {k} frame"](v[f"{i + k} name"])
 
+        elif e == "reset":
+            team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
+
+            get_unchecked()
+
+            for i in range(1, 17, 4):
+                for k in range(0, 4):
+
+                    w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
 
         elif e[-3:] == "but":
             set_value = ""
@@ -125,19 +146,7 @@ if __name__ == '__main__':
                 team_dict[e] = set_value
 
 
-                unchecked = ""
-
-
-                for i in team_dict:
-
-                    if team_dict[i] == "unchecked":
-                        unchecked += (str(i) + " ")
-
-
-                unchecked += "übrig"
-
-                w["info left"](unchecked)
-
+                get_unchecked()
                 set_value = ""
 
         elif e == "lang":
