@@ -1,6 +1,6 @@
 import FreeSimpleGUI as sg
 
-import settings
+from scripts import settings
 
 
 def entire_layout():
@@ -30,7 +30,7 @@ def layout():
     liste.append(adding_list)
 
     liste.append([sg.Input(size=75, key="info out")])
-    liste.append([sg.Input(size=75, key="info left", default_text=f"{str(list(range(1, 17))).replace("[", "").replace("]", "").replace(",", "")} übrig")])
+    liste.append([sg.Input(size=75, key="info left", default_text=f"{str(list(range(1, 17))).replace("[", "").replace("]", "").replace(",", "")} {trans["left"]}")])
 
     return liste
 
@@ -49,7 +49,7 @@ def layout_settings():
 
     languafe = settings.get_avaible_languages()
 
-    game_layout = [[sg.T("Language (needs restarting)")],
+    game_layout = [[sg.T(trans["settings"]["language"])],
                    [sg.Combo(key="lang", values=languafe[0], default_value=languafe[1], enable_events=True)],
                    [sg.T(trans["what_voting_role"])],
                    [sg.Combo(key="narr", values=voting_roles)]]

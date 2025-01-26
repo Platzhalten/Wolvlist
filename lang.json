@@ -21,6 +21,7 @@
          "games_settings": "",
          "names": "",
          "change_names": ""
+         "language": "",
       },
       "player": "",
       "what_voting_role": "",
@@ -46,6 +47,7 @@
          "games_settings": "Spieleeinstellungen",
          "names": "Namen",
          "change_names": "\u00c4ndern"
+         "language": "Sprache",
       },
       "player": "Spieler",
       "what_voting_role": "Welche voting role ig: ",
@@ -71,6 +73,7 @@
          "games_settings": "Games Settings",
          "names": "names",
          "change_names": "Change the Names"
+         "language": "language",
       },
       "player": "Player",
       "what_voting_role": "What Voting role is ig",

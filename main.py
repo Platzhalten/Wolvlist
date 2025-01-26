@@ -19,8 +19,8 @@
 import FreeSimpleGUI as sg
 import time
 
-import settings
-from layout import entire_layout
+from scripts import settings
+from scripts.layout import entire_layout
 
 sg.theme_global("DarkGrey11")
 
@@ -32,7 +32,7 @@ start = "ERROR"
 override = False
 temp = 0
 
-trans = settings.get_settings()
+trans = settings.get_language()
 team = trans["team_selector"]
 role = trans["roles"]
 

@@ -18,7 +18,8 @@ def get_avaible_languages():
     return [liste[1:], f["selected"]]
 
 
-def get_settings(language: str = None) -> dict:
+def get_language(language: str = None) -> dict:
+    check_for_lang_file()
 
     with open("lang.json", "r") as f:
         f = json.loads(f.read())
@@ -41,13 +42,6 @@ def change_selected_lang(lang: str):
         f.write(json.dumps(l, indent=3))
 
 def check_for_lang_file():
-    try:
-        open("lang.json", "x")
+    if not os.path.exists("lang.json"):
 
-    except FileExistsError:
-        return True
-
-    else:
-        os.remove("lang.json")
-
-        raise FileNotFoundError("\nNo language file was found.\nYou need one to run the Program you can find one on the Github of this Projekt https://github.com/Platzhalten/Wolvesville_list/tree/master")
+        raise FileNotFoundError("No language file was found.\nYou need one to run the Program you can find one on the Github of this Projekt: https://github.com/Platzhalten/Wolvesville_list/\nThen place it in the same place like the main.py")
