@@ -10,7 +10,7 @@ double click to mark someone as dead
 if you want to mark someone as good/evil or unknown select it and click to person you want to mark
 
 ### on Windows
-You can download the latest releases [here](https://github.com/Platzhalten/Wolvesville_list/releases) 
+You can download the latest releases [here](https://github.com/Platzhalten/Wolvesville_list/releases/latest) 
 
 then just unzip and run the wolvesville.exe
 
