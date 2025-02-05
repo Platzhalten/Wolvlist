@@ -42,10 +42,10 @@ image_path = {
     team["unchecked"]: "images/generic/Unchecked.png",
     team["unknown"]: "images/generic/Unknown.png",
     team["voting_role"]: "images/voting/Generic.png",
+    team["dead"]: "images/generic/dead.png",
     role["anarchist"]: "images/voting/Anarchist.png",
     role["fool"]: "images/voting/Fool.png",
-    role["headhunter"]: "images/voting/Headhunter.png",
-    team["dead"]: "images/generic/dead.png"
+    role["headhunter"]: "images/voting/Headhunter.png"
 }
 
 # OPTION
@@ -68,7 +68,7 @@ def get_unchecked():
 
     unchecked += trans["left"]
 
-    w["info left"](unchecked)
+    return unchecked
 
 
 if __name__ == '__main__':
@@ -95,12 +95,19 @@ if __name__ == '__main__':
         elif e == "reset":
             team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
 
+            w["info out"].update("")
+
             get_unchecked()
 
             for i in range(1, 17, 4):
                 for k in range(0, 4):
 
                     w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+
+        elif e == "reset-name":
+            for i in range(1, 17, 4):
+                for k in range(0, 4):
+                    w[f"{i} {k} frame"].update(f"{i + k} {trans["player"]}")
 
         elif e[-3:] == "but":
             set_value = ""
@@ -145,10 +152,8 @@ if __name__ == '__main__':
 
                 team_dict[e] = set_value
 
-
-                get_unchecked()
+                w["info left"](get_unchecked())
                 set_value = ""
 
         elif e == "lang":
             settings.change_selected_lang(v["lang"][0:3].strip())
-

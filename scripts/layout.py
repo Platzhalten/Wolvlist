@@ -13,7 +13,7 @@ def entire_layout():
 
 
 def layout():
-    from main import trans, choose_posibily
+    from main import trans, choose_posibily, get_unchecked
 
     liste = []
     for i in range(1, 17, 4):
@@ -30,7 +30,7 @@ def layout():
     liste.append(adding_list)
 
     liste.append([sg.Input(size=75, key="info out")])
-    liste.append([sg.Input(size=75, key="info left", default_text=f"{str(list(range(1, 17))).replace("[", "").replace("]", "").replace(",", "")} {trans["left"]}")])
+    liste.append([sg.Input(size=75, key="info left", default_text=get_unchecked())])
 
     return liste
 
@@ -38,7 +38,6 @@ def layout():
 def layout_settings():
     from main import trans, voting_roles
 
-    name_layout = []
     liste = []
     for i in range(1,17):
         liste.append([sg.Input(f"{i}. {trans["player"]}", key=f"{i} name")])
@@ -56,7 +55,9 @@ def layout_settings():
 
     game_layout = sg.Frame(title=trans["settings"]["games_settings"], layout=game_layout)
 
-    reset_layout = sg.Frame(title=trans["settings"]["reset_name"], layout=[[sg.Button(trans["settings"]["reset"], key="reset")]])
+    reset_layout = sg.Frame(title=trans["settings"]["reset_name"],
+                            layout=[[sg.Button(trans["settings"]["reset"], key="reset")],
+                                    [sg.Button("temp_name", key="reset-name")]])
 
     return [[name_layout], [game_layout, reset_layout]]
 
