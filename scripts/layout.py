@@ -46,10 +46,10 @@ def layout_settings():
 
     name_layout = sg.Frame(title=trans["settings"]["names"], layout=liste)
 
-    languafe = settings.get_avaible_languages()
+    language = settings.get_avaible_languages()
 
     game_layout = [[sg.T(trans["settings"]["language"])],
-                   [sg.Combo(key="lang", values=languafe[0], default_value=languafe[1], enable_events=True)],
+                   [sg.Combo(key="lang", values=language[0], default_value=language[1], enable_events=True)],
                    [sg.T(trans["what_voting_role"])],
                    [sg.Combo(key="narr", values=voting_roles)]]
 
@@ -57,7 +57,7 @@ def layout_settings():
 
     reset_layout = sg.Frame(title=trans["settings"]["reset_name"],
                             layout=[[sg.Button(trans["settings"]["reset"], key="reset")],
-                                    [sg.Button("temp_name", key="reset-name")]])
+                                    [sg.Button(trans["settings"]["reset_name"], key="reset-name")]])
 
     return [[name_layout], [game_layout, reset_layout]]
 

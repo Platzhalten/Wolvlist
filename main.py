@@ -71,6 +71,12 @@ def get_unchecked():
     return unchecked
 
 
+def all_player():
+    for colum in range(1, 17, 4):
+        for row in range(0, 4):
+            yield colum, row
+
+
 if __name__ == '__main__':
 
     w = sg.Window(title="werville", layout=entire_layout(), finalize=True)
@@ -87,27 +93,32 @@ if __name__ == '__main__':
 
 
         if e == "name_key":
-            for i in range(1, 17, 4):
-                for k in range(0, 4):
 
-                    w[f"{i} {k} frame"](v[f"{i + k} name"])
+            for i, k in all_player():
+                w[f"{i} {k} frame"](v[f"{i + k} name"])
 
-        elif e == "reset":
-            team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
+        elif e.startswith("reset"):
+            conf = sg.popup_yes_no(trans["settings"]["conformation"])
 
-            w["info out"].update("")
+            if conf == "Yes":
+                team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
 
-            get_unchecked()
+                w["info out"].update("")
 
-            for i in range(1, 17, 4):
-                for k in range(0, 4):
+                get_unchecked()
 
-                    w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+                if e == "reset_name":
+                    for i in range(1, 17):
+                        w[f"{i} name"](f"{i}. {trans["player"]}")
 
-        elif e == "reset-name":
-            for i in range(1, 17, 4):
-                for k in range(0, 4):
-                    w[f"{i} {k} frame"].update(f"{i + k} {trans["player"]}")
+                for i, k in all_player():
+                    if e == "reset_name":
+
+                        w[f"{i} {k} frame"].update(f"{i + k} {trans["player"]}")
+                    else:
+
+                        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+
 
         elif e[-3:] == "but":
             set_value = ""
