@@ -42,10 +42,10 @@ image_path = {
     team["unchecked"]: "images/generic/Unchecked.png",
     team["unknown"]: "images/generic/Unknown.png",
     team["voting_role"]: "images/voting/Generic.png",
+    team["dead"]: "images/generic/dead.png",
     role["anarchist"]: "images/voting/Anarchist.png",
     role["fool"]: "images/voting/Fool.png",
-    role["headhunter"]: "images/voting/Headhunter.png",
-    team["dead"]: "images/generic/dead.png"
+    role["headhunter"]: "images/voting/Headhunter.png"
 }
 
 # OPTION
@@ -68,7 +68,13 @@ def get_unchecked():
 
     unchecked += trans["left"]
 
-    w["info left"](unchecked)
+    return unchecked
+
+
+def all_player():
+    for colum in range(1, 17, 4):
+        for row in range(0, 4):
+            yield colum, row
 
 
 if __name__ == '__main__':
@@ -87,20 +93,32 @@ if __name__ == '__main__':
 
 
         if e == "name_key":
-            for i in range(1, 17, 4):
-                for k in range(0, 4):
 
-                    w[f"{i} {k} frame"](v[f"{i + k} name"])
+            for i, k in all_player():
+                w[f"{i} {k} frame"](v[f"{i + k} name"])
 
-        elif e == "reset":
-            team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
+        elif e.startswith("reset"):
+            conf = sg.popup_yes_no(trans["settings"]["conformation"])
 
-            get_unchecked()
+            if conf == "Yes":
+                team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
 
-            for i in range(1, 17, 4):
-                for k in range(0, 4):
+                w["info out"].update("")
 
-                    w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+                get_unchecked()
+
+                if e == "reset-name":
+                    for i in range(1, 17):
+                        w[f"{i} name"].update(f"{i}. {trans["player"]}")
+
+                for i, k in all_player():
+                    if e == "reset-name":
+
+                        w[f"{i} {k} frame"].update(f"{i + k} {trans["player"]}")
+                    else:
+
+                        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+
 
         elif e[-3:] == "but":
             set_value = ""
@@ -145,10 +163,8 @@ if __name__ == '__main__':
 
                 team_dict[e] = set_value
 
-
-                get_unchecked()
+                w["info left"](get_unchecked())
                 set_value = ""
 
         elif e == "lang":
             settings.change_selected_lang(v["lang"][0:3].strip())
-

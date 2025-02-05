@@ -23,7 +23,10 @@
          "change_names": "",
          "language": "",
          "reset": "",
-         "reset_name": ""
+         "reset_frame": "",
+         "reset_name": "",
+         "conformation": ""
+
       },
       "player": "",
       "what_voting_role": "",
@@ -51,7 +54,9 @@
          "change_names": "\u00c4ndern",
          "language": "Sprache",
          "reset": "Board zur\u00c3\u00bccksetzen",
-         "reset_name": "Zur\u00c3\u00bccksetzten"
+         "reset_frame": "Zur\u00c3\u00bccksetzten",
+         "reset_name": "Namen Zurücksetzten",
+         "conformation": "Bist du dir sicher?"
       },
       "player": "Spieler",
       "what_voting_role": "Welche voting role ig: ",
@@ -79,7 +84,10 @@
          "change_names": "Change the Names",
          "language": "language",
          "reset": "reset the board",
-         "reset_name": "reset"
+         "reset_frame": "reset",
+         "reset_name": "reset the names",
+         "conformation": "Are you sure?"
+
       },
       "player": "Player",
       "what_voting_role": "What Voting role is ig",
