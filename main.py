@@ -107,12 +107,12 @@ if __name__ == '__main__':
 
                 get_unchecked()
 
-                if e == "reset_name":
+                if e == "reset-name":
                     for i in range(1, 17):
-                        w[f"{i} name"](f"{i}. {trans["player"]}")
+                        w[f"{i} name"].update(f"{i}. {trans["player"]}")
 
                 for i, k in all_player():
-                    if e == "reset_name":
+                    if e == "reset-name":
 
                         w[f"{i} {k} frame"].update(f"{i + k} {trans["player"]}")
                     else:
