@@ -1,8 +1,4 @@
 # Wolvlist
-
-It is a list program for the online game [Wolvesville](https://www.wolvesville.com/) 
-
-
 ## how to run 
 
 double click to mark someone as dead
