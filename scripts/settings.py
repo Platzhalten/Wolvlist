@@ -1,3 +1,7 @@
+# Copyright (C) 2025 Eric M.
+#
+# full license at ../LICENSE
+
 import json
 import os
 

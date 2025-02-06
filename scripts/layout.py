@@ -1,4 +1,9 @@
+# Copyright (C) 2025 Eric M.
+#
+# full license at ../LICENSE
+
 import FreeSimpleGUI as sg
+import webbrowser
 
 from scripts import settings
 
@@ -14,8 +19,9 @@ def entire_layout():
 
 def layout():
     from main import trans, choose_posibily, get_unchecked
+    menu_def = [['General', ["Info", "exit"]]]
 
-    liste = []
+    liste = [[sg.MenuBar(menu_definition=menu_def)]]
     for i in range(1, 17, 4):
         liste.append([])
 
@@ -61,3 +67,25 @@ def layout_settings():
 
     return [[name_layout], [game_layout, reset_layout]]
 
+
+def info_popup():
+    layout = [[sg.Frame(title="Program Information", layout=[[sg.T("This Program is licensed under the GNU GPL v3")],
+                                                             [sg.Button("Read the Full License", key="full")],
+                                                             [sg.T("The Source Code can be found on GitHub")],
+                                                             [sg.Button("Open the GitHub projekt", key="github")]])],
+              [sg.Button("Close", key="close")]]
+
+    w1 = sg.Window(title="Info", layout=layout, keep_on_top=True)
+
+    while True:
+        e, v = w1.read()
+
+        if e is None or e == "close":
+            w1.close()
+            break
+
+        elif e == "full":
+            webbrowser.open(url="https://www.gnu.org/licenses/gpl-3.0")
+
+        elif e == "github":
+            webbrowser.open(url="https://github.com/Platzhalten/Wolvlist")
