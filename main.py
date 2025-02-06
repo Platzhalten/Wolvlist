@@ -19,7 +19,7 @@ import FreeSimpleGUI as sg
 import time
 
 from scripts import settings
-from scripts.layout import entire_layout
+from scripts.layout import entire_layout, info_popup
 
 sg.theme_global("DarkGrey11")
 
@@ -49,7 +49,7 @@ image_path = {
 
 # OPTION
 voting_roles = [role["fool"], role["headhunter"], role["anarchist"]]
-choose_posibily = [team["good"], team["unknown"] , team["evil"], team["voting_role"], team["unchecked"]]
+choose_posibily = [team["good"], team["unknown"], team["evil"], team["unchecked"], team["specific"]]
 
 team_dict = dict.fromkeys(range(1,17), team["unchecked"])
 
@@ -84,14 +84,16 @@ if __name__ == '__main__':
 
         e, v = w.read()
 
-        if e is None:
+        if e is None or e == "exit":
             w.close()
             break
 
         e: str = e
 
+        if e == "Info":
+            info_popup()
 
-        if e == "name_key":
+        elif e == "name_key":
 
             for i, k in all_player():
                 w[f"{i} {k} frame"](v[f"{i + k} name"])
