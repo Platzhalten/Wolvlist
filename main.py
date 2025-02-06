@@ -1,5 +1,4 @@
-
-#  Copyright (C) 2024 Eric M.
+#  Copyright (C) 2025 Eric M.
 #
 #   The Complet License is in LICENSE
 #
