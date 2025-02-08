@@ -39,12 +39,14 @@ def layout():
     for i in choose_posibily:
         adding_list.append(sg.Radio(text=i, group_id="choose", key=f"choose {i}", default=choose_posibily[0] == i))
 
-    len_adding_list = int(len(adding_list) / 2)
+    len_adding_list = int(len(adding_list) / 2) + 1
+
+    adding_list.append(sg.Input(key="search_bar", size=26, enable_events=True))
 
     adding_list = [adding_list[:len_adding_list + 1], adding_list[len_adding_list + 1:]]
 
     liste.append([sg.Frame(title="", layout=adding_list, element_justification="center"),
-                  sg.Listbox(role_images_finder(), size=(0, 4), key="role_picker")])
+                  sg.Listbox(role_images_finder(), size=(10, 4), key="role_picker")])
 
     liste.append([sg.Input(size=75, key="info left", default_text=get_unchecked())])
 
@@ -94,7 +96,8 @@ def info_popup():
     layout = [[sg.Frame(title="Program Information", layout=[[sg.T("This Program is licensed under the GNU GPL v3")],
                                                              [sg.Button("Read the Full License", key="full")],
                                                              [sg.T("The Source Code can be found on GitHub")],
-                                                             [sg.Button("Open the GitHub projekt", key="github")]])],
+                                                             [sg.Button("Open the GitHub projekt", key="github")],
+                                                             [sg.T("v1.1.0-beta.01")]])],
               [sg.Button("Close", key="close")]]
 
     w1 = sg.Window(title="Info", layout=layout, keep_on_top=True)

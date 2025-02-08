@@ -19,7 +19,7 @@ import FreeSimpleGUI as sg
 import time
 
 from scripts import settings
-from scripts.layout import entire_layout, info_popup
+from scripts.layout import entire_layout, info_popup, role_images_finder
 
 sg.theme_global("DarkGrey11")
 
@@ -123,6 +123,16 @@ if __name__ == '__main__':
                     else:
                         w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
                         w[f"{i} {k} info"].update("")
+
+
+        elif e == "search_bar":
+            role_liste = []
+
+            for i in role_images_finder():
+                if v["search_bar"] in i:
+                    role_liste.append(i)
+
+                w["role_picker"].update(role_liste)
 
 
         elif e[-3:] == "but":

@@ -9,7 +9,7 @@
          "voting_role": "Narr/hh",
          "unchecked": "unchecked",
          "dead": "tot",
-         "specific": "Rolle"
+         "specific": "Rolle: "
       },
       "roles": {
          "fool": "Narr",
@@ -40,7 +40,7 @@
          "voting_role": "Voting Role",
          "unchecked": "unchecked",
          "dead": "dead",
-         "specific": "role"
+         "specific": "role: "
       },
       "roles": {
          "fool": "Fool",
