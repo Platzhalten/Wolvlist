@@ -1,37 +1,5 @@
 {
    "selected": "de",
-   "placeholder": {
-      "message": "PLACEHOLDER MUST BE EVER ON TOP OF THE FILE",
-      "language_full_name": "placeholder",
-      "team_selector": {
-         "good": "",
-         "unknown": "",
-         "evil": "",
-         "voting_role": "",
-         "unchecked": "",
-         "dead": ""
-      },
-      "roles": {
-         "fool": "",
-         "headhunter": "",
-         "anarchist": ""
-      },
-      "settings": {
-         "settings": "",
-         "games_settings": "",
-         "names": "",
-         "change_names": "",
-         "language": "",
-         "reset": "",
-         "reset_frame": "",
-         "reset_name": "",
-         "conformation": ""
-
-      },
-      "player": "",
-      "what_voting_role": "",
-      "left": ""
-   },
    "de": {
       "language_full_name": "Deutsch",
       "team_selector": {
@@ -40,7 +8,8 @@
          "evil": "b\u00f6se",
          "voting_role": "Narr/hh",
          "unchecked": "unchecked",
-         "dead": "tot"
+         "dead": "tot",
+         "specific": "Rolle"
       },
       "roles": {
          "fool": "Narr",
@@ -55,7 +24,7 @@
          "language": "Sprache",
          "reset": "Board zur\u00c3\u00bccksetzen",
          "reset_frame": "Zur\u00c3\u00bccksetzten",
-         "reset_name": "Namen Zurücksetzten",
+         "reset_name": "Namen Zur\u00c3\u00bccksetzten",
          "conformation": "Bist du dir sicher?"
       },
       "player": "Spieler",
@@ -70,7 +39,8 @@
          "evil": "evil",
          "voting_role": "Voting Role",
          "unchecked": "unchecked",
-         "dead": "dead"
+         "dead": "dead",
+         "specific": ""
       },
       "roles": {
          "fool": "Fool",
@@ -86,8 +56,11 @@
          "reset": "reset the board",
          "reset_frame": "reset",
          "reset_name": "reset the names",
-         "conformation": "Are you sure?"
-
+         "reset_all": "reset all",
+         "conformation": "Are you sure?",
+         "generel": "General",
+         "info": "Info",
+         "exit": "exit"
       },
       "player": "Player",
       "what_voting_role": "What Voting role is ig",

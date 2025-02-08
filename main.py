@@ -49,7 +49,7 @@ image_path = {
 
 # OPTION
 voting_roles = [role["fool"], role["headhunter"], role["anarchist"]]
-choose_posibily = [team["good"], team["unknown"], team["evil"], team["unchecked"], team["specific"]]
+choose_posibily = [team["good"], team["unknown"], team["evil"], team["unchecked"]]
 
 team_dict = dict.fromkeys(range(1,17), team["unchecked"])
 
@@ -108,16 +108,19 @@ if __name__ == '__main__':
 
                 get_unchecked()
 
-                if e == "reset-name":
+                if e == "reset-name" or e == "reset_all":
                     for i in range(1, 17):
                         w[f"{i} name"].update(f"{i}. {trans["player"]}")
 
                 for i, k in all_player():
                     if e == "reset-name":
-
                         w[f"{i} {k} frame"].update(f"{i + k} {trans["player"]}")
-                    else:
 
+                    elif e == "reset_all":
+                        w[f"{i} {k} frame"].update(f"{i + k} {trans["player"]}")
+                        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+
+                    else:
                         w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
 
 

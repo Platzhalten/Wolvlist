@@ -19,14 +19,18 @@ def entire_layout():
 
 def layout():
     from main import trans, choose_posibily, get_unchecked
-    menu_def = [['General', ["Info", "exit"]]]
+    menutrans = trans["settings"]
+
+    menu_def = [[menutrans["generel"], [menutrans["info"], menutrans["exit"]]]]
 
     liste = [[sg.MenuBar(menu_definition=menu_def)]]
     for i in range(1, 17, 4):
         liste.append([])
 
         for k in range(0, 4):
-            liste[-1].append(sg.Frame(title=f"{i + k}. {trans["player"]}", key=f"{i} {k} frame", size=(125, 125), layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but", bind_return_key='<Double-1>')]]))
+            liste[-1].append(sg.Frame(title=f"{i + k}. {trans["player"]}", key=f"{i} {k} frame", size=(125, 125),
+                                      element_justification="center", layout=[
+                    [sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but")]]))
 
     adding_list = []
 
@@ -63,7 +67,8 @@ def layout_settings():
 
     reset_layout = sg.Frame(title=trans["settings"]["reset_name"],
                             layout=[[sg.Button(trans["settings"]["reset"], key="reset")],
-                                    [sg.Button(trans["settings"]["reset_name"], key="reset-name")]])
+                                    [sg.Button(trans["settings"]["reset_name"], key="reset-name")],
+                                    [sg.Button(trans["settings"]["reset_all"], key="reset_all")]])
 
     return [[name_layout], [game_layout, reset_layout]]
 
