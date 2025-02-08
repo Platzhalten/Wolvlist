@@ -25,7 +25,7 @@ just copy the placeholder down and put the right Translation in there
 | English | Completely         |
 | German  | Partially (canceld)|
 
-i only add german back when i am finshed with the Program
+I only add german back when I am finished with the Program
 
 ## branches 
 There are usually 2 branches, the Master and the dev branch. 
