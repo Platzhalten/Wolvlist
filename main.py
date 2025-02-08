@@ -105,8 +105,6 @@ if __name__ == '__main__':
             if conf == "Yes":
                 team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
 
-                w["info out"].update("")
-
                 get_unchecked()
 
                 if e == "reset-name" or e == "reset_all":
@@ -156,7 +154,7 @@ if __name__ == '__main__':
 
                     break
 
-            if v[f"choose {team["specific"]}"]:
+            if v[f"choose {team["specific"]}"] and not override:
                 if v["role_picker"]:
                     set_value = v["role_picker"][0]
 
