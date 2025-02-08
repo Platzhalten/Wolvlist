@@ -4,6 +4,7 @@
 
 import FreeSimpleGUI as sg
 import webbrowser
+import os
 
 from scripts import settings
 
@@ -28,21 +29,37 @@ def layout():
         liste.append([])
 
         for k in range(0, 4):
-            liste[-1].append(sg.Frame(title=f"{i + k}. {trans["player"]}", key=f"{i} {k} frame", size=(125, 125),
+            liste[-1].append(sg.Frame(title=f"{i + k}. {trans["player"]}", key=f"{i} {k} frame",
                                       element_justification="center", layout=[
-                    [sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but")]]))
+                    [sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but")],
+                    [sg.Input(key=f"{i} {k} info", size=(14, None))]]))
 
     adding_list = []
 
     for i in choose_posibily:
         adding_list.append(sg.Radio(text=i, group_id="choose", key=f"choose {i}", default=choose_posibily[0] == i))
 
-    liste.append(adding_list)
+    len_adding_list = int(len(adding_list) / 2)
 
-    liste.append([sg.Input(size=75, key="info out")])
+    adding_list = [adding_list[:len_adding_list + 1], adding_list[len_adding_list + 1:]]
+
+    liste.append([sg.Frame(title="", layout=adding_list, element_justification="center"),
+                  sg.Listbox(role_images_finder(), size=(0, 4), key="role_picker")])
+
     liste.append([sg.Input(size=75, key="info left", default_text=get_unchecked())])
 
     return liste
+
+
+def role_images_finder(path: str = "images/roles"):
+    dateinamen_liste = []
+    settings.check_for_file("images files", path)
+
+    for root, directories, files in os.walk(path):
+        for dateiname in files:
+            dateinamen_liste.append(dateiname[:-4])
+
+    return dateinamen_liste
 
 
 def layout_settings():

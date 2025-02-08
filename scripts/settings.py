@@ -7,7 +7,7 @@ import os
 
 
 def get_avaible_languages():
-    check_for_lang_file()
+    check_for_file(file="lang.json", path="lang.json")
 
     with open("lang.json", "r") as f:
         f = json.loads(f.read())
@@ -23,7 +23,7 @@ def get_avaible_languages():
 
 
 def get_language(language: str = None) -> dict:
-    check_for_lang_file()
+    check_for_file(file="lang.json", path="lang.json")
 
     with open("lang.json", "r") as f:
         f = json.loads(f.read())
@@ -56,6 +56,8 @@ def change_selected_lang(lang: str):
     with open("lang.json", "w") as f:
         f.write(json.dumps(l, indent=3))
 
-def check_for_lang_file():
-    if not os.path.exists("lang.json"):
-        raise FileNotFoundError("No language file was found.\nYou need one to run the Program you can find one on the Github of this Projekt: https://github.com/Platzhalten/Wolvesville_list/\nThen place it in the same place like the main.py")
+
+def check_for_file(file, path):
+    if not os.path.exists(path):
+        raise FileNotFoundError(
+            f"No {file} file was found.\nYou need one to run the Program you can find one on the Github of this Projekt: https://github.com/Platzhalten/Wolvlist/\nThen place it in the same place like the main.py")

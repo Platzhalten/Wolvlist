@@ -40,7 +40,7 @@
          "voting_role": "Voting Role",
          "unchecked": "unchecked",
          "dead": "dead",
-         "specific": ""
+         "specific": "role"
       },
       "roles": {
          "fool": "Fool",

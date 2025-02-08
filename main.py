@@ -40,22 +40,23 @@ image_path = {
     team["good"]: "images/generic/Good.png",
     team["unchecked"]: "images/generic/Unchecked.png",
     team["unknown"]: "images/generic/Unknown.png",
-    team["voting_role"]: "images/voting/Generic.png",
+    team["voting_role"]: "images/generic/voting.png",
     team["dead"]: "images/generic/dead.png",
-    role["anarchist"]: "images/voting/Anarchist.png",
-    role["fool"]: "images/voting/Fool.png",
-    role["headhunter"]: "images/voting/Headhunter.png"
 }
 
 # OPTION
 voting_roles = [role["fool"], role["headhunter"], role["anarchist"]]
-choose_posibily = [team["good"], team["unknown"], team["evil"], team["unchecked"]]
+choose_posibily = [team["good"], team["unknown"], team["evil"], team["unchecked"], team["specific"]]
 
 team_dict = dict.fromkeys(range(1,17), team["unchecked"])
 
 
 def get_image_path(image: str):
-    return image_path[image]
+    if image in image_path:
+        return image_path[image]
+
+    else:
+        return f"images/roles/{image}.png"
 
 
 def get_unchecked():
@@ -119,9 +120,11 @@ if __name__ == '__main__':
                     elif e == "reset_all":
                         w[f"{i} {k} frame"].update(f"{i + k} {trans["player"]}")
                         w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+                        w[f"{i} {k} info"].update("")
 
                     else:
                         w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+                        w[f"{i} {k} info"].update("")
 
 
         elif e[-3:] == "but":
@@ -153,12 +156,15 @@ if __name__ == '__main__':
 
                     break
 
+            if v[f"choose {team["specific"]}"]:
+                if v["role_picker"]:
+                    set_value = v["role_picker"][0]
+
+                else:
+                    set_value = None
+
 
             if set_value:
-                if v["narr"] and set_value == "Narr/hh":
-                    set_value = v["narr"]
-
-
                 w[e].update(image_source=get_image_path(image=set_value))
 
                 e = e.split(" ")
