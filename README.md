@@ -1,8 +1,4 @@
 # Wolvlist
-
-It is a list program for the online game [Wolvesville](https://www.wolvesville.com/) 
-
-
 ## how to run 
 
 double click to mark someone as dead
@@ -23,6 +19,13 @@ then just run the main.py file
 If you really bored and know a language that is not yet in the lang.json you can add it
 
 just copy the placeholder down and put the right Translation in there
+
+|Languages|Supported           |
+|---------|--------------------|
+| English | Completely         |
+| German  | Partially (canceld)|
+
+i only add german back when i am finshed with the Program
 
 ## branches 
 There are usually 2 branches, the Master and the dev branch. 
