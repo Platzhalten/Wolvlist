@@ -19,7 +19,7 @@ import FreeSimpleGUI as sg
 import time
 
 from scripts import settings
-from scripts.layout import entire_layout, info_popup
+from scripts.layout import entire_layout, info_popup, role_images_finder
 
 sg.theme_global("DarkGrey11")
 
@@ -40,11 +40,8 @@ image_path = {
     team["good"]: "images/generic/Good.png",
     team["unchecked"]: "images/generic/Unchecked.png",
     team["unknown"]: "images/generic/Unknown.png",
-    team["voting_role"]: "images/voting/Generic.png",
+    team["voting_role"]: "images/generic/voting.png",
     team["dead"]: "images/generic/dead.png",
-    role["anarchist"]: "images/voting/Anarchist.png",
-    role["fool"]: "images/voting/Fool.png",
-    role["headhunter"]: "images/voting/Headhunter.png"
 }
 
 # OPTION
@@ -55,7 +52,11 @@ team_dict = dict.fromkeys(range(1,17), team["unchecked"])
 
 
 def get_image_path(image: str):
-    return image_path[image]
+    if image in image_path:
+        return image_path[image]
+
+    else:
+        return f"images/roles/{image}.png"
 
 
 def get_unchecked():
@@ -104,21 +105,34 @@ if __name__ == '__main__':
             if conf == "Yes":
                 team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
 
-                w["info out"].update("")
-
                 get_unchecked()
 
-                if e == "reset-name":
+                if e == "reset-name" or e == "reset_all":
                     for i in range(1, 17):
                         w[f"{i} name"].update(f"{i}. {trans["player"]}")
 
                 for i, k in all_player():
                     if e == "reset-name":
-
                         w[f"{i} {k} frame"].update(f"{i + k} {trans["player"]}")
-                    else:
 
+                    elif e == "reset_all":
+                        w[f"{i} {k} frame"].update(f"{i + k} {trans["player"]}")
                         w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+                        w[f"{i} {k} info"].update("")
+
+                    else:
+                        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+                        w[f"{i} {k} info"].update("")
+
+
+        elif e == "search_bar":
+            role_liste = []
+
+            for i in role_images_finder():
+                if v["search_bar"] in i:
+                    role_liste.append(i)
+
+                w["role_picker"].update(role_liste)
 
 
         elif e[-3:] == "but":
@@ -150,12 +164,15 @@ if __name__ == '__main__':
 
                     break
 
+            if v[f"choose {team["specific"]}"] and not override:
+                if v["role_picker"]:
+                    set_value = v["role_picker"][0]
+
+                else:
+                    set_value = None
+
 
             if set_value:
-                if v["narr"] and set_value == "Narr/hh":
-                    set_value = v["narr"]
-
-
                 w[e].update(image_source=get_image_path(image=set_value))
 
                 e = e.split(" ")
