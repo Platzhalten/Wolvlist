@@ -105,11 +105,12 @@ if __name__ == '__main__':
             if conf == "Yes":
                 team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
 
-                get_unchecked()
-
                 if e == "reset-name" or e == "reset_all":
                     for i in range(1, 17):
                         w[f"{i} name"].update(f"{i}. {trans["player"]}")
+
+                if e == "reset" or e == "reset_all":
+                    w["info left"].update(get_unchecked())
 
                 for i, k in all_player():
                     if e == "reset-name":
