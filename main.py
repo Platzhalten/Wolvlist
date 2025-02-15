@@ -50,13 +50,14 @@ choose_posibily = [team["good"], team["unknown"], team["evil"], team["unchecked"
 
 team_dict = dict.fromkeys(range(1,17), team["unchecked"])
 
+role_path = role_images_finder(full_path=True)
 
 def get_image_path(image: str):
     if image in image_path:
         return image_path[image]
 
     else:
-        return f"images/roles/{image}.png"
+        return role_path[image]
 
 
 def get_unchecked():
