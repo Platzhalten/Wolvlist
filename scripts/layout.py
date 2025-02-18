@@ -3,7 +3,7 @@
 # full license at ../LICENSE
 
 import FreeSimpleGUI as sg
-import webbrowser
+import webbrowser as wb
 import os
 
 from scripts import settings
@@ -29,8 +29,9 @@ def layout():
         liste.append([])
 
         for k in range(0, 4):
-            liste[-1].append(sg.Frame(title=f"{i + k}. {trans["player"]}", key=f"{i} {k} frame",
-                                      element_justification="center", layout=[
+            liste[-1].append(
+                sg.Frame(title=f"{i + k}. {trans["player"]}", key=f"{i} {k} frame", element_justification="center",
+                         layout=[
                     [sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but")],
                     [sg.Input(key=f"{i} {k} info", size=(14, None))]]))
 
@@ -46,22 +47,33 @@ def layout():
     adding_list = [adding_list[:len_adding_list + 1], adding_list[len_adding_list + 1:]]
 
     liste.append([sg.Frame(title="", layout=adding_list, element_justification="center"),
-                  sg.Listbox(role_images_finder(), size=(10, 4), key="role_picker")])
+                  sg.Listbox(role_images_finder(), size=(25, 4), key="role_picker")])
 
-    liste.append([sg.Input(size=75, key="info left", default_text=get_unchecked())])
+    liste.append([sg.Input(size=71, key="info left", default_text=get_unchecked())])
 
     return liste
 
 
-def role_images_finder(path: str = "images/roles"):
+def role_images_finder(path: str = "images/roles", full_path=False):
     dateinamen_liste = []
+    path_list = {}
+
     settings.check_for_file("images files", path)
 
     for root, directories, files in os.walk(path):
         for dateiname in files:
-            dateinamen_liste.append(dateiname[:-4])
+            if full_path:
+                path_list[dateiname[:-4]] = root + "/" + dateiname
+            else:
+                dateinamen_liste.append(dateiname[:-4])
 
-    return dateinamen_liste
+    if full_path:
+        return path_list
+
+    else:
+        dateinamen_liste.sort()
+        return dateinamen_liste
+
 
 
 def layout_settings():
@@ -78,9 +90,7 @@ def layout_settings():
     language = settings.get_avaible_languages()
 
     game_layout = [[sg.T(trans["settings"]["language"])],
-                   [sg.Combo(key="lang", values=language[0], default_value=language[1], enable_events=True)],
-                   [sg.T(trans["what_voting_role"])],
-                   [sg.Combo(key="narr", values=voting_roles)]]
+                   [sg.Combo(key="lang", values=language[0], default_value=language[1], enable_events=True)]]
 
     game_layout = sg.Frame(title=trans["settings"]["games_settings"], layout=game_layout)
 
@@ -97,7 +107,7 @@ def info_popup():
                                                              [sg.Button("Read the Full License", key="full")],
                                                              [sg.T("The Source Code can be found on GitHub")],
                                                              [sg.Button("Open the GitHub projekt", key="github")],
-                                                             [sg.T("v1.1.0-beta.01")]])],
+                                                             [sg.T("v1.1.0-beta.03")]])],
               [sg.Button("Close", key="close")]]
 
     w1 = sg.Window(title="Info", layout=layout, keep_on_top=True)
@@ -110,7 +120,7 @@ def info_popup():
             break
 
         elif e == "full":
-            webbrowser.open(url="https://www.gnu.org/licenses/gpl-3.0")
+            wb.open(url="https://www.gnu.org/licenses/gpl-3.0")
 
         elif e == "github":
-            webbrowser.open(url="https://github.com/Platzhalten/Wolvlist")
+            wb.open(url="https://github.com/Platzhalten/Wolvlist")

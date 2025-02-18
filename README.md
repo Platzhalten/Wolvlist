@@ -10,6 +10,11 @@ You can download the latest releases [here](https://github.com/Platzhalten/Wolve
 
 then just unzip and run the wolvesville.exe
 
+### on Linux
+You can download the latest versions [here](https://github.com/Platzhalten/Wolvesville_list/releases/latest) (the latest version does not support Linux, but the [latest beta](https://github.com/Platzhalten/Wolvlist/releases/tag/v1.1.0-beta-01) does). 
+
+Then unpack the tar.gz and run Wolvlist
+
 ### with Python
 Download [Python](https://www.python.org/) and FreeSimpleGUI (if you on Linux you may also need Tkinter). 
 

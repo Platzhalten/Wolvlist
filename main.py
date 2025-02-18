@@ -50,13 +50,14 @@ choose_posibily = [team["good"], team["unknown"], team["evil"], team["unchecked"
 
 team_dict = dict.fromkeys(range(1,17), team["unchecked"])
 
+role_path = role_images_finder(full_path=True)
 
 def get_image_path(image: str):
     if image in image_path:
         return image_path[image]
 
     else:
-        return f"images/roles/{image}.png"
+        return role_path[image]
 
 
 def get_unchecked():
@@ -105,11 +106,12 @@ if __name__ == '__main__':
             if conf == "Yes":
                 team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
 
-                get_unchecked()
-
                 if e == "reset-name" or e == "reset_all":
                     for i in range(1, 17):
                         w[f"{i} name"].update(f"{i}. {trans["player"]}")
+
+                if e == "reset" or e == "reset_all":
+                    w["info left"].update(get_unchecked())
 
                 for i, k in all_player():
                     if e == "reset-name":
