@@ -103,11 +103,16 @@ def layout_settings():
 
 
 def info_popup():
-    layout = [[sg.Frame(title="Program Information", layout=[[sg.T("This Program is licensed under the GNU GPL v3")],
+    layout = [[sg.Frame(title="Program Information", layout=[[sg.T("This Program is not related with Wolvesville")],
+                                                             [sg.T("This Program is licensed under the GNU GPL v3")],
                                                              [sg.Button("Read the Full License", key="full")],
                                                              [sg.T("The Source Code can be found on GitHub")],
                                                              [sg.Button("Open the GitHub projekt", key="github")],
-                                                             [sg.T("v1.1.0-beta.03")]])],
+                                                             [sg.T(
+                                                                 "All images in the images order have been downloaded \nvia the official Wolvesville API \nWith the exception of the generic order \nthese come from the Wolvesville Wiki ")],
+                                                             [sg.Button("Wolvesville API", key="API"),
+                                                              sg.Button("Wolvesville Wiki", key="wiki")],
+                                                             [sg.T("v1.1.0-beta.03")], ])],
               [sg.Button("Close", key="close")]]
 
     w1 = sg.Window(title="Info", layout=layout, keep_on_top=True)
@@ -124,3 +129,9 @@ def info_popup():
 
         elif e == "github":
             wb.open(url="https://github.com/Platzhalten/Wolvlist")
+
+        elif e == "API":
+            wb.open(url="https://api-docs.wolvesville.com/#/")
+
+        elif e == "wiki":
+            wb.open(url="https://wolvesville.fandom.com/wiki/Wolvesville_Wiki")
