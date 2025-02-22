@@ -19,7 +19,7 @@ import FreeSimpleGUI as sg
 import time
 
 from scripts import settings
-from scripts.layout import entire_layout, info_popup, role_images_finder
+from scripts.layout import entire_layout, info_popup, role_images_finder, layout_settings
 
 sg.theme_global("DarkGrey11")
 
@@ -78,9 +78,54 @@ def all_player():
             yield colum, row
 
 
+
 if __name__ == '__main__':
 
     w = sg.Window(title="werville", layout=entire_layout(), finalize=True)
+
+
+    def settings_win():
+
+        w1 = sg.Window(title=trans["settings"]["settings"], layout=layout_settings())
+
+        while True:
+
+            e1, v1 = w1.read()
+
+            e1: str = e1
+
+            if e1 is None:
+                w1.close()
+                return
+
+            elif e1.startswith("reset") and sg.popup_ok_cancel(trans["settings"]["conformation"]) == "OK":
+
+                if e1 == "reset-name" or e1 == "reset_all":
+                    for i, k in all_player():
+                        w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
+
+                if e1 == "reset" or e1 == "reset_all":
+                    w["info left"].update(get_unchecked())
+
+                for i, k in all_player():
+                    if e == "reset-name":
+                        w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
+
+                    elif e == "reset_all":
+                        w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
+                        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+                        w[f"{i} {k} info"].update("")
+
+                    else:
+                        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+                        w[f"{i} {k} info"].update("")
+
+            elif e1 == "lang":
+                settings.change_selected_lang(v["lang"][0:3].strip())
+
+            elif e1 == "name_key":
+                pass
+
 
     while True:
 
@@ -95,37 +140,8 @@ if __name__ == '__main__':
         if e == "Info":
             info_popup()
 
-        elif e == "name_key":
-
-            for i, k in all_player():
-                w[f"{i} {k} frame"](v[f"{i + k} name"])
-
-        elif e.startswith("reset"):
-            conf = sg.popup_yes_no(trans["settings"]["conformation"])
-
-            if conf == "Yes":
-                team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
-
-                if e == "reset-name" or e == "reset_all":
-                    for i in range(1, 17):
-                        w[f"{i} name"].update(f"{i}. {trans["player"]}")
-
-                if e == "reset" or e == "reset_all":
-                    w["info left"].update(get_unchecked())
-
-                for i, k in all_player():
-                    if e == "reset-name":
-                        w[f"{i} {k} frame"].update(f"{i + k} {trans["player"]}")
-
-                    elif e == "reset_all":
-                        w[f"{i} {k} frame"].update(f"{i + k} {trans["player"]}")
-                        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
-                        w[f"{i} {k} info"].update("")
-
-                    else:
-                        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
-                        w[f"{i} {k} info"].update("")
-
+        elif e == trans["settings"]["settings"]:
+            settings_win()
 
         elif e == "search_bar":
             role_liste = []
@@ -186,5 +202,3 @@ if __name__ == '__main__':
                 w["info left"](get_unchecked())
                 set_value = ""
 
-        elif e == "lang":
-            settings.change_selected_lang(v["lang"][0:3].strip())
