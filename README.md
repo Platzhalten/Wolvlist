@@ -20,6 +20,10 @@ Download [Python](https://www.python.org/) and FreeSimpleGUI (if you on Linux yo
 
 then just run the main.py file
 
+## Images
+
+you can change all Images you can find more information in [Information.md](images/information.md) located in images
+
 ## translation
 If you really bored and know a language that is not yet in the lang.json you can add it
 

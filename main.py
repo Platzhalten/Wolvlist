@@ -19,7 +19,7 @@ import FreeSimpleGUI as sg
 import time
 
 from scripts import settings
-from scripts.layout import entire_layout, info_popup, role_images_finder, layout_settings
+from scripts.layout import layout, info_popup, role_images_finder, layout_settings
 
 sg.theme_global("DarkGrey11")
 
@@ -36,16 +36,14 @@ team = trans["team_selector"]
 role = trans["roles"]
 
 image_path = {
-    team["evil"]: "images/generic/Evil.png",
-    team["good"]: "images/generic/Good.png",
-    team["unchecked"]: "images/generic/Unchecked.png",
-    team["unknown"]: "images/generic/Unknown.png",
-    team["voting_role"]: "images/generic/voting.png",
+    team["evil"]: "images/generic/evil.png",
+    team["good"]: "images/generic/good.png",
+    team["unchecked"]: "images/generic/unchecked.png",
+    team["unknown"]: "images/generic/unknown.png",
     team["dead"]: "images/generic/dead.png",
 }
 
 # OPTION
-voting_roles = [role["fool"], role["headhunter"], role["anarchist"]]
 choose_posibily = [team["good"], team["unknown"], team["evil"], team["unchecked"], team["specific"]]
 
 team_dict = dict.fromkeys(range(1,17), team["unchecked"])
@@ -81,7 +79,10 @@ def all_player():
 
 if __name__ == '__main__':
 
-    w = sg.Window(title="werville", layout=entire_layout(), finalize=True)
+    for i in image_path.values():
+        settings.check_for_file(path=i)
+
+    w = sg.Window(title="werville", layout=layout(), finalize=True)
 
 
     def settings_win():
@@ -120,8 +121,8 @@ if __name__ == '__main__':
                         w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
                         w[f"{i} {k} info"].update("")
 
-            elif e1 == "lang":
-                settings.change_selected_lang(v["lang"][0:3].strip())
+            elif e1 == "language":
+                settings.change_selected_lang(v1["language"][0:3].strip())
 
             elif e1 == "name_key":
                 for i, k in all_player():
