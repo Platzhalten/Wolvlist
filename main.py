@@ -124,7 +124,8 @@ if __name__ == '__main__':
                 settings.change_selected_lang(v["lang"][0:3].strip())
 
             elif e1 == "name_key":
-                pass
+                for i, k in all_player():
+                    w[f"{i} {k} frame"](v1[f"{i + k} name"])
 
 
     while True:
