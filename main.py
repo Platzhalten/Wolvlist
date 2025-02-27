@@ -112,7 +112,7 @@ if __name__ == '__main__':
                     if e == "reset-name":
                         w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
 
-                    elif e == "reset_all":
+                    elif e1 == "reset_all":
                         w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
                         w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
                         w[f"{i} {k} info"].update("")
