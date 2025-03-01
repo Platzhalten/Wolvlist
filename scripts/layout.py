@@ -77,8 +77,8 @@ def role_images_finder(path: str = "images/roles", full_path=False):
         return path_list
 
     else:
-        dateinamen_liste.sort()
-        return dateinamen_liste
+        file_name_list.sort()
+        return file_name_list
 
 
 
