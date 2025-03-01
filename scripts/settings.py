@@ -91,6 +91,9 @@ def check_for_file(path: str, leave: bool = True) -> bool:
         return True
 
     else:
+        if not leave:
+            return False
+
         error_message = (f"The File or Directory {path} is missing.\n"
                          f"You need one to run the Program you can find one on the Github of this Projekt: https://github.com/Platzhalten/Wolvlist/\n"
                          f"Then place it in the same place like the main.py\n")

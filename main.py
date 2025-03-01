@@ -44,7 +44,7 @@ image_path = {
 }
 
 # OPTION
-choose_posibily = [team["good"], team["unknown"], team["evil"], team["unchecked"], team["specific"]]
+choose_possibility = [team["good"], team["unknown"], team["evil"], team["unchecked"], team["specific"]]
 
 team_dict = dict.fromkeys(range(1,17), team["unchecked"])
 
@@ -76,7 +76,6 @@ def all_player():
             yield colum, row
 
 
-
 if __name__ == '__main__':
 
     for i in image_path.values():
@@ -90,7 +89,6 @@ if __name__ == '__main__':
         w1 = sg.Window(title=trans["settings"]["settings"], layout=layout_settings())
 
         while True:
-
             e1, v1 = w1.read()
 
             e1: str = e1
@@ -173,7 +171,7 @@ if __name__ == '__main__':
 
             start = time.time()
 
-            for i in choose_posibily:
+            for i in choose_possibility:
                 if override:
                     set_value = team["dead"]
 

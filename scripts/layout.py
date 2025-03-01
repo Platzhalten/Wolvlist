@@ -14,7 +14,7 @@ def layout():
     Generates the entire main layout
     :return: a list with sg.elements
     """
-    from main import trans, choose_posibily, get_unchecked
+    from main import trans, choose_possibility, get_unchecked
 
     # adding the menu bar
     menutrans = trans["settings"]
