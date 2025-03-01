@@ -7,7 +7,7 @@ import os
 import FreeSimpleGUI as sg
 
 
-def get_available_languages() -> list:
+def get_available_languages() -> list[list[str] | str]:
     """
     :return: a list with 2 elements the first one is a list with all available languages (excluding the selected language) and the second one is the currently selected
     """
@@ -29,7 +29,7 @@ def get_available_languages() -> list:
 def get_language(language: str = None) -> dict:
     """
     Returns the language dictionary for the specified or selected language
-    :param language: The language that dict should have. If None is set the selected language is used
+    :param language: The language code (e.g., "en", "de"). If None, the currently selected language is used.
     :return: a dict with all the strings, when a string is not available in the selected languages its get replace with the english string
     """
     check_for_file(path="lang.json")
@@ -45,10 +45,11 @@ def get_language(language: str = None) -> dict:
 
 def merge_dictionaries(dict1, dict2) -> dict:
     """
-    Replaces the values of dict1 with the value from dict2 if they exist
-    :param dict1: The bigger one
-    :param dict2: The smaller dict
-    :return: a merged dict
+    Merges two dictionaries, with values from `dict2` overriding those in `dict1`.
+
+    :param dict1: The base dictionary.
+    :param dict2: The dictionary whose values will override those in `dict1`.
+    :return: A new dictionary containing the merged data.
     """
     merged_dict = dict2.copy()
 
@@ -65,7 +66,7 @@ def merge_dictionaries(dict1, dict2) -> dict:
 def change_selected_lang(language: str) -> None:
     """
     Changes the default Languages
-    :param language: what language it should be
+    :param language: the language code (e.g. "en", "de)
     """
 
     check_for_file("lang.json")
@@ -82,10 +83,10 @@ def change_selected_lang(language: str) -> None:
 
 def check_for_file(path: str, leave: bool = True) -> bool:
     """
-    Checks if a path is valid and creates a popup informing the User
+    Checks if a file or directory exists. A popup is created when the file or directory does not exist informing the User
     :param path: the path to check
-    :param leave: should the program exit if the path is not valid
-    :return: if the path exist
+    :param leave: should the program exit if the path is not valid. No PopUp is show when False
+    :return: True when the Path exist, False otherwise
     """
     if os.path.exists(path):
         return True

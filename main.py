@@ -50,7 +50,16 @@ team_dict = dict.fromkeys(range(1,17), team["unchecked"])
 
 role_path = role_images_finder(full_path=True)
 
-def get_image_path(image: str):
+
+def get_image_path(image: str) -> str:
+    """
+    Returns the full path to an image based on the provided image name.
+
+    :param image: The name of the image (e.g., "evil", "good", "unchecked").
+
+    :return:The full path to the image file.
+
+    """
     if image in image_path:
         return image_path[image]
 
@@ -58,7 +67,13 @@ def get_image_path(image: str):
         return role_path[image]
 
 
-def get_unchecked():
+def get_unchecked() -> str:
+    """
+    Generates a string listing all players whose team status is "unchecked".
+
+    :return: A string with the number of unchecked players (e.g., "1 2 3 left").
+            (depending on the language another word is used for left)
+    """
     unchecked = ""
     for i in team_dict:
 
@@ -85,6 +100,9 @@ if __name__ == '__main__':
 
 
     def settings_win():
+        """
+        Opens a settings Window where the user can change thinks like Player Names and reset the game state
+        """
 
         w1 = sg.Window(title=trans["settings"]["settings"], layout=layout_settings())
 

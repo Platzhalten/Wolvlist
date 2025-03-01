@@ -9,7 +9,7 @@ import os
 from scripts import settings
 
 
-def layout():
+def layout() -> list:
     """
     Generates the entire main layout
     :return: a list with sg.elements
@@ -52,12 +52,12 @@ def layout():
     return liste
 
 
-def role_images_finder(path: str = "images/roles", full_path=False):
+def role_images_finder(path: str = "images/roles", full_path=False) -> list | dict:
     """
     Searches the given path for all .png and .jpg files and adding then to the return
     :param path: the path where to search default: images/roles
-    :param full_path: if the full path to the image should be return or only the name
-    :return: if full_path is False then the name without the file exteions will be returnt in a list (villager.png > villager) when full_path is True then the path from the repo root (images/roles/village/villager.png)
+    :param full_path: if True the full path to the image gets return. If false only the name will be return
+    :return: if full_path is False then the name without the file extensions will be return in a list (villager.png > villager) when full_path is True then the path from the repo root (images/roles/village/villager.png)
     """
     file_name_list = []
     path_list = {}
@@ -81,8 +81,12 @@ def role_images_finder(path: str = "images/roles", full_path=False):
         return file_name_list
 
 
+def layout_settings() -> list:
+    """
+    Generates the layout for the settings window.
 
-def layout_settings():
+    :return: a list with sg.elements
+    """
     from main import trans
 
     set_trans = trans["settings"]
