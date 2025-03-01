@@ -34,8 +34,8 @@ def layout():
     adding_list = []
 
     # adding the radio buttons, the search bar and move then into 2 rows
-    for i in choose_posibily:
-        adding_list.append(sg.Radio(text=i, group_id="choose", key=f"choose {i}", default=choose_posibily[0] == i))
+    for i in choose_possibility:
+        adding_list.append(sg.Radio(text=i, group_id="choose", key=f"choose {i}", default=choose_possibility[0] == i))
 
     len_adding_list = int(len(adding_list) / 2) + 1
     adding_list.append(sg.Input(key="search_bar", size=26, enable_events=True))
