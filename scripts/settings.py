@@ -66,7 +66,7 @@ def merge_dictionaries(dict1, dict2) -> dict:
 def change_selected_lang(language: str) -> None:
     """
     Changes the default Languages
-    :param language: the language code (e.g. "en", "de)
+    :param language: the language code (e.g. "en", "de")
     """
 
     check_for_file("lang.json")

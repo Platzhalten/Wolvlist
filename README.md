@@ -29,10 +29,10 @@ If you really bored and know a language that is not yet in the lang.json you can
 
 just copy the placeholder down and put the right Translation in there
 
-|Languages|Supported           |
-|---------|--------------------|
-| English | Completely         |
-| German  | Partially (canceld)|
+| Languages | Supported  |
+|-----------|------------|
+| English   | Completely |
+| German    | Partially  |
 
 I only add german back when I am finished with the Program
 

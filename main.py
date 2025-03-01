@@ -115,17 +115,16 @@ if __name__ == '__main__':
                 w1.close()
                 return
 
-            elif e1.startswith("reset") and sg.popup_ok_cancel(trans["settings"]["conformation"]) == "OK":
+            elif e1 == "language":
+                settings.change_selected_lang(v1["language"][0:3].strip())
 
-                if e1 == "reset-name" or e1 == "reset_all":
-                    for i, k in all_player():
-                        w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
+            elif e1.startswith("reset") and sg.popup_ok_cancel(trans["settings"]["conformation"]) == "OK":
 
                 if e1 == "reset" or e1 == "reset_all":
                     w["info left"].update(get_unchecked())
 
                 for i, k in all_player():
-                    if e == "reset-name":
+                    if e1 == "reset-name":
                         w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
 
                     elif e1 == "reset_all":
@@ -136,9 +135,6 @@ if __name__ == '__main__':
                     else:
                         w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
                         w[f"{i} {k} info"].update("")
-
-            elif e1 == "language":
-                settings.change_selected_lang(v1["language"][0:3].strip())
 
             elif e1 == "name_key":
                 for i, k in all_player():
