@@ -59,7 +59,7 @@ def role_images_finder(path: str = "images/roles", full_path=False):
     :param full_path: if the full path to the image should be return or only the name
     :return: if full_path is False then the name without the file exteions will be returnt in a list (villager.png > villager) when full_path is True then the path from the repo root (images/roles/village/villager.png)
     """
-    dateinamen_liste = []
+    file_name_list = []
     path_list = {}
 
     settings.check_for_file(path)
@@ -71,7 +71,7 @@ def role_images_finder(path: str = "images/roles", full_path=False):
                 if full_path:
                     path_list[dateiname[:-4]] = root + "/" + dateiname
                 else:
-                    dateinamen_liste.append(dateiname[:-4])
+                    file_name_list.append(dateiname[:-4])
 
     if full_path:
         return path_list
@@ -85,20 +85,28 @@ def role_images_finder(path: str = "images/roles", full_path=False):
 def layout_settings():
     from main import trans
 
+    set_trans = trans["settings"]
+
+    # General Tab
     liste = []
     for i in range(1,17):
         liste.append([sg.Input(f"{i}. {trans["player"]}", key=f"{i} name")])
 
-    liste.append([sg.Button(trans["settings"]["change_names"], key="name_key")])
+    liste.append([sg.Button(set_trans["change_names"], key="name_key")])
 
-    name_layout = sg.Frame(title=trans["settings"]["names"], layout=liste)
+    name_layout = sg.Frame(title=set_trans["names"], layout=liste)
 
     language = settings.get_available_languages()
 
-    game_layout = [[sg.T(trans["settings"]["language"])],
+    game_layout = [[sg.T(set_trans["language"])],
                    [sg.Combo(key="language", values=language[0], default_value=language[1], enable_events=True)]]
 
-    game_layout = sg.Frame(title=trans["settings"]["games_settings"], layout=game_layout)
+    game_layout = sg.Frame(title=set_trans["games_settings"], layout=game_layout)
+
+    reset_layout = sg.Frame(title=set_trans["reset_name"],
+                            layout=[[sg.Button(set_trans["reset"], key="reset")],
+                                    [sg.Button(set_trans["reset_name"], key="reset-name")],
+                                    [sg.Button(set_trans["reset_all"], key="reset_all")]])
 
     reset_layout = sg.Frame(title=trans["settings"]["reset_name"],
                             layout=[[sg.Button(trans["settings"]["reset"], key="reset")],
