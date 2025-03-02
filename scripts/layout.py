@@ -100,10 +100,11 @@ def layout_settings() -> list:
 
     name_layout = sg.Frame(title=set_trans["names"], layout=liste)
 
-    language = settings.get_available_languages()
+    language, selected = settings.get_available_languages()
+    language.append(selected)
 
     game_layout = [[sg.T(set_trans["language"])],
-                   [sg.Combo(key="language", values=language[0], default_value=language[1], enable_events=True)]]
+                   [sg.Combo(key="language", values=language, default_value=selected, enable_events=True)]]
 
     game_layout = sg.Frame(title=set_trans["games_settings"], layout=game_layout)
 
@@ -142,20 +143,20 @@ def info_popup() -> None:
     w1 = sg.Window(title="Info", layout=layout, keep_on_top=True)
 
     while True:
-        e, v = w1.read()
+        event_popup, v = w1.read()
 
-        if e is None or e == "close":
+        if event_popup is None or event_popup == "close":
             w1.close()
             break
 
-        elif e == "full":
+        elif event_popup == "full":
             wb.open(url="https://www.gnu.org/licenses/gpl-3.0")
 
-        elif e == "github":
+        elif event_popup == "github":
             wb.open(url="https://github.com/Platzhalten/Wolvlist")
 
-        elif e == "API":
+        elif event_popup == "API":
             wb.open(url="https://api-docs.wolvesville.com/#/")
 
-        elif e == "wiki":
+        elif event_popup == "wiki":
             wb.open(url="https://wolvesville.fandom.com/wiki/Wolvesville_Wiki")

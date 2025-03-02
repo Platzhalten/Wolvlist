@@ -7,7 +7,16 @@ import os
 import FreeSimpleGUI as sg
 
 
-def get_available_languages() -> list[list[str] | str]:
+def set_settings(path: str, setting: str, value: str) -> None:
+    original = get_setting(path)
+
+    original[setting] = value
+
+    with open(path, "w") as f:
+        f.write(json.dumps(original))
+
+
+def get_available_languages() -> tuple[list[str], str]:
     """
     :return: a list with 2 elements the first one is a list with all available languages (excluding the selected language) and the second one is the currently selected
     """
@@ -18,12 +27,17 @@ def get_available_languages() -> list[list[str] | str]:
 
     liste = []
 
+    selected = "ERROR"
+
     for i in f:
         if not i == "selected":
-
             liste.append(f"{i} - {f[i]["language_full_name"]}")
 
-    return [liste, f["selected"]]
+        else:
+            selected = f["selected"]
+            selected = f"{f["selected"]} - {f[selected]["language_full_name"]}"
+
+    return liste, selected
 
 
 def get_language(language: str = None) -> dict:
