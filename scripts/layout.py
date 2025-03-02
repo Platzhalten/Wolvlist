@@ -28,7 +28,7 @@ def layout() -> list:
         for k in range(0, 4):
             liste[-1].append(
                 sg.Frame(title=f"{i + k}. {trans["player"]}", key=f"{i} {k} frame", element_justification="center",
-                         layout=[[sg.Button(image_source="images/generic/Unchecked.png", key=f"{i} {k} but")],
+                         layout=[[sg.Button(image_source="images/generic/unchecked.png", key=f"{i} {k} but")],
                                  [sg.Input(key=f"{i} {k} info", size=(14, None))]]))
 
     adding_list = []
@@ -101,7 +101,6 @@ def layout_settings() -> list:
     name_layout = sg.Frame(title=set_trans["names"], layout=liste)
 
     language, selected = settings.get_available_languages()
-    language.append(selected)
 
     game_layout = [[sg.T(set_trans["language"])],
                    [sg.Combo(key="language", values=language, default_value=selected, enable_events=True)]]

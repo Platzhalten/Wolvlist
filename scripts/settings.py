@@ -7,35 +7,47 @@ import os
 import FreeSimpleGUI as sg
 
 
+def get_setting(path: str, setting: str = None) -> dict:
+    check_for_file(path)
+
+    with open(path, "r") as f:
+        f = f.read()
+
+        try:
+            if setting is None:
+                return json.loads(f)
+
+            elif json.loads(f)[setting]:
+                return json.loads(f)[setting]
+
+        except KeyError:
+            return {}
+
+
 def set_settings(path: str, setting: str, value: str) -> None:
     original = get_setting(path)
 
     original[setting] = value
 
     with open(path, "w") as f:
-        f.write(json.dumps(original))
+        f.write(json.dumps(original, indent=3))
 
 
 def get_available_languages() -> tuple[list[str], str]:
     """
     :return: a list with 2 elements the first one is a list with all available languages (excluding the selected language) and the second one is the currently selected
     """
-    check_for_file(path="lang.json")
-
-    with open("lang.json", "r") as f:
-        f = json.loads(f.read())
+    language = get_setting("lang.json")
 
     liste = []
 
-    selected = "ERROR"
+    selected = get_setting("config.json", "language")
 
-    for i in f:
-        if not i == "selected":
-            liste.append(f"{i} - {f[i]["language_full_name"]}")
+    for i in language:
+        liste.append(f"{i} - {language[i]["language_full_name"]}")
 
-        else:
-            selected = f["selected"]
-            selected = f"{f["selected"]} - {f[selected]["language_full_name"]}"
+        if i.startswith(selected):
+            selected = f"{selected} - {language[i]["language_full_name"]}"
 
     return liste, selected
 
@@ -46,13 +58,10 @@ def get_language(language: str = None) -> dict:
     :param language: The language code (e.g., "en", "de"). If None, the currently selected language is used.
     :return: a dict with all the strings, when a string is not available in the selected languages its get replace with the english string
     """
-    check_for_file(path="lang.json")
-
-    with open("lang.json", "r") as f:
-        f = json.loads(f.read())
+    f = get_setting("lang.json")
 
     if language is None:
-        language = f["selected"]
+        language = get_setting("config.json", "language")
 
     return merge_dictionaries(f["en"], f[language[0:2]])
 
@@ -82,18 +91,8 @@ def change_selected_lang(language: str) -> None:
     Changes the default Languages
     :param language: the language code (e.g. "en", "de")
     """
-
-    check_for_file("lang.json")
-
-    with open("lang.json", "r") as f:
-
-        l = json.loads(f.read())
-
-        l["selected"] = language
-
-    with open("lang.json", "w") as f:
-        f.write(json.dumps(l, indent=3))
-
+    if len(language) == 2:
+        set_settings("config.json", setting="language", value=language)
 
 def check_for_file(path: str, leave: bool = True) -> bool:
     """

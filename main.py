@@ -107,27 +107,27 @@ if __name__ == '__main__':
         w1 = sg.Window(title=trans["settings"]["settings"], layout=layout_settings())
 
         while True:
-            e1, v1 = w1.read()
+            event_settings, value_settings = w1.read()
 
-            e1: str = e1
+            event_settings: str = event_settings
 
-            if e1 is None:
+            if event_settings is None:
                 w1.close()
                 return
 
-            elif e1 == "language":
-                settings.change_selected_lang(v1["language"][0:3].strip())
+            elif event_settings == "language":
+                settings.change_selected_lang(value_settings["language"][0:3].strip())
 
-            elif e1.startswith("reset") and sg.popup_ok_cancel(trans["settings"]["conformation"]) == "OK":
+            elif event_settings.startswith("reset") and sg.popup_ok_cancel(trans["settings"]["conformation"]) == "OK":
 
-                if e1 == "reset" or e1 == "reset_all":
+                if event_settings == "reset" or event_settings == "reset_all":
                     w["info left"].update(get_unchecked())
 
                 for i, k in all_player():
-                    if e1 == "reset-name":
+                    if event_settings == "reset-name":
                         w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
 
-                    elif e1 == "reset_all":
+                    elif event_settings == "reset_all":
                         w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
                         w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
                         w[f"{i} {k} info"].update("")
@@ -136,45 +136,45 @@ if __name__ == '__main__':
                         w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
                         w[f"{i} {k} info"].update("")
 
-            elif e1 == "name_key":
+            elif event_settings == "name_key":
                 for i, k in all_player():
-                    w[f"{i} {k} frame"](v1[f"{i + k} name"])
+                    w[f"{i} {k} frame"](value_settings[f"{i + k} name"])
 
 
     while True:
 
-        e, v = w.read()
+        event_main, value_main = w.read()
 
-        if e is None or e == "exit":
+        if event_main is None or event_main == "exit":
             w.close()
             break
 
-        e: str = e
+        event_main: str = event_main
 
-        if e == "Info":
+        if event_main == "Info":
             info_popup()
 
-        elif e == trans["settings"]["settings"]:
+        elif event_main == trans["settings"]["settings"]:
             settings_win()
 
-        elif e == "search_bar":
+        elif event_main == "search_bar":
             role_liste = []
 
             for i in role_images_finder():
-                if v["search_bar"] in i:
+                if value_main["search_bar"] in i:
                     role_liste.append(i)
 
                 w["role_picker"].update(role_liste)
 
 
-        elif e[-3:] == "but":
+        elif event_main[-3:] == "but":
             set_value = ""
 
             if not times:
                 start = time.time()
                 times = True
                 override = False
-                temp = e
+                temp = event_main
 
             elif times:
                 end = time.time()
@@ -191,27 +191,27 @@ if __name__ == '__main__':
 
                     break
 
-                elif v[f"choose {i}"]:
+                elif value_main[f"choose {i}"]:
                     set_value = i
 
                     break
 
-            if v[f"choose {team["specific"]}"] and not override:
-                if v["role_picker"]:
-                    set_value = v["role_picker"][0]
+            if value_main[f"choose {team["specific"]}"] and not override:
+                if value_main["role_picker"]:
+                    set_value = value_main["role_picker"][0]
 
                 else:
                     set_value = None
 
 
             if set_value:
-                w[e].update(image_source=get_image_path(image=set_value))
+                w[event_main].update(image_source=get_image_path(image=set_value))
 
-                e = e.split(" ")
+                event_main = event_main.split(" ")
 
-                e: int = int(e[0]) + int(e[1])
+                event_main: int = int(event_main[0]) + int(event_main[1])
 
-                team_dict[e] = set_value
+                team_dict[event_main] = set_value
 
                 w["info left"](get_unchecked())
                 set_value = ""

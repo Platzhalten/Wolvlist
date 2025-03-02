@@ -1,0 +1,13 @@
+{
+  "language": "de",
+  "paths": {
+    "generic": {
+      "dead": "images/generic/dead.png - CURRENTLY NOT IN USE",
+      "evil": "images/generic/dead.png - CURRENTLY NOT IN USE",
+      "good": "images/generic/dead.png - CURRENTLY NOT IN USE",
+      "unchecked": "images/generic/dead.png - CURRENTLY NOT IN USE",
+      "unknown": "images/generic/dead.png - CURRENTLY NOT IN USE"
+    },
+    "role_base": "images/roles - CURRENTLY NOT IN USE"
+  }
+}
