@@ -11,7 +11,8 @@ You can download the latest releases [here](https://github.com/Platzhalten/Wolve
 then just unzip and run the wolvesville.exe
 
 ### on Linux
-You can download the latest versions [here](https://github.com/Platzhalten/Wolvesville_list/releases/latest) (the latest version does not support Linux, but the [latest beta](https://github.com/Platzhalten/Wolvlist/releases/tag/v1.1.0-beta-01) does). 
+
+You can download the latest versions [here](https://github.com/Platzhalten/Wolvesville_list/releases/latest).
 
 Then unpack the tar.gz and run Wolvlist
 
@@ -20,15 +21,19 @@ Download [Python](https://www.python.org/) and FreeSimpleGUI (if you on Linux yo
 
 then just run the main.py file
 
+## Images
+
+you can change all Images you can find more information in [Information.md](images/information.md) located in images
+
 ## translation
 If you really bored and know a language that is not yet in the lang.json you can add it
 
 just copy the placeholder down and put the right Translation in there
 
-|Languages|Supported           |
-|---------|--------------------|
-| English | Completely         |
-| German  | Partially (canceld)|
+| Languages | Supported  |
+|-----------|------------|
+| English   | Completely |
+| German    | Partially  |
 
 I only add german back when I am finished with the Program
 
