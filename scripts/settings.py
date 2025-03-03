@@ -8,6 +8,12 @@ import FreeSimpleGUI as sg
 
 
 def get_setting(path: str, setting: str = None) -> dict:
+    """
+    Reads the json file at the path and returns parts/the entire content
+    :param path: where to look for the json file
+    :param setting: what settings is supposed to return (a dict path). If None the entire json file gets return
+    :return: The content of the json file
+    """
     check_for_file(path)
 
     with open(path, "r") as f:
@@ -25,6 +31,12 @@ def get_setting(path: str, setting: str = None) -> dict:
 
 
 def set_settings(path: str, setting: str, value: str) -> None:
+    """
+    Gets the content of path changes the values and writes the changed content to the same path
+    :param path: the path to the json file
+    :param setting: what settings should be changed (key)
+    :param value: what the value of the settings should be
+    """
     original = get_setting(path)
 
     original[setting] = value
