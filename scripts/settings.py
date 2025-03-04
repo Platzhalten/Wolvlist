@@ -70,7 +70,19 @@ def get_language(language: str = None) -> dict:
     :param language: The language code (e.g., "en", "de"). If None, the currently selected language is used.
     :return: a dict with all the strings, when a string is not available in the selected languages its get replace with the english string
     """
+    from main import version
+
     f = get_setting("lang.json")
+
+    try:
+        if not f["en"]["version"] == version:
+            raise KeyError
+
+    except KeyError as e:
+        wrong_version = "The Version of the lang.json does not math the Version of the Program \nPlease get a matching Version"
+
+        sg.popup_error(wrong_version)
+        raise Exception(wrong_version)
 
     if language is None:
         language = get_setting("config.json", "language")

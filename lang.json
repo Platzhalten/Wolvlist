@@ -1,5 +1,4 @@
 {
-   "selected": "de",
    "de": {
       "language_full_name": "Deutsch",
       "team_selector": {
@@ -32,6 +31,7 @@
       "left": "\u00fcbrig"
    },
    "en": {
+      "version": "v1.1.0",
       "language_full_name": "english",
       "team_selector": {
          "good": "good",

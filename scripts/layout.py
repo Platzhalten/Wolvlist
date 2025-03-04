@@ -121,6 +121,7 @@ def layout_settings() -> list:
 
 
 def info_popup() -> None:
+    from main import version
     """
     Opens a Popup like window with general infos about the Program (e.g. the Version, the License, where to find the source code and some more)
     """
@@ -136,7 +137,7 @@ def info_popup() -> None:
                                                                  "these come from the Wolvesville Wiki ")],
                                                              [sg.Button("Wolvesville API", key="API"),
                                                               sg.Button("Wolvesville Wiki", key="wiki")],
-                                                             [sg.T("v1.1.0-beta.03")], ])],
+                                                             [sg.T(version)], ])],
               [sg.Button("Close", key="close")]]
 
     w1 = sg.Window(title="Info", layout=layout, keep_on_top=True)

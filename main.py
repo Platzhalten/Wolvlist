@@ -30,6 +30,7 @@ times = False
 start = "ERROR"
 override = False
 temp = 0
+version = "v1.1.0"
 
 trans = settings.get_language()
 team = trans["team_selector"]
@@ -56,7 +57,6 @@ def get_image_path(image: str) -> str:
     Returns the full path to an image based on the provided image name.
 
     :param image: The name of the image (e.g., "evil", "good", "unchecked").
-
     :return:The full path to the image file.
 
     """
@@ -115,6 +115,7 @@ if __name__ == '__main__':
                 w1.close()
                 return
 
+            # General Settings
             elif event_settings == "language":
                 settings.change_selected_lang(value_settings["language"][0:3].strip())
 
