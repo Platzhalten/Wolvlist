@@ -18,19 +18,77 @@
 import FreeSimpleGUI as sg
 import time
 
+
 from scripts import settings
 from scripts.layout import layout, info_popup, role_images_finder, layout_settings
 
 sg.theme_global("DarkGrey11")
 
 
-# GLOBAL VARIABEL
-choosen = None
-times = False
-start = "ERROR"
-override = False
-temp = 0
-version = "v1.1.0"
+class Global:
+
+    def __init__(self):
+        self.request_available = True
+        self.choosen = None
+        self.times = False
+        self.start = "ERROR"
+        self.override = False
+        self.temp = 0
+        self.version = ["1", "1", "0", "beta01"]
+
+    def compare_version(self, version: str, file_name: str) -> bool | None:
+        """
+        Checks if the program Version matches the given Version
+        :param file_name: Is used in the popup when the given Version is newer than the program Version
+        :param version: The Version to compare. Assumes the Format: vX.X.X (v1.1.0) or vX.X.X-X (v1.1.0-beta01)
+        :return: If the Version matches. None if the User cancels
+        """
+
+        def parse_part(part: str) -> tuple[int, int | str]:
+            if 'alpha' in part:
+                num = part.replace('alpha', '')
+                return 0, int(num) if num.isdigit() else 0
+            if 'beta' in part:
+                num = part.replace('beta', '')
+                return 1, int(num) if num.isdigit() else 0
+            try:
+                return 2, int(part)
+            except ValueError:
+                return 3, part
+
+        version_parts = version.replace("v", "").replace("-", ".").split(".")
+        processed_self = [parse_part(p) for p in self.version]
+        processed_ver = [parse_part(p) for p in version_parts]
+
+        later_version = False
+        max_length = max(len(processed_self), len(processed_ver))
+        for i in range(max_length):
+            self_version = processed_self[i] if i < len(processed_self) else (2, 0)
+            version = processed_ver[i] if i < len(processed_ver) else (2, 0)
+
+            if self_version > version:
+                return False
+            if self_version < version:
+                later_version = True
+
+        if later_version:
+            yes_no = sg.popup_yes_no(f"The Version of the {file_name} v{'.'.join(version_parts)} is newer than "
+                                     f"the program version (v{'.'.join(self.version)})\nThis could cause Problems\nTry anyways?")
+
+            if yes_no == "Yes":
+                return True
+
+            else:
+                return None
+
+        return True
+
+    def __str__(self):
+        return "v" + ".".join(self.version)
+
+
+States = Global()
+
 
 trans = settings.get_language()
 team = trans["team_selector"]
@@ -57,7 +115,7 @@ def get_image_path(image: str) -> str:
     Returns the full path to an image based on the provided image name.
 
     :param image: The name of the image (e.g., "evil", "good", "unchecked").
-    :return:The full path to the image file.
+    :return: The full path to the image file.
 
     """
     if image in image_path:
@@ -101,7 +159,7 @@ if __name__ == '__main__':
 
     def settings_win():
         """
-        Opens a settings Window where the user can change thinks like Player Names and reset the game state
+        Opens a settings window where the user can change settings like player names and reset the game state.
         """
 
         w1 = sg.Window(title=trans["settings"]["settings"], layout=layout_settings())
@@ -171,23 +229,23 @@ if __name__ == '__main__':
         elif event_main[-3:] == "but":
             set_value = ""
 
-            if not times:
-                start = time.time()
-                times = True
-                override = False
-                temp = event_main
+            if not States.times:
+                States.start = time.time()
+                States.times = True
+                States.override = False
+                States.temp = event_main
 
-            elif times:
-                end = time.time()
+            elif States.times:
+                States.end = time.time()
 
-                if end - start <= 0.2:
-                    override = True
-                    times = False
+                if States.end - States.start <= 0.2:
+                    States.override = True
+                    States.times = False
 
             start = time.time()
 
             for i in choose_possibility:
-                if override:
+                if States.override:
                     set_value = team["dead"]
 
                     break
@@ -197,7 +255,7 @@ if __name__ == '__main__':
 
                     break
 
-            if value_main[f"choose {team["specific"]}"] and not override:
+            if value_main[f"choose {team["specific"]}"] and not States.override:
                 if value_main["role_picker"]:
                     set_value = value_main["role_picker"][0]
 
