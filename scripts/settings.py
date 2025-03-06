@@ -9,10 +9,10 @@ import FreeSimpleGUI as sg
 
 def get_setting(path: str, setting: str = None) -> dict:
     """
-    Reads the json file at the path and returns parts/the entire content
-    :param path: where to look for the json file
-    :param setting: what settings is supposed to return (a dict path). If None the entire json file gets return
-    :return: The content of the json file
+    Reads the JSON file at the path and returns parts/the entire content.
+    :param path: The path to the JSON file.
+    :param setting: The setting to return (a dict path). If None, the entire JSON file is returned.
+    :return: The content of the JSON file.
     """
     check_for_file(path)
 
@@ -32,10 +32,10 @@ def get_setting(path: str, setting: str = None) -> dict:
 
 def set_settings(path: str, setting: str, value: str) -> None:
     """
-    Gets the content of path changes the values and writes the changed content to the same path
-    :param path: the path to the json file
-    :param setting: what settings should be changed (key)
-    :param value: what the value of the settings should be
+    Gets the content of the path, changes the values, and writes the changed content to the same path.
+    :param path: The path to the JSON file.
+    :param setting: The setting to change (key).
+    :param value: The value of the setting.
     """
     original = get_setting(path)
 
@@ -47,7 +47,7 @@ def set_settings(path: str, setting: str, value: str) -> None:
 
 def get_available_languages() -> tuple[list[str], str]:
     """
-    :return: a list with 2 elements the first one is a list with all available languages (excluding the selected language) and the second one is the currently selected
+    :return: A list with 2 elements: the first is a list of all available languages (excluding the selected language), and the second is the currently selected language.
     """
     language = get_setting("lang.json")
 
@@ -68,21 +68,26 @@ def get_language(language: str = None) -> dict:
     """
     Returns the language dictionary for the specified or selected language
     :param language: The language code (e.g., "en", "de"). If None, the currently selected language is used.
-    :return: a dict with all the strings, when a string is not available in the selected languages its get replace with the english string
+    :return: A dict with all the strings. If a string is not available in the selected language, it is replaced with the English string.
     """
-    from main import version
+    from main import States
 
     f = get_setting("lang.json")
 
     try:
-        if not f["en"]["version"] == version:
+        matching = States.compare_version(f["en"]["version"], file_name="lang.json")
+        print(matching)
+        if matching is None:
+            raise ValueError
+        elif not matching:
             raise KeyError
 
     except KeyError as e:
-        wrong_version = "The Version of the lang.json does not math the Version of the Program \nPlease get a matching Version"
+        wrong_version = "The Version of the lang.json is older than the Version of the Program \nPlease get a matching or newer Version"
 
         sg.popup_error(wrong_version)
         raise Exception(wrong_version)
+
 
     if language is None:
         language = get_setting("config.json", "language")
@@ -112,18 +117,19 @@ def merge_dictionaries(dict1, dict2) -> dict:
 
 def change_selected_lang(language: str) -> None:
     """
-    Changes the default Languages
-    :param language: the language code (e.g. "en", "de")
+    Changes the default Languages.
+    :param language: The language code (e.g. "en", "de")
     """
     if len(language) == 2:
         set_settings("config.json", setting="language", value=language)
 
+
 def check_for_file(path: str, leave: bool = True) -> bool:
     """
-    Checks if a file or directory exists. A popup is created when the file or directory does not exist informing the User
-    :param path: the path to check
-    :param leave: should the program exit if the path is not valid. No PopUp is show when False
-    :return: True when the Path exist, False otherwise
+    Checks if a file or directory exists. A popup is created if the file or directory does not exist, informing the user.
+    :param path: The path to check.
+    :param leave: Should the program exit if the path is not valid. No popup is show when False
+    :return: True if the Path exist, False otherwise
     """
     if os.path.exists(path):
         return True

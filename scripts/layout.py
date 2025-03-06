@@ -11,8 +11,8 @@ from scripts import settings
 
 def layout() -> list:
     """
-    Generates the entire main layout
-    :return: a list with sg.elements
+    Generates the entire main layout.
+    :return: A list with sg.elements.
     """
     from main import trans, choose_possibility, get_unchecked
 
@@ -33,7 +33,7 @@ def layout() -> list:
 
     adding_list = []
 
-    # adding the radio buttons, the search bar and move then into 2 rows
+    # Adding the radio buttons, the search bar, and arranging them into 2 rows
     for i in choose_possibility:
         adding_list.append(sg.Radio(text=i, group_id="choose", key=f"choose {i}", default=choose_possibility[0] == i))
 
@@ -42,11 +42,11 @@ def layout() -> list:
 
     adding_list = [adding_list[:len_adding_list + 1], adding_list[len_adding_list + 1:]]
 
-    # added the box for selecting the role
+    # Adding the box for selecting the role
     liste.append([sg.Frame(title="", layout=adding_list, element_justification="center"),
                   sg.Listbox(role_images_finder(), size=(25, 4), key="role_picker")])
 
-    # the remaining people bar
+    # The remaining people bar
     liste.append([sg.Input(size=71, key="info left", default_text=get_unchecked())])
 
     return liste
@@ -54,10 +54,10 @@ def layout() -> list:
 
 def role_images_finder(path: str = "images/roles", full_path=False) -> list | dict:
     """
-    Searches the given path for all .png and .jpg files and adding then to the return
-    :param path: the path where to search default: images/roles
-    :param full_path: if True the full path to the image gets return. If false only the name will be return
-    :return: if full_path is False then the name without the file extensions will be return in a list (villager.png > villager) when full_path is True then the path from the repo root (images/roles/village/villager.png)
+    Searches the given path for all .png and .jpg files and adds them to the return.
+    :param path: The path to search (default: images/roles).
+    :param full_path: If True, the full path to the image is returned. If False, only the name is returned.
+    :return: If full_path is False, the name without the file extension is returned in a list (e.g., "villager.png" -> "villager"). If full_path is True, the path from the repo root is returned (e.g., "images/roles/village/villager.png").
     """
     file_name_list = []
     path_list = {}
@@ -84,8 +84,7 @@ def role_images_finder(path: str = "images/roles", full_path=False) -> list | di
 def layout_settings() -> list:
     """
     Generates the layout for the settings window.
-
-    :return: a list with sg.elements
+    :return: A list with sg.elements.
     """
     from main import trans
 
@@ -121,9 +120,9 @@ def layout_settings() -> list:
 
 
 def info_popup() -> None:
-    from main import version
+    from main import States
     """
-    Opens a Popup like window with general infos about the Program (e.g. the Version, the License, where to find the source code and some more)
+    Opens a popup-like window with general information about the program (e.g., version, license, source code location, and more).
     """
     layout = [[sg.Frame(title="Program Information", layout=[[sg.T("This Program is not related with Wolvesville")],
                                                              [sg.T("This Program is licensed under the GNU GPL v3")],
@@ -137,7 +136,7 @@ def info_popup() -> None:
                                                                  "these come from the Wolvesville Wiki ")],
                                                              [sg.Button("Wolvesville API", key="API"),
                                                               sg.Button("Wolvesville Wiki", key="wiki")],
-                                                             [sg.T(version)], ])],
+                                                             [sg.T(str(States))], ])],
               [sg.Button("Close", key="close")]]
 
     w1 = sg.Window(title="Info", layout=layout, keep_on_top=True)
