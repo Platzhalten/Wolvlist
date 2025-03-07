@@ -94,6 +94,17 @@ class Global:
 
         return True
 
+    def _requests_available(self) -> None:
+
+        try:
+            import requests
+
+        except ImportError:
+            self.request_available = False
+
+        finally:
+            self.request_available = True
+
     def double_click(self):
         if not self.time_is_running:
             self.start_timer = time.time()
@@ -222,6 +233,10 @@ if __name__ == '__main__':
             elif event_settings == "name_key":
                 for i, k in all_player():
                     w[f"{i} {k} frame"](value_settings[f"{i + k} name"])
+
+            # API settings
+
+
 
 
     while True:

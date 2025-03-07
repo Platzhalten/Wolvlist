@@ -1,5 +1,7 @@
 {
   "language": "de",
+  "api_key": 0,
+  "api_key_is_valid": false,
   "paths": {
     "generic": {
       "dead": "images/generic/dead.png - CURRENTLY NOT IN USE",

@@ -86,7 +86,7 @@ def layout_settings() -> list:
     Generates the layout for the settings window.
     :return: A list with sg.elements.
     """
-    from main import trans
+    from main import trans, States
 
     set_trans = trans["settings"]
 
@@ -111,12 +111,27 @@ def layout_settings() -> list:
                                     [sg.Button(set_trans["reset_name"], key="reset-name")],
                                     [sg.Button(set_trans["reset_all"], key="reset_all")]])
 
-    reset_layout = sg.Frame(title=trans["settings"]["reset_name"],
-                            layout=[[sg.Button(trans["settings"]["reset"], key="reset")],
-                                    [sg.Button(trans["settings"]["reset_name"], key="reset-name")],
-                                    [sg.Button(trans["settings"]["reset_all"], key="reset_all")]])
+    # Api Tab
+    api_key = False
+    if settings.check_for_file("config.json", leave=False):
+        key = settings.get_setting("config.json", "api_key")
 
-    return [[name_layout], [game_layout, reset_layout]]
+        if bool(key):
+            api_key = key
+
+    set_api = set_trans["api"]
+
+    api_key_layout = sg.Frame(title=set_api["api_key"],
+                              layout=[[sg.Input(key="API_key", disabled=True, default_text="Currently not in use"),
+                                       sg.Button(set_api["api_key_safe"])]])
+
+    limit_role_selection = sg.Frame(title="", layout=[[]])
+
+    return [
+        [sg.TabGroup(layout=[[sg.Tab(title=set_trans["generel"], layout=[[name_layout], [game_layout, reset_layout]]),
+                              sg.Tab(title=set_api["api_setting"], layout=[[api_key_layout]],
+                                     disabled=States.request_available == 0)
+                              ]])]]
 
 
 def info_popup() -> None:

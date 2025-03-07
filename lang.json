@@ -60,7 +60,13 @@
          "conformation": "Are you sure?",
          "generel": "General",
          "info": "Info",
-         "exit": "exit"
+         "exit": "exit",
+         "api": {
+            "api_key": "API key",
+            "api_key_safe": "safe",
+            "api_setting": "API Settings",
+            "limit_role": "Filter Roles"
+         }
       },
       "player": "Player",
       "what_voting_role": "What Voting role is ig",

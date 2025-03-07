@@ -76,7 +76,6 @@ def get_language(language: str = None) -> dict:
 
     try:
         matching = States.compare_version(f["en"]["version"], file_name="lang.json")
-        print(matching)
         if matching is None:
             raise ValueError
         elif not matching:
