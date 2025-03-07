@@ -40,8 +40,8 @@ class Global:
         self.request_available = None
 
         # Double Click
-        self.time_is_running = False
-        self.start_timer = "ERROR"
+        self.last_click_button = None
+        self.last_click_time = 0
 
         # Version
         self.version = ["1", "1", "0", "beta01"]  #v1.1.0-beta01
@@ -105,18 +105,16 @@ class Global:
         finally:
             self.request_available = True
 
-    def double_click(self):
-        if not self.time_is_running:
-            self.start_timer = time.time()
-            self.time_is_running = True
-
-        elif self.time_is_running:
-            end = time.time()
-            self.time_is_running = False
-
-            return end - self.start_timer <= 0.2
-
-        self.start_timer = time.time()
+    def double_click(self, button):
+        current_time = time.time()
+        if self.last_click_button == button and (current_time - self.last_click_time) <= 0.2:
+            self.last_click_button = None
+            self.last_click_time = 0
+            return True
+        else:
+            self.last_click_button = button
+            self.last_click_time = current_time
+            return False
 
     def __str__(self):
         return "v" + ".".join(self.version)
@@ -268,7 +266,7 @@ if __name__ == '__main__':
         elif event_main[-3:] == "but":
             set_value = ""
 
-            double_click = States.double_click()
+            double_click = States.double_click(event_main)
 
             for i in choose_possibility:
                 if double_click:
