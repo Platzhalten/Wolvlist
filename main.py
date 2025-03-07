@@ -22,19 +22,30 @@ import time
 from scripts import settings
 from scripts.layout import layout, info_popup, role_images_finder, layout_settings
 
+# TODO: Adding a way to change themes
+#
+# maybe add the following:
+
+# light: Reddit, LightGrey, LightBlue
+# dark: DarkGrey11 (Default), PythonPlus, Topanga
+# darkest: NeonYellow1, NeonBlue1, NeonGreen1
+# other: DarkRed, HotDogStand, BrightColors
 sg.theme_global("DarkGrey11")
 
 
 class Global:
 
     def __init__(self):
-        self.request_available = True
-        self.choosen = None
-        self.times = False
-        self.start = "ERROR"
-        self.override = False
-        self.temp = 0
-        self.version = ["1", "1", "0", "beta01"]
+        # API
+        self.request_available = None
+
+        # Double Click
+        self.time_is_running = False
+        self.start_timer = "ERROR"
+
+        # Version
+        self.version = ["1", "1", "0", "beta01"]  #v1.1.0-beta01
+
 
     def compare_version(self, version: str, file_name: str) -> bool | None:
         """
@@ -83,8 +94,23 @@ class Global:
 
         return True
 
+    def double_click(self):
+        if not self.time_is_running:
+            self.start_timer = time.time()
+            self.time_is_running = True
+
+        elif self.time_is_running:
+            end = time.time()
+            self.time_is_running = False
+
+            return end - self.start_timer <= 0.2
+
+        self.start_timer = time.time()
+
     def __str__(self):
         return "v" + ".".join(self.version)
+
+
 
 
 States = Global()
@@ -104,9 +130,7 @@ image_path = {
 
 # OPTION
 choose_possibility = [team["good"], team["unknown"], team["evil"], team["unchecked"], team["specific"]]
-
 team_dict = dict.fromkeys(range(1,17), team["unchecked"])
-
 role_path = role_images_finder(full_path=True)
 
 
@@ -229,23 +253,10 @@ if __name__ == '__main__':
         elif event_main[-3:] == "but":
             set_value = ""
 
-            if not States.times:
-                States.start = time.time()
-                States.times = True
-                States.override = False
-                States.temp = event_main
-
-            elif States.times:
-                States.end = time.time()
-
-                if States.end - States.start <= 0.2:
-                    States.override = True
-                    States.times = False
-
-            start = time.time()
+            double_click = States.double_click()
 
             for i in choose_possibility:
-                if States.override:
+                if double_click:
                     set_value = team["dead"]
 
                     break
@@ -255,7 +266,7 @@ if __name__ == '__main__':
 
                     break
 
-            if value_main[f"choose {team["specific"]}"] and not States.override:
+            if value_main[f"choose {team["specific"]}"] and not double_click:
                 if value_main["role_picker"]:
                     set_value = value_main["role_picker"][0]
 
