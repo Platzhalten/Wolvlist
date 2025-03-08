@@ -4,12 +4,11 @@
   "api_key_is_valid": false,
   "paths": {
     "generic": {
-      "dead": "images/generic/dead.png - CURRENTLY NOT IN USE",
-      "evil": "images/generic/dead.png - CURRENTLY NOT IN USE",
-      "good": "images/generic/dead.png - CURRENTLY NOT IN USE",
-      "unchecked": "images/generic/dead.png - CURRENTLY NOT IN USE",
-      "unknown": "images/generic/dead.png - CURRENTLY NOT IN USE"
-    },
-    "role_base": "images/roles - CURRENTLY NOT IN USE"
+      "dead": "images/generic/dead.png",
+      "evil": "images/generic/evil.png",
+      "good": "images/generic/good.png",
+      "unchecked": "images/generic/unchecked.png",
+      "unknown": "images/generic/unknown.png"
+    }
   }
 }
