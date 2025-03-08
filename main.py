@@ -120,8 +120,6 @@ class Global:
         return "v" + ".".join(self.version)
 
 
-
-
 States = Global()
 
 
@@ -129,12 +127,14 @@ trans = settings.get_language()
 team = trans["team_selector"]
 role = trans["roles"]
 
+generic_path = settings.get_setting("config.json")["paths"]["generic"]
+
 image_path = {
-    team["evil"]: "images/generic/evil.png",
-    team["good"]: "images/generic/good.png",
-    team["unchecked"]: "images/generic/unchecked.png",
-    team["unknown"]: "images/generic/unknown.png",
-    team["dead"]: "images/generic/dead.png",
+    team["evil"]: generic_path["evil"],  # default Value: images/generic/evil.png
+    team["good"]: generic_path["good"],  # default Value: images/generic/good.png
+    team["unchecked"]: generic_path["unchecked"],  # default Value: images/generic/unchecked.png
+    team["unknown"]: generic_path["unknown"],  # default Value: images/generic/unknown.png
+    team["dead"]: generic_path["dead"],  # default Value: images/generic/dead.png
 }
 
 # OPTION
