@@ -25,54 +25,43 @@ class Api:
 
         if req.status_code == 200:
             self.rotation = req.json()
-
             self.rotation_parser()
+
+            settings.set_settings("../config.json", "api_key", self.API_key)
+            settings.set_settings("../config.json", "api_key_is_valid", True)
 
         return req.status_code == 200
 
+
     def rotation_parser(self):
-        if self.rotation is None:
-            return False
 
-        print(self.rotation)
-        print(self.rotation[0]["roleRotations"])
+        rollen_liste = {}
 
-        f = self.rotation[0]["roleRotations"]["roles"]
+        for game_mode in self.rotation:
+            game_mode_name = game_mode["gameMode"]
+            rollen_liste[game_mode_name] = []
 
-        role_list = []
+            for role_rotation in game_mode["roleRotations"]:
+                roles_data = role_rotation["roleRotation"]["roles"]
 
-        for i in f:
-            if len(i) >= 2:
-                role_list.append([])
-                for k in i:
-                    role_list[-1].append(k["role"].replace("-", " "))
+                for slot in roles_data:
+                    roles_in_slot = []
 
-            else:
-                role_list.append(i[0]["role"].replace("-", " "))
+                    for role_variant in slot:
+                        if "role" in role_variant:
+                            roles_in_slot.append(role_variant["role"])
+                        elif "roles" in role_variant:
+                            roles_in_slot.extend(role_variant["roles"])
 
-        self.parsed_rotation = role_list
+                    if len(roles_in_slot) > 1:
+                        rollen_liste[game_mode_name].append(roles_in_slot)
+                    else:
+                        rollen_liste[game_mode_name].append(roles_in_slot[0] if roles_in_slot else "")
 
-        return self.parsed_rotation
+        self.parsed_rotation = rollen_liste
+
 
 
 key = Api("a very nice API key")
 
 print(key.parsed_rotation)
-
-test = [{'roleRotation':
-             {'id': '2a6690ec-4843-4223-bbc4-d42fd0d7ac54', 'roles':
-                 [[{'probability': 1.0, 'role': 'aura-seer'}],
-                  [{'probability': 1.0, 'role': 'medium'}],
-                  [{'probability': 1.0, 'role': 'jailer'}],
-                  [{'probability': 0.5, 'role': 'party-wolf'}, {'probability': 0.5, 'role': 'junior-werewolf'}],
-                  [{'probability': 1.0, 'role': 'doctor'}],
-                  [{'probability': 1.0, 'role': 'alpha-werewolf'}],
-                  [{'probability': 1.0, 'role': 'detective'}],
-                  [{'probability': 0.5, 'role': 'fool'}, {'probability': 0.5, 'role': 'headhunter'}],
-                  [{'probability': 1.0, 'role': 'bodyguard'}],
-                  [{'probability': 1.0, 'role': 'witch'}],
-                  [{'probability': 1.0, 'role': 'shadow-wolf'}],
-                  [{'probability': 1.0, 'role': 'cursed-human'}],
-                  [{'probability': 0.5, 'role': 'corruptor'}, {'probability': 0.5, 'role': 'bandit'}],
-                  [{'probability': 1.0, 'role': 'mayor'}], [{'probability': 1.0, 'role': 'wolf-seer'}],
-                  [{'probability': 1.0, 'role': 'loudmouth'}]]}, 'probability': 1.0}]
