@@ -113,23 +113,33 @@ def layout_settings() -> list:
 
     # Api Tab
     api_key = False
+    rotation = {"quick": "blabla"}
+
     if settings.check_for_file("config.json", leave=False):
         key = settings.get_setting("config.json", "api_key")
 
         if bool(key):
             api_key = key
 
+            rotation = settings.get_setting("config.json", "rotation")
+
     set_api = set_trans["api"]
 
     api_key_layout = sg.Frame(title=set_api["api_key"],
-                              layout=[[sg.Input(key="API_key", disabled=True, default_text="Currently not in use"),
+                              layout=[[sg.Input(key="API_key"),
                                        sg.Button(set_api["api_key_safe"])]])
 
-    limit_role_selection = sg.Frame(title="", layout=[[]])
+    games = list(rotation.keys())
+
+    role_list = States.parsed_rotation
+
+    role_selection = sg.Frame(title=set_api["limit_role"],
+                              layout=[[sg.DropDown(games, default_value=games[0], disabled=bool(api_key) == 0)]])
+
 
     return [
         [sg.TabGroup(layout=[[sg.Tab(title=set_trans["generel"], layout=[[name_layout], [game_layout, reset_layout]]),
-                              sg.Tab(title=set_api["api_setting"], layout=[[api_key_layout]],
+                              sg.Tab(title=set_api["api_setting"], layout=[[api_key_layout], [role_selection]],
                                      disabled=States.request_available == 0)
                               ]])]]
 

@@ -30,7 +30,7 @@ def get_setting(path: str, setting: str = None) -> dict:
             return {}
 
 
-def set_settings(path: str, setting: str, value: str | bool) -> None:
+def set_settings(path: str, setting: str, value: any) -> None:
     """
     Gets the content of the path, changes the values, and writes the changed content to the same path.
     :param path: The path to the JSON file.

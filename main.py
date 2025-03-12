@@ -43,6 +43,10 @@ class Global:
         self.time_is_running = False
         self.start_timer = "ERROR"
 
+        # rotation
+        self.rotation = settings.get_setting("config.json", "rotation")
+        self.parsed_rotation = self.role_limiter()
+
         # Version
         self.version = ["1", "1", "0", "beta01"]  #v1.1.0-beta01
 
@@ -117,6 +121,33 @@ class Global:
             return end - self.start_timer <= 0.2
 
         self.start_timer = time.time()
+
+    def role_limiter(self):
+        role_list = []
+        counter = 1.0
+
+        tes2 = list(self.rotation.values())
+        print(tes2)
+
+        for k in self.rotation:
+            role_list.append([sg.T(f"{k} - ")])
+            print(k)
+
+            for i in self.rotation[k]:
+                if isinstance(i, str):
+                    role_list[-1].append(sg.T(i.replace("-", " ")))
+
+                else:
+                    print(i)
+                    counter = int(counter + 1)
+                    for x in i:
+                        print(x)
+                        role_list[-1].append(
+                            sg.Radio(text=", ".join(x).replace("-", " "), group_id=int(counter), key=counter,
+                                     default=int(counter) == counter))
+                        counter += 0.1
+
+        return role_list
 
     def __str__(self):
         return "v" + ".".join(self.version)
