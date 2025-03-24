@@ -17,7 +17,7 @@
 
 import FreeSimpleGUI as sg
 import time
-
+from packaging import version
 
 from scripts import settings
 from scripts.layout import layout, info_popup, role_images_finder, layout_settings
@@ -48,55 +48,33 @@ class Global:
         self.parsed_rotation = self.role_limiter()
 
         # Version
-        self.version = ["1", "1", "0", "beta01"]  #v1.1.0-beta01
+        self.str_version = "1.2.0-beta01"
+        self.version = version.parse(self.str_version)  # v1.2.0-beta01
 
+        self.checked_version = False
 
-    def compare_version(self, version: str, file_name: str) -> bool | None:
+    def compare_version(self, test_version: str, file_name: str) -> tuple[bool, bool]:
         """
         Checks if the program Version matches the given Version
         :param file_name: Is used in the popup when the given Version is newer than the program Version
-        :param version: The Version to compare. Assumes the Format: vX.X.X (v1.1.0) or vX.X.X-X (v1.1.0-beta01)
-        :return: If the Version matches. None if the User cancels
+        :param test_version: The Version to compare. Assumes the Format: vX.X.X (v1.1.0) or vX.X.X-X (v1.1.0-beta01)
+        :return: If the Version matches.
         """
+        if self.checked_version:
+            return True, True
 
-        def parse_part(part: str) -> tuple[int, int | str]:
-            if 'alpha' in part:
-                num = part.replace('alpha', '')
-                return 0, int(num) if num.isdigit() else 0
-            if 'beta' in part:
-                num = part.replace('beta', '')
-                return 1, int(num) if num.isdigit() else 0
-            try:
-                return 2, int(part)
-            except ValueError:
-                return 3, part
+        test_str_version = test_version
+        test_version = version.parse(test_version)
 
-        version_parts = version.replace("v", "").replace("-", ".").split(".")
-        processed_self = [parse_part(p) for p in self.version]
-        processed_ver = [parse_part(p) for p in version_parts]
-
-        later_version = False
-        max_length = max(len(processed_self), len(processed_ver))
-        for i in range(max_length):
-            self_version = processed_self[i] if i < len(processed_self) else (2, 0)
-            version = processed_ver[i] if i < len(processed_ver) else (2, 0)
-
-            if self_version > version:
-                return False
-            if self_version < version:
-                later_version = True
-
-        if later_version:
-            yes_no = sg.popup_yes_no(f"The Version of the {file_name} v{'.'.join(version_parts)} is newer than "
-                                     f"the program version (v{'.'.join(self.version)})\nThis could cause Problems\nTry anyways?")
+        if test_version > self.version:
+            yes_no = sg.popup_yes_no(f"The Version of the {file_name} v{test_str_version} is newer than "
+                                     f"the program version (v{self.str_version})\nThis could cause Problems\nTry anyways?")
 
             if yes_no == "Yes":
-                return True
+                test_version = self.version
 
-            else:
-                return None
-
-        return True
+        self.checked_version = True
+        return test_version == self.version, test_version > self.version
 
     def _requests_available(self) -> None:
 
@@ -150,7 +128,7 @@ class Global:
         return role_list
 
     def __str__(self):
-        return "v" + ".".join(self.version)
+        return self.str_version
 
 
 

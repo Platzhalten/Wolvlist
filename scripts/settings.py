@@ -76,15 +76,16 @@ def get_language(language: str = None) -> dict:
 
     try:
         matching = States.compare_version(f["en"]["version"], file_name="lang.json")
-        if matching is None:
-            raise ValueError
-        elif not matching:
+        if not matching[0]:
             raise KeyError
 
     except KeyError as e:
-        wrong_version = "The Version of the lang.json is older than the Version of the Program \nPlease get a matching or newer Version"
+        wrong_version = ""
 
-        sg.popup_error(wrong_version)
+        if not matching[1]:
+            wrong_version = "The Version of the lang.json is older than the Version of the Program \nPlease get a matching or newer Version"
+            sg.popup_error(wrong_version)
+
         raise Exception(wrong_version)
 
 
