@@ -100,32 +100,35 @@ class Global:
 
         self.start_timer = time.time()
 
-    def role_limiter(self):
-        role_list = []
-        counter = 1.0
+    def role_limiter(self, selected: str = "quick"):
+        layout = []
+        # frame_title = f"Frame {input_list[0]}"
+        frame_layout = []
+        number = 0
+        group_number = 0
 
-        tes2 = list(self.rotation.values())
-        print(tes2)
+        for k in self.rotation.keys():
+            for item in self.rotation[k]:
+                if isinstance(item, list):
+                    radio_group = []
+                    for option in item:
+                        radio_group.append(
+                            sg.Radio(option, group_id=f"{k}_{number}_radio", key=f"{k}_{number}_{group_number}_radio",
+                                     default=not group_number == 0))
+                    frame_layout.append(radio_group)
 
-        for k in self.rotation:
-            role_list.append([sg.T(f"{k} - ")])
-            print(k)
-
-            for i in self.rotation[k]:
-                if isinstance(i, str):
-                    role_list[-1].append(sg.T(i.replace("-", " ")))
-
+                    number = number + 1
+                    group_number = group_number + 1
                 else:
-                    print(i)
-                    counter = int(counter + 1)
-                    for x in i:
-                        print(x)
-                        role_list[-1].append(
-                            sg.Radio(text=", ".join(x).replace("-", " "), group_id=int(counter), key=counter,
-                                     default=int(counter) == counter))
-                        counter += 0.1
+                    frame_layout.append([sg.Text(item)])
 
-        return role_list
+                group_number = 0
+                number = 0
+
+            layout.append(sg.Frame(title="", layout=frame_layout, visible=selected == k, key=k, border_width=0))
+            frame_layout = []
+
+        return layout
 
     def __str__(self):
         return self.str_version

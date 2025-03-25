@@ -131,10 +131,12 @@ def layout_settings() -> list:
 
     games = list(rotation.keys())
 
-    role_list = States.parsed_rotation
+    role_list = States.role_limiter()
+
 
     role_selection = sg.Frame(title=set_api["limit_role"],
-                              layout=[[sg.DropDown(games, default_value=games[0], disabled=bool(api_key) == 0)]])
+                              layout=[[sg.DropDown(games, default_value=games[0], disabled=bool(api_key) == 0)],
+                                      role_list])
 
 
     return [
