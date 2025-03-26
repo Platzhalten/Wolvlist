@@ -135,7 +135,8 @@ def layout_settings() -> list:
 
 
     role_selection = sg.Frame(title=set_api["limit_role"],
-                              layout=[[sg.DropDown(games, default_value=games[0], disabled=bool(api_key) == 0)],
+                              layout=[[sg.DropDown(games, default_value=games[0], disabled=bool(api_key) == 0,
+                                                   key="dropie", enable_events=True)],
                                       role_list])
 
 

@@ -47,6 +47,8 @@ class Global:
         self.rotation = settings.get_setting("config.json", "rotation")
         self.parsed_rotation = self.role_limiter()
 
+        self.last_selected = "quick"
+
         # Version
         self.str_version = "1.2.0-beta01"
         self.version = version.parse(self.str_version)  # v1.2.0-beta01
@@ -112,18 +114,24 @@ class Global:
                 if isinstance(item, list):
                     radio_group = []
                     for option in item:
+                        option = ", ".join(option).replace("-", " ").replace("cursed human", "cursed")
+
                         radio_group.append(
                             sg.Radio(option, group_id=f"{k}_{number}_radio", key=f"{k}_{number}_{group_number}_radio",
-                                     default=not group_number == 0))
+                                     default=group_number == 0))
+
+                        group_number = group_number + 1
+
                     frame_layout.append(radio_group)
 
                     number = number + 1
-                    group_number = group_number + 1
                 else:
-                    frame_layout.append([sg.Text(item)])
+                    item: str = item
+
+                    frame_layout.append([sg.Text(item.replace("-", " ").replace("cursed human", "cursed"))])
 
                 group_number = 0
-                number = 0
+            number = 0
 
             layout.append(sg.Frame(title="", layout=frame_layout, visible=selected == k, key=k, border_width=0))
             frame_layout = []
@@ -209,6 +217,11 @@ if __name__ == '__main__':
         Opens a settings window where the user can change settings like player names and reset the game state.
         """
 
+        def change_selected_limiter(changing: str):
+            w1[States.last_selected].update(visible=False)
+            w1[changing].update(visible=True)
+            States.last_selected = changing
+
         w1 = sg.Window(title=trans["settings"]["settings"], layout=layout_settings())
 
         while True:
@@ -247,6 +260,10 @@ if __name__ == '__main__':
                     w[f"{i} {k} frame"](value_settings[f"{i + k} name"])
 
             # API settings
+
+            if event_settings == "dropie":
+                change_selected_limiter(value_settings["dropie"])
+
 
 
 
