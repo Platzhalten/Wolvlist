@@ -48,6 +48,7 @@ class Global:
         self.parsed_rotation = self.role_limiter()
 
         self.last_selected = "quick"
+        self.limiting = []
 
         # Version
         self.str_version = "1.2.0-beta01"
@@ -102,9 +103,12 @@ class Global:
 
         self.start_timer = time.time()
 
+    def role_string_parsing(self, string: str):
+        return string.replace("-", " ").removesuffix("human")
+
+
     def role_limiter(self, selected: str = "quick"):
         layout = []
-        # frame_title = f"Frame {input_list[0]}"
         frame_layout = []
         number = 0
         group_number = 0
@@ -114,7 +118,7 @@ class Global:
                 if isinstance(item, list):
                     radio_group = []
                     for option in item:
-                        option = ", ".join(option).replace("-", " ").replace("cursed human", "cursed")
+                        option = self.role_string_parsing(", ".join(option))
 
                         radio_group.append(
                             sg.Radio(option, group_id=f"{k}_{number}_radio", key=f"{k}_{number}_{group_number}_radio",
@@ -128,7 +132,7 @@ class Global:
                 else:
                     item: str = item
 
-                    frame_layout.append([sg.Text(item.replace("-", " ").replace("cursed human", "cursed"))])
+                    frame_layout.append([sg.Text(self.role_string_parsing(item))])
 
                 group_number = 0
             number = 0
@@ -165,19 +169,24 @@ team_dict = dict.fromkeys(range(1,17), team["unchecked"])
 role_path = role_images_finder(full_path=True)
 
 
-def get_image_path(image: str) -> str:
+def get_image_path(image: str) -> str | bool:
     """
     Returns the full path to an image based on the provided image name.
 
     :param image: The name of the image (e.g., "evil", "good", "unchecked").
-    :return: The full path to the image file.
+    :return: The full path to the image file. False if the file is not found
 
     """
-    if image in image_path:
+    if image.strip() in image_path:
         return image_path[image]
 
     else:
-        return role_path[image]
+        if image.strip() in role_path:
+            return role_path[image]
+
+        else:
+            settings.raise_error(f"The Image for {image} was not found\nPlease check if the file is in the right Place")
+            return False
 
 
 def get_unchecked() -> str:
@@ -264,8 +273,32 @@ if __name__ == '__main__':
             if event_settings == "dropie":
                 change_selected_limiter(value_settings["dropie"])
 
+            elif event_settings == "activator" and value_settings["activator"]:
+                number = 0
 
+                for i in States.rotation[value_settings["dropie"]]:
 
+                    if isinstance(i, str):
+                        States.limiting.append(States.role_string_parsing(i))
+                    elif isinstance(i, list):
+                        for k in range(len(i)):
+                            radio_key = f"{value_settings['dropie']}_{number}_{k}_radio"
+
+                            if radio_key in value_settings and value_settings[radio_key]:
+                                if len(i[k]) <= 2:
+                                    for y in i[k]:
+                                        States.limiting.append(States.role_string_parsing(y))
+                                else:
+                                    States.limiting.append(States.role_string_parsing(i[k]))
+
+                        number += 1
+
+                    else:
+                        print("WAS??")
+                w["role_picker"].update(values=States.limiting)
+
+            elif event_settings == "activator" and not value_settings["activator"]:
+                States.limiting = []
 
 
     while True:
@@ -288,7 +321,13 @@ if __name__ == '__main__':
             role_liste = []
 
             for i in role_images_finder():
-                if value_main["search_bar"] in i:
+                i: str = i
+                if States.limiting:
+                    if i in States.limiting and value_main["search_bar"] in i:
+                        print(i)
+                        role_liste.append(i)
+
+                elif value_main["search_bar"] in i:
                     role_liste.append(i)
 
                 w["role_picker"].update(role_liste)
@@ -319,14 +358,16 @@ if __name__ == '__main__':
 
 
             if set_value:
-                w[event_main].update(image_source=get_image_path(image=set_value))
+                image = get_image_path(image=set_value)
 
-                event_main = event_main.split(" ")
+                if image:
+                    w[event_main].update(image_source=image)
 
-                event_main: int = int(event_main[0]) + int(event_main[1])
+                    event_main = event_main.split(" ")
 
-                team_dict[event_main] = set_value
+                    event_main: int = int(event_main[0]) + int(event_main[1])
 
-                w["info left"](get_unchecked())
-                set_value = ""
+                    team_dict[event_main] = set_value
 
+                    w["info left"](get_unchecked())
+                    set_value = ""

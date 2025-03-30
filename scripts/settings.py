@@ -138,16 +138,34 @@ def check_for_file(path: str, leave: bool = True) -> bool:
         if not leave:
             return False
 
-        error_message = (f"The File or Directory {path} is missing.\n"
+        raise_error(error_message=f"The File or Directory {path} is missing.\n"
                          f"You need one to run the Program you can find one on the Github of this Projekt: https://github.com/Platzhalten/Wolvlist/\n"
-                         f"Then place it in the same place like the main.py\n")
-
-        if leave:
-            error_message = error_message + f"The Program is exiting now"
-
-            sg.popup_error(error_message)
-            exit()
-        else:
-            sg.popup_error(error_message)
+                                  f"Then place it in the same place like the main.py", leave=leave == True,
+                    ask_to_leave=leave == False)
 
         return False
+
+
+def raise_error(error_message: str = None, leave: bool = False, ask_to_leave: bool = False) -> bool | None:
+    """
+    Creates a popup to notify a user of an error. when leave and ask_to_leave are False only a popup is shown
+    :param error_message: The Main text
+    :param leave: If the program should exit
+    :param ask_to_leave: Ask the user if he wants to stop the Program
+    :return: if the user wants to proceed True (only when ask_to_leave is True) otherwise its always None
+    """
+
+    if leave:
+        sg.popup_error(error_message + "\nThe Program is exiting now", title="ERROR")
+        exit()
+
+    elif ask_to_leave:
+        yes_no = sg.popup_yes_no(error_message + "\n\nDo you want to proceed\nThis could cause Problems", title="ERROR")
+
+        if yes_no == "No":
+            exit()
+
+        return True
+
+    else:
+        sg.popup_ok(error_message, title="ERROR")

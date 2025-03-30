@@ -44,7 +44,7 @@ def layout() -> list:
 
     # Adding the box for selecting the role
     liste.append([sg.Frame(title="", layout=adding_list, element_justification="center"),
-                  sg.Listbox(role_images_finder(), size=(25, 4), key="role_picker")])
+                  sg.Listbox(values=role_images_finder(), size=(25, 4), key="role_picker")])
 
     # The remaining people bar
     liste.append([sg.Input(size=71, key="info left", default_text=get_unchecked())])
@@ -136,7 +136,9 @@ def layout_settings() -> list:
 
     role_selection = sg.Frame(title=set_api["limit_role"],
                               layout=[[sg.DropDown(games, default_value=games[0], disabled=bool(api_key) == 0,
-                                                   key="dropie", enable_events=True)],
+                                                   key="dropie", enable_events=True),
+                                       sg.Checkbox(text=set_api["use_role_rotation"], key="activator",
+                                                   enable_events=True)],
                                       role_list])
 
 
