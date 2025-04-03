@@ -45,9 +45,9 @@ class Global:
 
         # rotation
         self.rotation = settings.get_setting("config.json", "rotation")
+        self.last_selected = "quick"
         self.parsed_rotation = self.role_limiter()
 
-        self.last_selected = "quick"
         self.limiting = []
 
         # Version
@@ -106,12 +106,14 @@ class Global:
     def role_string_parsing(self, string: str):
         return string.replace("-", " ").removesuffix("human")
 
-
-    def role_limiter(self, selected: str = "quick"):
+    def role_limiter(self, selected: str = None):
         layout = []
         frame_layout = []
         number = 0
         group_number = 0
+        if selected is None:
+            selected = self.last_selected
+
 
         for k in self.rotation.keys():
             for item in self.rotation[k]:
@@ -293,8 +295,6 @@ if __name__ == '__main__':
 
                         number += 1
 
-                    else:
-                        print("WAS??")
                 w["role_picker"].update(values=States.limiting)
 
             elif event_settings == "activator" and not value_settings["activator"]:
@@ -320,15 +320,15 @@ if __name__ == '__main__':
         elif event_main == "search_bar":
             role_liste = []
 
-            for i in role_images_finder():
-                i: str = i
-                if States.limiting:
-                    if i in States.limiting and value_main["search_bar"] in i:
-                        print(i)
+            if States.limiting:
+                for i in States.limiting:
+                    if value_main["search_bar"] in i and i not in role_liste:
                         role_liste.append(i)
 
-                elif value_main["search_bar"] in i:
-                    role_liste.append(i)
+            else:
+                for i in role_images_finder():
+                    if value_main["search_bar"] in i:
+                        role_liste.append(i)
 
                 w["role_picker"].update(role_liste)
 

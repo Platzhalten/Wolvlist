@@ -135,12 +135,11 @@ def layout_settings() -> list:
 
 
     role_selection = sg.Frame(title=set_api["limit_role"],
-                              layout=[[sg.DropDown(games, default_value=games[0], disabled=bool(api_key) == 0,
-                                                   key="dropie", enable_events=True),
+                              layout=[[sg.DropDown(games, default_value=States.last_selected,
+                                                   disabled=bool(api_key) == 0, key="dropie", enable_events=True),
                                        sg.Checkbox(text=set_api["use_role_rotation"], key="activator",
                                                    enable_events=True)],
                                       role_list])
-
 
     return [
         [sg.TabGroup(layout=[[sg.Tab(title=set_trans["generel"], layout=[[name_layout], [game_layout, reset_layout]]),
