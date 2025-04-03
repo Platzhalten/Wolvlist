@@ -32,11 +32,11 @@ then just run the main.py file
 > The pictures were taken under Linux.
 > May vary slightly depending on the operating system.
 
-First time Opening         |  filled out board
-:-------------------------:|:-------------------------:
-![image](https://github.com/user-attachments/assets/282260bd-5e91-4790-b4de-b12adf6f54cb "First time Opening") | ![image](https://github.com/user-attachments/assets/396e7b9b-8c37-448f-8b9f-7d0def1143ce "filled out board")
-**Settings**
-![image](https://github.com/user-attachments/assets/3cd9e711-ac17-441c-95af-e28a3ab8c7bc)
+|                                               First time Opening                                               |                                               filled out board                                               |
+|:--------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------:|
+| ![image](https://github.com/user-attachments/assets/282260bd-5e91-4790-b4de-b12adf6f54cb "First time Opening") | ![image](https://github.com/user-attachments/assets/396e7b9b-8c37-448f-8b9f-7d0def1143ce "filled out board") |
+|                                                  **Settings**                                                  |
+|           ![image](https://github.com/user-attachments/assets/3cd9e711-ac17-441c-95af-e28a3ab8c7bc)            |
 
 
 

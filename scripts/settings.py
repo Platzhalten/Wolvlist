@@ -128,7 +128,7 @@ def check_for_file(path: str, leave: bool = True) -> bool:
     """
     Checks if a file or directory exists. A popup is created if the file or directory does not exist, informing the user.
     :param path: The path to check.
-    :param leave: Should the program exit if the path is not valid. No popup is show when False
+    :param leave: Should the program exit if the path is not valid. If False the User get asked if he wants to proceed.
     :return: True if the Path exist, False otherwise
     """
     if os.path.exists(path):
