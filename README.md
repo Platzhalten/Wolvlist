@@ -1,9 +1,9 @@
 # Wolvlist
 
-![GitHub commits since latest release](https://img.shields.io/github/commits-since/Platzhalten/wolvlist/latest)
-![GitHub License](https://img.shields.io/github/license/Platzhalten/Wolvlist)
 ![GitHub Release](https://img.shields.io/github/v/release/platzhalten/wolvlist?display_name=release)
-![GitHub Release](https://img.shields.io/github/v/release/platzhalten/wolvlist?include_prereleases&display_name=release&label=latest%20beta)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/platzhalten/wolvlist/total)
+![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/platzhalten/wolvlist/latest/total)
+
 
 > [!Important]
 > this project is not related, supported or affiliated by Wolvesville
