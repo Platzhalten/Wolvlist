@@ -5,6 +5,10 @@
 ![GitHub Release](https://img.shields.io/github/v/release/platzhalten/wolvlist?display_name=release)
 ![GitHub Release](https://img.shields.io/github/v/release/platzhalten/wolvlist?include_prereleases&display_name=release&label=latest%20beta)
 
+> [!Important]
+> this project is not related, supported or affiliated by Wolvesville
+
+
 ## how to run 
 
 double click to mark someone as dead
@@ -59,5 +63,5 @@ I only add german back when I am finished with the Program
 ## branches 
 There are usually 2 branches, the Master and the dev branch. 
 
-The Master branch should always work, the dev branch should also work, but with more errors and unfinished features
+The Master branch should always work, the dev branch should also work, but with unfinished features and errors
 
