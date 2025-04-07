@@ -66,7 +66,8 @@
             "api_key_safe": "safe",
             "api_setting": "API Settings",
             "limit_role": "Role rotation",
-            "use_role_rotation": "activate"
+            "use_role_rotation": "activate",
+            "update_rotation": "update Data"
          }
       },
       "player": "Player",

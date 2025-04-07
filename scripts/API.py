@@ -3,13 +3,16 @@
 #  full license at ../LICENSE
 
 import requests
-import settings
-
+from scripts import settings
 class Api:
 
     def __init__(self, API_key=None):
         if API_key is None:
             self.API_key = settings.get_setting("config.json", "api_key")
+
+            if self.API_key == 0 or self.API_key is None:
+                raise ValueError("No API-key given in the Arguments and in the config file")
+
         else:
             self.API_key = API_key
 
@@ -27,18 +30,18 @@ class Api:
             self.rotation = req.json()
             self.rotation_parser()
 
-            if not settings.get_setting("../config.json", "debug_mode"):
-                settings.set_settings("../config.json", "api_key", self.API_key)
-                settings.set_settings("../config.json", "api_key_is_valid", True)
+            if not settings.get_setting("config.json", "debug_mode"):
+                settings.set_settings("config.json", "api_key", self.API_key)
+                settings.set_settings("config.json", "api_key_is_valid", True)
 
         return req.status_code == 200
 
 
     def rotation_parser(self):
 
-        if not settings.get_setting("../config.json", "debug_mode"):
-            if not settings.get_setting("../config.json", "api_key_is_valid"):
-                return False
+        if not settings.get_setting("config.json", "debug_mode") and not settings.get_setting("config.json",
+                                                                                              "api_key_is_valid"):
+            return False
 
         role_list = {}
 
@@ -95,13 +98,13 @@ class Api:
 
         self.parsed_rotation = role_list
 
-        settings.set_settings("../config.json", "rotation", self.parsed_rotation)
+        settings.set_settings("config.json", "rotation", self.parsed_rotation)
 
         return role_list
 
     def update_rotation(self):
 
-        if not settings.get_setting("../config.json", "api_key_is_valid"):
+        if not settings.get_setting("config.json", "api_key_is_valid"):
             return False
 
         req = requests.request(method="Get", url="https://api.wolvesville.com/roleRotations",
@@ -114,6 +117,5 @@ class Api:
         else:
             return False
 
-key = Api("a very nice API key")
-
-print(key.parsed_rotation)
+    def __bool__(self):
+        return self.API_key_is_valid

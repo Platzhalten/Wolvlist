@@ -1,6 +1,6 @@
 #  Copyright (C) 2025 Eric M.
 #
-#   The Complet License is in LICENSE
+#   The Complete License is in LICENSE
 #
 #   This program is free software: you can redistribute it and/or modify
 #      it under the terms of the GNU General Public License as published by
@@ -37,7 +37,10 @@ class Global:
 
     def __init__(self):
         # API
-        self.request_available = None
+        self.API = None
+        self.request_available = self._requests_available()
+
+        self.enable_api(settings.get_setting("config.json", "api_key"))
 
         # Double Click
         self.time_is_running = False
@@ -79,16 +82,41 @@ class Global:
         self.checked_version = True
         return test_version == self.version, test_version > self.version
 
-    def _requests_available(self) -> None:
+    def _requests_available(self) -> bool:
 
         try:
             import requests
 
         except ImportError:
-            self.request_available = False
+            return False
 
         finally:
-            self.request_available = True
+            self.API_available = False
+            self.API_key_available = False
+
+            if settings.check_for_file("./scripts/API.py", leave=False, do_not_ask=True):
+                self.API_available = True
+
+                if settings.get_setting("config.json", "api_key_is_valid"):
+                    self.API_key_available = True
+
+            return True
+
+    def enable_api(self, key: str):
+        if self.API_available and self.request_available:
+            from scripts import API
+
+            if not key:
+                return False
+
+            self.API = API.Api(key.removesuffix("\n").strip())
+
+            if not bool(self.API):
+                self.API = None
+                return False
+
+        return True
+
 
     def double_click(self):
         if not self.time_is_running:
@@ -242,7 +270,7 @@ if __name__ == '__main__':
 
             if event_settings is None:
                 w1.close()
-                return
+                return False
 
             # General Settings
             elif event_settings == "language":
@@ -275,6 +303,13 @@ if __name__ == '__main__':
             if event_settings == "dropie":
                 change_selected_limiter(value_settings["dropie"])
 
+            elif event_settings == "api_save":
+                api = States.enable_api(value_settings["API_key"])
+
+                if api:
+                    w1["dropie"].update(disabled=False)
+                    w1["activator"].update(disabled=False)
+
             elif event_settings == "activator" and value_settings["activator"]:
                 number = 0
 
@@ -299,6 +334,14 @@ if __name__ == '__main__':
 
             elif event_settings == "activator" and not value_settings["activator"]:
                 States.limiting = []
+                w["role_picker"].update(role_images_finder())
+
+            elif event_settings == "update":
+                States.API.update_rotation()
+                w1.close()
+
+                return True
+
 
 
     while True:
@@ -315,7 +358,8 @@ if __name__ == '__main__':
             info_popup()
 
         elif event_main == trans["settings"]["settings"]:
-            settings_win()
+            if settings_win():
+                settings_win()
 
         elif event_main == "search_bar":
             role_liste = []

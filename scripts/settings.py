@@ -7,7 +7,7 @@ import os
 import FreeSimpleGUI as sg
 
 
-def get_setting(path: str, setting: str = None) -> dict:
+def get_setting(path: str, setting: str = None) -> dict | str:
     """
     Reads the JSON file at the path and returns parts/the entire content.
     :param path: The path to the JSON file.
@@ -124,29 +124,31 @@ def change_selected_lang(language: str) -> None:
         set_settings("config.json", setting="language", value=language)
 
 
-def check_for_file(path: str, leave: bool = True) -> bool:
+def check_for_file(path: str, leave: bool = True, do_not_ask: bool = False) -> bool:
     """
     Checks if a file or directory exists. A popup is created if the file or directory does not exist, informing the user.
     :param path: The path to check.
     :param leave: Should the program exit if the path is not valid. If False the User get asked if he wants to proceed.
+    :param do_not_ask: if leave is False do not ask the User if he wants to proceed
     :return: True if the Path exist, False otherwise
     """
     if os.path.exists(path):
         return True
 
     else:
-        if not leave:
+        if do_not_ask:
             return False
 
         raise_error(error_message=f"The File or Directory {path} is missing.\n"
                          f"You need one to run the Program you can find one on the Github of this Projekt: https://github.com/Platzhalten/Wolvlist/\n"
-                                  f"Then place it in the same place like the main.py", leave=leave == True,
+                                  f"Then place it in the same place like the main.py",
+                    leave=leave == True,
                     ask_to_leave=leave == False)
 
         return False
 
 
-def raise_error(error_message: str = None, leave: bool = False, ask_to_leave: bool = False) -> bool | None:
+def raise_error(error_message: str, leave: bool = False, ask_to_leave: bool = False) -> bool | None:
     """
     Creates a popup to notify a user of an error. when leave and ask_to_leave are False only a popup is shown
     :param error_message: The Main text

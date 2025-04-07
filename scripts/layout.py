@@ -153,7 +153,7 @@ def info_popup() -> None:
     """
     Opens a popup-like window with general information about the program (e.g., version, license, source code location, and more).
     """
-    layout = [[sg.T("This Program is not related or affiliated with Wolvesville")],
+    layout = [[sg.T("This Program is not related with Wolvesville")],
               [sg.T("This Program is licensed under the GNU GPL v3")],
               [sg.Button("Read the Full License", key="full")],
               [sg.T("The Source Code can be found on GitHub")],
