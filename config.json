@@ -10,5 +10,10 @@
       "unchecked": "images/generic/unchecked.png",
       "unknown": "images/generic/unknown.png"
     }
-  }
+  },
+   "rotation": {
+      "quick": [
+         "NO API KEY"
+      ]
+   }
 }

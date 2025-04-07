@@ -31,7 +31,7 @@
       "left": "\u00fcbrig"
    },
    "en": {
-      "version": "v1.1.0-beta01",
+      "version": "v1.2.0-beta01",
       "language_full_name": "english",
       "team_selector": {
          "good": "good",
@@ -65,7 +65,9 @@
             "api_key": "API key",
             "api_key_safe": "safe",
             "api_setting": "API Settings",
-            "limit_role": "Filter Roles"
+            "limit_role": "Role rotation",
+            "use_role_rotation": "activate",
+            "update_rotation": "update Data"
          }
       },
       "player": "Player",

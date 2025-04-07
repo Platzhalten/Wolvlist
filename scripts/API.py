@@ -1,15 +1,18 @@
 #  Copyright (c) 2025.  Eric M.
 #
 #  full license at ../LICENSE
+
 import requests
-import settings
-
-
+from scripts import settings
 class Api:
 
     def __init__(self, API_key=None):
         if API_key is None:
             self.API_key = settings.get_setting("config.json", "api_key")
+
+            if self.API_key == 0 or self.API_key is None:
+                raise ValueError("No API-key given in the Arguments and in the config file")
+
         else:
             self.API_key = API_key
 
@@ -25,54 +28,94 @@ class Api:
 
         if req.status_code == 200:
             self.rotation = req.json()
-
             self.rotation_parser()
+
+            if not settings.get_setting("config.json", "debug_mode"):
+                settings.set_settings("config.json", "api_key", self.API_key)
+                settings.set_settings("config.json", "api_key_is_valid", True)
 
         return req.status_code == 200
 
+
     def rotation_parser(self):
-        if self.rotation is None:
+
+        if not settings.get_setting("config.json", "debug_mode") and not settings.get_setting("config.json",
+                                                                                              "api_key_is_valid"):
             return False
 
-        print(self.rotation)
-        print(self.rotation[0]["roleRotations"])
+        role_list = {}
 
-        f = self.rotation[0]["roleRotations"]["roles"]
+        for game_mode in self.rotation:
+            game_mode_name = game_mode['gameMode']
+            role_rotations = game_mode['roleRotations']
+            num_rotations = len(role_rotations)
 
-        role_list = []
-
-        for i in f:
-            if len(i) >= 2:
-                role_list.append([])
-                for k in i:
-                    role_list[-1].append(k["role"].replace("-", " "))
-
+            if num_rotations == 1:
+                role_rotation = role_rotations[0]
+                roles_data = role_rotation['roleRotation']['roles']
+                processed_roles = []
+                for role_group in roles_data:
+                    if len(role_group) == 1:
+                        role_dict = role_group[0]
+                        if 'role' in role_dict:
+                            processed_roles.append(role_dict['role'])
+                        elif 'roles' in role_dict:
+                            processed_roles.append(role_dict['roles'])
+                    else:
+                        sublist = []
+                        for role_dict in role_group:
+                            if 'role' in role_dict:
+                                sublist.append([role_dict['role']])
+                            elif 'roles' in role_dict:
+                                sublist.append(role_dict['roles'])
+                        processed_roles.append(sublist)
+                role_list[game_mode_name] = processed_roles
             else:
-                role_list.append(i[0]["role"].replace("-", " "))
+                used_suffixes = []
+                for role_rotation in role_rotations:
+                    roles_data = role_rotation['roleRotation']['roles']
+                    processed_roles = []
+                    for role_group in roles_data:
+                        if len(role_group) == 1:
+                            role_dict = role_group[0]
+                            if 'role' in role_dict:
+                                processed_roles.append(role_dict['role'])
+                            elif 'roles' in role_dict:
+                                processed_roles.append(role_dict['roles'])
+                        else:
+                            sublist = []
+                            for role_dict in role_group:
+                                if 'role' in role_dict:
+                                    sublist.append([role_dict['role']])
+                                elif 'roles' in role_dict:
+                                    sublist.append(role_dict['roles'])
+                            processed_roles.append(sublist)
+
+                    used_suffixes.append(game_mode)
+                    suffex = used_suffixes.count(game_mode)
+
+                    role_list[f"{game_mode_name.replace("-", " ")} {suffex}"] = processed_roles
 
         self.parsed_rotation = role_list
 
-        return self.parsed_rotation
+        settings.set_settings("config.json", "rotation", self.parsed_rotation)
 
+        return role_list
 
-key = Api("a very nice API key")
+    def update_rotation(self):
 
-print(key.parsed_rotation)
+        if not settings.get_setting("config.json", "api_key_is_valid"):
+            return False
 
-test = [{'roleRotation':
-             {'id': '2a6690ec-4843-4223-bbc4-d42fd0d7ac54', 'roles':
-                 [[{'probability': 1.0, 'role': 'aura-seer'}],
-                  [{'probability': 1.0, 'role': 'medium'}],
-                  [{'probability': 1.0, 'role': 'jailer'}],
-                  [{'probability': 0.5, 'role': 'party-wolf'}, {'probability': 0.5, 'role': 'junior-werewolf'}],
-                  [{'probability': 1.0, 'role': 'doctor'}],
-                  [{'probability': 1.0, 'role': 'alpha-werewolf'}],
-                  [{'probability': 1.0, 'role': 'detective'}],
-                  [{'probability': 0.5, 'role': 'fool'}, {'probability': 0.5, 'role': 'headhunter'}],
-                  [{'probability': 1.0, 'role': 'bodyguard'}],
-                  [{'probability': 1.0, 'role': 'witch'}],
-                  [{'probability': 1.0, 'role': 'shadow-wolf'}],
-                  [{'probability': 1.0, 'role': 'cursed-human'}],
-                  [{'probability': 0.5, 'role': 'corruptor'}, {'probability': 0.5, 'role': 'bandit'}],
-                  [{'probability': 1.0, 'role': 'mayor'}], [{'probability': 1.0, 'role': 'wolf-seer'}],
-                  [{'probability': 1.0, 'role': 'loudmouth'}]]}, 'probability': 1.0}]
+        req = requests.request(method="Get", url="https://api.wolvesville.com/roleRotations",
+                               headers={"Authorization": f"Bot {self.API_key}"})
+
+        if req.status_code == 200:
+            self.rotation = req.json()
+            self.rotation_parser()
+
+        else:
+            return False
+
+    def __bool__(self):
+        return self.API_key_is_valid

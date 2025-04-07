@@ -1,6 +1,6 @@
 #  Copyright (C) 2025 Eric M.
 #
-#   The Complet License is in LICENSE
+#   The Complete License is in LICENSE
 #
 #   This program is free software: you can redistribute it and/or modify
 #      it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 import FreeSimpleGUI as sg
 import time
-
+from packaging import version
 
 from scripts import settings
 from scripts.layout import layout, info_popup, role_images_finder, layout_settings
@@ -37,73 +37,86 @@ class Global:
 
     def __init__(self):
         # API
-        self.request_available = None
+        self.API = None
+        self.request_available = self._requests_available()
+
+        self.enable_api(settings.get_setting("config.json", "api_key"))
 
         # Double Click
         self.last_click_button = None
         self.last_click_time = 0
 
+        # rotation
+        self.rotation = settings.get_setting("config.json", "rotation")
+        self.last_selected = "quick"
+        self.parsed_rotation = self.role_limiter()
+
+        self.limiting = []
+
         # Version
-        self.version = ["1", "1", "0", "beta01"]  #v1.1.0-beta01
+        self.str_version = "1.2.0-beta01"
+        self.version = version.parse(self.str_version)  # v1.2.0-beta01
 
+        self.checked_version = False
 
-    def compare_version(self, version: str, file_name: str) -> bool | None:
+    def compare_version(self, test_version: str, file_name: str) -> tuple[bool, bool]:
         """
         Checks if the program Version matches the given Version
         :param file_name: Is used in the popup when the given Version is newer than the program Version
-        :param version: The Version to compare. Assumes the Format: vX.X.X (v1.1.0) or vX.X.X-X (v1.1.0-beta01)
-        :return: If the Version matches. None if the User cancels
+        :param test_version: The Version to compare. Assumes the Format: vX.X.X (v1.1.0) or vX.X.X-X (v1.1.0-beta01)
+        :return: If the Version matches.
         """
+        if self.checked_version:
+            return True, True
 
-        def parse_part(part: str) -> tuple[int, int | str]:
-            if 'alpha' in part:
-                num = part.replace('alpha', '')
-                return 0, int(num) if num.isdigit() else 0
-            if 'beta' in part:
-                num = part.replace('beta', '')
-                return 1, int(num) if num.isdigit() else 0
-            try:
-                return 2, int(part)
-            except ValueError:
-                return 3, part
+        test_str_version = test_version
+        test_version = version.parse(test_version)
 
-        version_parts = version.replace("v", "").replace("-", ".").split(".")
-        processed_self = [parse_part(p) for p in self.version]
-        processed_ver = [parse_part(p) for p in version_parts]
-
-        later_version = False
-        max_length = max(len(processed_self), len(processed_ver))
-        for i in range(max_length):
-            self_version = processed_self[i] if i < len(processed_self) else (2, 0)
-            version = processed_ver[i] if i < len(processed_ver) else (2, 0)
-
-            if self_version > version:
-                return False
-            if self_version < version:
-                later_version = True
-
-        if later_version:
-            yes_no = sg.popup_yes_no(f"The Version of the {file_name} v{'.'.join(version_parts)} is newer than "
-                                     f"the program version (v{'.'.join(self.version)})\nThis could cause Problems\nTry anyways?")
+        if test_version > self.version:
+            yes_no = sg.popup_yes_no(f"The Version of the {file_name} v{test_str_version} is newer than "
+                                     f"the program version (v{self.str_version})\nThis could cause Problems\nTry anyways?")
 
             if yes_no == "Yes":
-                return True
+                test_version = self.version
 
-            else:
-                return None
+        self.checked_version = True
+        return test_version == self.version, test_version > self.version
 
-        return True
-
-    def _requests_available(self) -> None:
+    def _requests_available(self) -> bool:
 
         try:
             import requests
 
         except ImportError:
-            self.request_available = False
+            return False
 
         finally:
-            self.request_available = True
+            self.API_available = False
+            self.API_key_available = False
+
+            if settings.check_for_file("./scripts/API.py", leave=False, do_not_ask=True):
+                self.API_available = True
+
+                if settings.get_setting("config.json", "api_key_is_valid"):
+                    self.API_key_available = True
+
+            return True
+
+    def enable_api(self, key: str):
+        if self.API_available and self.request_available:
+            from scripts import API
+
+            if not key:
+                return False
+
+            self.API = API.Api(key.removesuffix("\n").strip())
+
+            if not bool(self.API):
+                self.API = None
+                return False
+
+        return True
+
 
     def double_click(self, button):
         current_time = time.time()
@@ -116,8 +129,49 @@ class Global:
             self.last_click_time = current_time
             return False
 
+    def role_string_parsing(self, string: str):
+        return string.replace("-", " ").removesuffix("human")
+
+    def role_limiter(self, selected: str = None):
+        layout = []
+        frame_layout = []
+        number = 0
+        group_number = 0
+        if selected is None:
+            selected = self.last_selected
+
+
+        for k in self.rotation.keys():
+            for item in self.rotation[k]:
+                if isinstance(item, list):
+                    radio_group = []
+                    for option in item:
+                        option = self.role_string_parsing(", ".join(option))
+
+                        radio_group.append(
+                            sg.Radio(option, group_id=f"{k}_{number}_radio", key=f"{k}_{number}_{group_number}_radio",
+                                     default=group_number == 0))
+
+                        group_number = group_number + 1
+
+                    frame_layout.append(radio_group)
+
+                    number = number + 1
+                else:
+                    item: str = item
+
+                    frame_layout.append([sg.Text(self.role_string_parsing(item))])
+
+                group_number = 0
+            number = 0
+
+            layout.append(sg.Frame(title="", layout=frame_layout, visible=selected == k, key=k, border_width=0))
+            frame_layout = []
+
+        return layout
+
     def __str__(self):
-        return "v" + ".".join(self.version)
+        return self.str_version
 
 
 States = Global()
@@ -143,19 +197,24 @@ team_dict = dict.fromkeys(range(1,17), team["unchecked"])
 role_path = role_images_finder(full_path=True)
 
 
-def get_image_path(image: str) -> str:
+def get_image_path(image: str) -> str | bool:
     """
     Returns the full path to an image based on the provided image name.
 
     :param image: The name of the image (e.g., "evil", "good", "unchecked").
-    :return: The full path to the image file.
+    :return: The full path to the image file. False if the file is not found
 
     """
-    if image in image_path:
+    if image.strip() in image_path:
         return image_path[image]
 
     else:
-        return role_path[image]
+        if image.strip() in role_path:
+            return role_path[image]
+
+        else:
+            settings.raise_error(f"The Image for {image} was not found\nPlease check if the file is in the right Place")
+            return False
 
 
 def get_unchecked() -> str:
@@ -195,6 +254,11 @@ if __name__ == '__main__':
         Opens a settings window where the user can change settings like player names and reset the game state.
         """
 
+        def change_selected_limiter(changing: str):
+            w1[States.last_selected].update(visible=False)
+            w1[changing].update(visible=True)
+            States.last_selected = changing
+
         w1 = sg.Window(title=trans["settings"]["settings"], layout=layout_settings())
 
         while True:
@@ -204,7 +268,7 @@ if __name__ == '__main__':
 
             if event_settings is None:
                 w1.close()
-                return
+                return False
 
             # General Settings
             elif event_settings == "language":
@@ -234,6 +298,47 @@ if __name__ == '__main__':
 
             # API settings
 
+            if event_settings == "dropie":
+                change_selected_limiter(value_settings["dropie"])
+
+            elif event_settings == "api_save":
+                api = States.enable_api(value_settings["API_key"])
+
+                if api:
+                    w1["dropie"].update(disabled=False)
+                    w1["activator"].update(disabled=False)
+
+            elif event_settings == "activator" and value_settings["activator"]:
+                number = 0
+
+                for i in States.rotation[value_settings["dropie"]]:
+
+                    if isinstance(i, str):
+                        States.limiting.append(States.role_string_parsing(i))
+                    elif isinstance(i, list):
+                        for k in range(len(i)):
+                            radio_key = f"{value_settings['dropie']}_{number}_{k}_radio"
+
+                            if radio_key in value_settings and value_settings[radio_key]:
+                                if len(i[k]) <= 2:
+                                    for y in i[k]:
+                                        States.limiting.append(States.role_string_parsing(y))
+                                else:
+                                    States.limiting.append(States.role_string_parsing(i[k]))
+
+                        number += 1
+
+                w["role_picker"].update(values=States.limiting)
+
+            elif event_settings == "activator" and not value_settings["activator"]:
+                States.limiting = []
+                w["role_picker"].update(role_images_finder())
+
+            elif event_settings == "update":
+                States.API.update_rotation()
+                w1.close()
+
+                return True
 
 
 
@@ -251,14 +356,21 @@ if __name__ == '__main__':
             info_popup()
 
         elif event_main == trans["settings"]["settings"]:
-            settings_win()
+            if settings_win():
+                settings_win()
 
         elif event_main == "search_bar":
             role_liste = []
 
-            for i in role_images_finder():
-                if value_main["search_bar"] in i:
-                    role_liste.append(i)
+            if States.limiting:
+                for i in States.limiting:
+                    if value_main["search_bar"] in i and i not in role_liste:
+                        role_liste.append(i)
+
+            else:
+                for i in role_images_finder():
+                    if value_main["search_bar"] in i:
+                        role_liste.append(i)
 
                 w["role_picker"].update(role_liste)
 
@@ -288,14 +400,16 @@ if __name__ == '__main__':
 
 
             if set_value:
-                w[event_main].update(image_source=get_image_path(image=set_value))
+                image = get_image_path(image=set_value)
 
-                event_main = event_main.split(" ")
+                if image:
+                    w[event_main].update(image_source=image)
 
-                event_main: int = int(event_main[0]) + int(event_main[1])
+                    event_main = event_main.split(" ")
 
-                team_dict[event_main] = set_value
+                    event_main: int = int(event_main[0]) + int(event_main[1])
 
-                w["info left"](get_unchecked())
-                set_value = ""
+                    team_dict[event_main] = set_value
 
+                    w["info left"](get_unchecked())
+                    set_value = ""
