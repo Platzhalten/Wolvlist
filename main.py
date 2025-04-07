@@ -43,8 +43,8 @@ class Global:
         self.enable_api(settings.get_setting("config.json", "api_key"))
 
         # Double Click
-        self.time_is_running = False
-        self.start_timer = "ERROR"
+        self.last_click_button = None
+        self.last_click_time = 0
 
         # rotation
         self.rotation = settings.get_setting("config.json", "rotation")
@@ -118,18 +118,16 @@ class Global:
         return True
 
 
-    def double_click(self):
-        if not self.time_is_running:
-            self.start_timer = time.time()
-            self.time_is_running = True
-
-        elif self.time_is_running:
-            end = time.time()
-            self.time_is_running = False
-
-            return end - self.start_timer <= 0.2
-
-        self.start_timer = time.time()
+    def double_click(self, button):
+        current_time = time.time()
+        if self.last_click_button == button and (current_time - self.last_click_time) <= 0.2:
+            self.last_click_button = None
+            self.last_click_time = 0
+            return True
+        else:
+            self.last_click_button = button
+            self.last_click_time = current_time
+            return False
 
     def role_string_parsing(self, string: str):
         return string.replace("-", " ").removesuffix("human")
@@ -176,8 +174,6 @@ class Global:
         return self.str_version
 
 
-
-
 States = Global()
 
 
@@ -185,12 +181,14 @@ trans = settings.get_language()
 team = trans["team_selector"]
 role = trans["roles"]
 
+generic_path = settings.get_setting("config.json")["paths"]["generic"]
+
 image_path = {
-    team["evil"]: "images/generic/evil.png",
-    team["good"]: "images/generic/good.png",
-    team["unchecked"]: "images/generic/unchecked.png",
-    team["unknown"]: "images/generic/unknown.png",
-    team["dead"]: "images/generic/dead.png",
+    team["evil"]: generic_path["evil"],  # default Value: images/generic/evil.png
+    team["good"]: generic_path["good"],  # default Value: images/generic/good.png
+    team["unchecked"]: generic_path["unchecked"],  # default Value: images/generic/unchecked.png
+    team["unknown"]: generic_path["unknown"],  # default Value: images/generic/unknown.png
+    team["dead"]: generic_path["dead"],  # default Value: images/generic/dead.png
 }
 
 # OPTION
@@ -380,7 +378,7 @@ if __name__ == '__main__':
         elif event_main[-3:] == "but":
             set_value = ""
 
-            double_click = States.double_click()
+            double_click = States.double_click(event_main)
 
             for i in choose_possibility:
                 if double_click:
