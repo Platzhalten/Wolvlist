@@ -27,7 +27,35 @@ You can download the latest versions [here](https://github.com/Platzhalten/Wolve
 Then unpack the tar.gz and run Wolvlist
 
 ### with Python
-Download [Python](https://www.python.org/) and FreeSimpleGUI (if you on Linux you may also need Tkinter). 
+<details>
+  
+  <summary>on Windows</summary>
+  
+  1. Download [Python](https://www.python.org/)
+  2. Download FreeSimpleGUI with the command `py -m pip install freesimplegui`
+  3. (optional) For some features you may also need request
+
+      Install it with: `py -m pip install request`
+
+  4. run the main.py file
+
+</details>
+
+<details>
+  
+  <summary>on Linux/MacOS</summary>
+  
+  1. Download [Python](https://www.python.org/)
+  2. Download FreeSimpleGUI with the command `python3 -m pip install freesimplegui`
+  3. You may also need to install tkinter with your package manager
+  4. (optional) For some features you may also need request
+
+      Install it with: `python3 -m pip install request`
+  
+  5. run the main.py file
+
+</details>
+
 
 then just run the main.py file
 
