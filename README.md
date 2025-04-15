@@ -57,8 +57,6 @@ Then unpack the tar.gz and run Wolvlist
 </details>
 
 
-then just run the main.py file
-
 ## Screenshoots
 > [!Note]
 > The pictures were taken under Linux.
