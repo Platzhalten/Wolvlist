@@ -38,6 +38,10 @@ class Global:
     def __init__(self):
         # API
         self.API = None
+
+        self.API_available = False
+        self.API_key_available = False
+
         self.request_available = self._requests_available()
 
         self.enable_api(settings.get_setting("config.json", "api_key"))
@@ -90,17 +94,13 @@ class Global:
         except ImportError:
             return False
 
-        finally:
-            self.API_available = False
-            self.API_key_available = False
+        if settings.check_for_file("./scripts/API.py", leave=False, do_not_ask=True):
+            self.API_available = True
 
-            if settings.check_for_file("./scripts/API.py", leave=False, do_not_ask=True):
-                self.API_available = True
+            if settings.get_setting("config.json", "api_key_is_valid"):
+                self.API_key_available = True
 
-                if settings.get_setting("config.json", "api_key_is_valid"):
-                    self.API_key_available = True
-
-            return True
+        return True
 
     def enable_api(self, key: str):
         if self.API_available and self.request_available:
@@ -336,10 +336,26 @@ if __name__ == '__main__':
 
             elif event_settings == "update":
                 States.API.update_rotation()
+                States.role_limiter()
                 w1.close()
 
                 return True
 
+
+    def searcher(search_list: list[str], filter: str) -> list[str]:
+        """
+
+        :param search_list: The list to search
+        :param filter: for what to search
+        :return: a list that contains every item from search_list that contain the filter
+        """
+        final_list = []
+
+        for i in search_list:
+            if filter in i:
+                final_list.append(i)
+
+        return final_list
 
 
     while True:
@@ -356,23 +372,19 @@ if __name__ == '__main__':
             info_popup()
 
         elif event_main == trans["settings"]["settings"]:
-            if settings_win():
+            while settings_win():
                 settings_win()
 
         elif event_main == "search_bar":
-            role_liste = []
+            role_list = []
 
             if States.limiting:
-                for i in States.limiting:
-                    if value_main["search_bar"] in i and i not in role_liste:
-                        role_liste.append(i)
+                role_list = searcher(search_list=States.limiting, filter=value_main["search_bar"])
 
             else:
-                for i in role_images_finder():
-                    if value_main["search_bar"] in i:
-                        role_liste.append(i)
+                role_list = searcher(search_list=role_images_finder(), filter=value_main["search_bar"])
 
-                w["role_picker"].update(role_liste)
+            w["role_picker"].update(role_list)
 
 
         elif event_main[-3:] == "but":

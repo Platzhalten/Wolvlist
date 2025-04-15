@@ -127,7 +127,7 @@ def layout_settings() -> list:
 
     api_key_layout = sg.Frame(title=set_api["api_key"],
                               layout=[[sg.Input(key="API_key"),
-                                       sg.Button(set_api["api_key_safe"])]])
+                                       sg.Button(set_api["api_key_safe"], key="api_save")]])
 
     games = list(rotation.keys())
 
@@ -138,7 +138,8 @@ def layout_settings() -> list:
                               layout=[[sg.DropDown(games, default_value=States.last_selected,
                                                    disabled=bool(api_key) == 0, key="dropie", enable_events=True),
                                        sg.Checkbox(text=set_api["use_role_rotation"], key="activator",
-                                                   enable_events=True)],
+                                                   enable_events=True),
+                                       sg.Button(button_text=set_api["update_rotation"], key="update")],
                                       role_list])
 
     return [
