@@ -44,58 +44,36 @@ class Api:
             return False
 
         role_list = {}
+        suffix_counter = {}
+
+        get_role_key = lambda d: "role" if "role" in d else "roles"
 
         for game_mode in self.rotation:
-            game_mode_name = game_mode['gameMode']
-            role_rotations = game_mode['roleRotations']
-            num_rotations = len(role_rotations)
+            mode_name = game_mode["gameMode"]
+            rotations = game_mode["roleRotations"]
 
-            if num_rotations == 1:
-                role_rotation = role_rotations[0]
-                roles_data = role_rotation['roleRotation']['roles']
-                processed_roles = []
+            # Lambda-Funktion als Hilfsfunktion
+            get_role_key = lambda d: "role" if "role" in d else "roles"
+
+            for rotation in rotations:
+                processed = []
+                roles_data = rotation["roleRotation"]["roles"]
+
                 for role_group in roles_data:
+                    # Verarbeitung einzelner und gruppierter Rollen
                     if len(role_group) == 1:
-                        role_dict = role_group[0]
-                        if 'role' in role_dict:
-                            processed_roles.append(role_dict['role'])
-                        elif 'roles' in role_dict:
-                            processed_roles.append(role_dict['roles'])
+                        processed.append(role_group[0][get_role_key(role_group[0])])
                     else:
-                        sublist = []
-                        for role_dict in role_group:
-                            if 'role' in role_dict:
-                                sublist.append([role_dict['role']])
-                            elif 'roles' in role_dict:
-                                sublist.append(role_dict['roles'])
-                        processed_roles.append(sublist)
-                role_list[game_mode_name] = processed_roles
-            else:
-                used_suffixes = []
-                for role_rotation in role_rotations:
-                    roles_data = role_rotation['roleRotation']['roles']
-                    processed_roles = []
-                    for role_group in roles_data:
-                        if len(role_group) == 1:
-                            role_dict = role_group[0]
-                            if 'role' in role_dict:
-                                processed_roles.append(role_dict['role'])
-                            elif 'roles' in role_dict:
-                                processed_roles.append(role_dict['roles'])
-                        else:
-                            sublist = []
-                            for role_dict in role_group:
-                                if 'role' in role_dict:
-                                    sublist.append([role_dict['role']])
-                                elif 'roles' in role_dict:
-                                    sublist.append(role_dict['roles'])
-                            processed_roles.append(sublist)
+                        group = [role[get_role_key(role)] for role in role_group]
+                        processed.append(group)
 
-                    used_suffixes.append(game_mode)
-                    suffex = used_suffixes.count(game_mode)
+                # Suffix-Logik für eindeutige Schlüssel
+                clean_name = mode_name.replace("-", " ")
+                suffix_counter.setdefault(clean_name, 0)
+                suffix_counter[clean_name] += 1
+                key = f"{clean_name} {suffix_counter[clean_name]}" if len(rotations) > 1 else clean_name
 
-                    role_list[f"{game_mode_name.replace("-", " ")} {suffex}"] = processed_roles
-
+                role_list[key] = processed
         self.parsed_rotation = role_list
 
         settings.set_settings("config.json", "rotation", self.parsed_rotation)

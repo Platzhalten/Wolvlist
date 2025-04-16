@@ -146,7 +146,10 @@ class Global:
                 if isinstance(item, list):
                     radio_group = []
                     for option in item:
-                        option = self.role_string_parsing(", ".join(option))
+                        if isinstance(option, str):
+                            option = self.role_string_parsing(option)
+                        else:
+                            option = self.role_string_parsing(", ".join(option))
 
                         radio_group.append(
                             sg.Radio(option, group_id=f"{k}_{number}_radio", key=f"{k}_{number}_{group_number}_radio",
