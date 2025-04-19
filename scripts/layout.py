@@ -31,8 +31,10 @@ def layout() -> list:
         for k in range(0, 4):
             liste[-1].append(
                 sg.Frame(title=f"{i + k}. {trans["player"]}", key=f"{i} {k} frame", element_justification="center",
-                         layout=[[sg.Button(image_source="images/generic/unchecked.png", key=f"{i} {k} but")],
-                                 [sg.Input(key=f"{i} {k} info", size=(14, None))]]))
+                         expand_y=True, expand_x=True,
+                         layout=[[sg.Button(image_source="images/generic/unchecked.png", key=f"{i} {k} but",
+                                            expand_y=True, expand_x=True)],
+                                 [sg.Input(key=f"{i} {k} info", size=(14, None), expand_x=True)]]))
 
     adding_list = []
 
@@ -47,10 +49,11 @@ def layout() -> list:
 
     # Adding the box for selecting the role
     liste.append([sg.Frame(title="", layout=adding_list, element_justification="center"),
-                  sg.Listbox(values=role_images_finder(), size=(25, 4), key="role_picker")])
+                  sg.Listbox(values=role_images_finder(), key="role_picker", expand_x=True, expand_y=True)])
 
     # The remaining people bar
-    liste.append([sg.Input(size=71, key="info left", default_text=get_unchecked())])
+    liste.append([sg.Input(key="info left", default_text=get_unchecked(), expand_x=True),
+                  sg.Button(button_text="⇄", key="switcher", font="ANY 6")])
 
     return liste
 

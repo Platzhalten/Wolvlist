@@ -16,7 +16,7 @@
 #      along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import FreeSimpleGUI as sg
-import time
+from time import time
 from packaging import version
 
 from scripts import settings
@@ -62,6 +62,9 @@ class Global:
         self.version = version.parse(self.str_version)  # v1.2.0-beta01
 
         self.checked_version = False
+
+        # Info bar
+        self.current_info = "remaining"  # can be one of remaining and discovered. remaining=1,4 left; discovered=1 good | 3 ubk
 
     def compare_version(self, test_version: str, file_name: str) -> tuple[bool, bool]:
         """
@@ -119,7 +122,7 @@ class Global:
 
 
     def double_click(self, button):
-        current_time = time.time()
+        current_time = time()
         if self.last_click_button == button and (current_time - self.last_click_time) <= 0.2:
             self.last_click_button = None
             self.last_click_time = 0
@@ -173,6 +176,14 @@ class Global:
 
         return layout
 
+    def info_bar(self) -> str:
+        if self.current_info == "remaining":
+            return get_unchecked()
+        elif self.current_info == "discovered":
+            return get_checked()
+        else:
+            return "UNKNOWN TYPE"
+
     def __str__(self):
         return self.str_version
 
@@ -184,7 +195,7 @@ trans = settings.get_language()
 team = trans["team_selector"]
 role = trans["roles"]
 
-generic_path = settings.get_setting("config.json")["paths"]["generic"]
+generic_path: dict = settings.get_setting("config.json", "paths")["generic"]
 
 image_path = {
     team["evil"]: generic_path["evil"],  # default Value: images/generic/evil.png
@@ -228,15 +239,49 @@ def get_unchecked() -> str:
             (depending on the language another word is used for left)
     """
     unchecked = ""
+    team_trans = trans["team_selector"]
     for i in team_dict:
 
-        if team_dict[i] == "unchecked":
+        if team_dict[i] == team_trans["unchecked"]:
             unchecked += (str(i) + " ")
 
     unchecked += trans["left"]
 
     return unchecked
 
+
+def get_checked(separator: str = "|") -> str:
+    team_trans = trans["team_selector"]
+
+    checked = ""
+    role_dict = {
+        team_trans["good"]: [],
+        team_trans["unknown"]: [],
+        team_trans["evil"]: [],
+    }
+
+    for i in team_dict.keys():
+        if team_dict[i] in role_dict:
+            role_dict[team_dict[i]].append(str(i))
+
+        elif not team_dict[i] == team_trans["unchecked"]:
+            role_dict[team_dict[i]] = [str(i)]
+
+    for i in role_dict:
+        if not role_dict[i]:
+            continue
+
+        if not checked == "":
+            checked = f"{checked} {separator} "
+
+        role_dict[i].append(i)
+
+        checked = checked + (" ".join(role_dict[i]))
+
+    if checked.strip() == "":
+        return "NO INFO"
+
+    return checked
 
 def all_player():
     for colum in range(1, 17, 4):
@@ -269,7 +314,8 @@ if __name__ == '__main__':
     for i in image_path.values():
         settings.check_for_file(path=i)
 
-    w = sg.Window(title="werville", layout=layout(), finalize=True)
+    w = sg.Window(title="werville", layout=layout(), finalize=True, resizable=True)
+    w.set_min_size(w.size)
 
 
     def settings_win():
@@ -437,10 +483,21 @@ if __name__ == '__main__':
 
                     team_dict[event_main] = set_value
 
-                    w["info left"](get_unchecked())
+                    w["info left"](States.info_bar())
                     set_value = ""
 
+                   
+        elif event_main == "switcher":
+            if States.current_info == "remaining":
+                States.current_info = "discovered"
+            else:
+                States.current_info = "remaining"
+
+            w["info left"](States.info_bar())
+
+            
         elif event_main.startswith("reset"):
             if sg.popup_ok_cancel(trans["settings"]["conformation_reset"],
                                   title=trans["settings"]["conformation"]) == "OK":
                 reset(event_main)
+

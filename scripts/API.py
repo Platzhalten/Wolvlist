@@ -23,6 +23,12 @@ class Api:
             self.API_key_is_valid = self.is_valid_api_key()
 
     def is_valid_api_key(self) -> bool:
+        """
+        Checks if the API key works correctly
+
+        It's also getting the roleRotation and parsing it into config.json
+        :return: If the request return with status code 200
+        """
         req = requests.request(method="Get", url="https://api.wolvesville.com/roleRotations",
                                headers={"Authorization": f"Bot {self.API_key}"})
 
@@ -36,23 +42,23 @@ class Api:
 
         return req.status_code == 200
 
-
-    def rotation_parser(self):
+    def rotation_parser(self) -> dict:
+        """
+        Is parsing the rotation from self.rotation into a dict with each game mode
+        :return: a dict where each item contains one game mode, when the API key not valid is an empty dict is returned
+        """
 
         if not settings.get_setting("config.json", "debug_mode") and not settings.get_setting("config.json",
                                                                                               "api_key_is_valid"):
-            return False
+            return {}
 
         role_list = {}
         suffix_counter = {}
-
-        get_role_key = lambda d: "role" if "role" in d else "roles"
 
         for game_mode in self.rotation:
             mode_name = game_mode["gameMode"]
             rotations = game_mode["roleRotations"]
 
-            # Lambda-Funktion als Hilfsfunktion
             get_role_key = lambda d: "role" if "role" in d else "roles"
 
             for rotation in rotations:
@@ -60,14 +66,12 @@ class Api:
                 roles_data = rotation["roleRotation"]["roles"]
 
                 for role_group in roles_data:
-                    # Verarbeitung einzelner und gruppierter Rollen
                     if len(role_group) == 1:
                         processed.append(role_group[0][get_role_key(role_group[0])])
                     else:
                         group = [role[get_role_key(role)] for role in role_group]
                         processed.append(group)
 
-                # Suffix-Logik für eindeutige Schlüssel
                 clean_name = mode_name.replace("-", " ")
                 suffix_counter.setdefault(clean_name, 0)
                 suffix_counter[clean_name] += 1
@@ -80,7 +84,11 @@ class Api:
 
         return role_list
 
-    def update_rotation(self):
+    def update_rotation(self) -> bool:
+        """
+        Gets the current Rotation and parses it into config.json
+        :return: True when it worked and False when there were an error
+        """
 
         if not settings.get_setting("config.json", "api_key_is_valid"):
             return False
@@ -91,6 +99,8 @@ class Api:
         if req.status_code == 200:
             self.rotation = req.json()
             self.rotation_parser()
+
+            return True
 
         else:
             return False
