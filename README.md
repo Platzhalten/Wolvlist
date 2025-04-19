@@ -4,7 +4,6 @@
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/platzhalten/wolvlist/total)
 ![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/platzhalten/wolvlist/latest/total)
 
-
 > [!Important]
 > this project is not related, supported or affiliated by Wolvesville
 

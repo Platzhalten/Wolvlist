@@ -249,7 +249,10 @@ if __name__ == '__main__':
     for i in image_path.values():
         settings.check_for_file(path=i)
 
-    w = sg.Window(title="werville", layout=layout(), finalize=True)
+    w = sg.Window(title="werville", layout=layout(), finalize=True, resizable=True)
+    w.set_min_size(w.size)
+
+    print(w.Size)
 
 
     def settings_win():
