@@ -49,7 +49,8 @@ def layout() -> list:
                   sg.Listbox(values=role_images_finder(), key="role_picker", expand_x=True, expand_y=True)])
 
     # The remaining people bar
-    liste.append([sg.Input(key="info left", default_text=get_unchecked(), expand_x=True)])
+    liste.append([sg.Input(key="info left", default_text=get_unchecked(), expand_x=True),
+                  sg.Button(button_text="⇄", key="switcher", font="ANY 6")])
 
     return liste
 
