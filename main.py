@@ -244,6 +244,26 @@ def all_player():
             yield colum, row
 
 
+def reset(reseting: str):
+    reseting = reseting.replace(" ", "_")
+
+    if reseting == "reset" or reseting == "reset_all":
+        w["info left"].update(get_unchecked())
+
+    for i, k in all_player():
+        if reseting == "reset_name":
+            w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
+
+        elif reseting == "reset_all":
+            w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
+            w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+            w[f"{i} {k} info"].update("")
+
+        else:
+            w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+            w[f"{i} {k} info"].update("")
+
+
 if __name__ == '__main__':
 
     for i in image_path.values():
@@ -278,22 +298,7 @@ if __name__ == '__main__':
                 settings.change_selected_lang(value_settings["language"][0:3].strip())
 
             elif event_settings.startswith("reset") and sg.popup_ok_cancel(trans["settings"]["conformation"]) == "OK":
-
-                if event_settings == "reset" or event_settings == "reset_all":
-                    w["info left"].update(get_unchecked())
-
-                for i, k in all_player():
-                    if event_settings == "reset-name":
-                        w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
-
-                    elif event_settings == "reset_all":
-                        w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
-                        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
-                        w[f"{i} {k} info"].update("")
-
-                    else:
-                        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
-                        w[f"{i} {k} info"].update("")
+                reset(event_settings)
 
             elif event_settings == "name_key":
                 for i, k in all_player():
@@ -365,9 +370,15 @@ if __name__ == '__main__':
 
         event_main, value_main = w.read()
 
-        if event_main is None or event_main == "exit":
+        if event_main is None:
             w.close()
             break
+
+        elif event_main == "exit":
+            if sg.popup_ok_cancel(trans["settings"]["conformation_leave"],
+                                  title=trans["settings"]["conformation"]) == "OK":
+                w.close()
+                break
 
         event_main: str = event_main
 
@@ -428,3 +439,8 @@ if __name__ == '__main__':
 
                     w["info left"](get_unchecked())
                     set_value = ""
+
+        elif event_main.startswith("reset"):
+            if sg.popup_ok_cancel(trans["settings"]["conformation_reset"],
+                                  title=trans["settings"]["conformation"]) == "OK":
+                reset(event_main)
