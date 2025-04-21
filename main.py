@@ -36,6 +36,9 @@ sg.theme_global("DarkGrey11")
 class Global:
 
     def __init__(self):
+        # General
+        self.team_dict = dict.fromkeys(range(1, 17), "unchecked")
+
         # API
         self.API = None
 
@@ -207,7 +210,6 @@ image_path = {
 
 # OPTION
 choose_possibility = [team["good"], team["unknown"], team["evil"], team["unchecked"], team["specific"]]
-team_dict = dict.fromkeys(range(1,17), team["unchecked"])
 role_path = role_images_finder(full_path=True)
 
 
@@ -240,9 +242,9 @@ def get_unchecked() -> str:
     """
     unchecked = ""
     team_trans = trans["team_selector"]
-    for i in team_dict:
+    for i in States.team_dict:
 
-        if team_dict[i] == team_trans["unchecked"]:
+        if States.team_dict[i] == team_trans["unchecked"]:
             unchecked += (str(i) + " ")
 
     unchecked += trans["left"]
@@ -260,12 +262,12 @@ def get_checked(separator: str = "|") -> str:
         team_trans["evil"]: [],
     }
 
-    for i in team_dict.keys():
-        if team_dict[i] in role_dict:
-            role_dict[team_dict[i]].append(str(i))
+    for i in States.team_dict.keys():
+        if States.team_dict[i] in role_dict:
+            role_dict[States.team_dict[i]].append(str(i))
 
-        elif not team_dict[i] == team_trans["unchecked"]:
-            role_dict[team_dict[i]] = [str(i)]
+        elif not States.team_dict[i] in [team_trans["unchecked"], team_trans["dead"]]:
+            role_dict[States.team_dict[i]] = [str(i)]
 
     for i in role_dict:
         if not role_dict[i]:
@@ -290,10 +292,7 @@ def all_player():
 
 
 def reset(reseting: str):
-    reseting = reseting.replace(" ", "_")
-
-    if reseting == "reset" or reseting == "reset_all":
-        w["info left"].update(get_unchecked())
+    reseting = reseting.replace(" ", "-")
 
     for i, k in all_player():
         if reseting == "reset_name":
@@ -308,6 +307,8 @@ def reset(reseting: str):
             w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
             w[f"{i} {k} info"].update("")
 
+    w["info left"].update(get_unchecked())
+
 
 if __name__ == '__main__':
 
@@ -316,6 +317,8 @@ if __name__ == '__main__':
 
     w = sg.Window(title="werville", layout=layout(), finalize=True, resizable=True)
     w.set_min_size(w.size)
+
+    States.team_dict.fromkeys(range(1, 17), team["unchecked"])
 
 
     def settings_win():
@@ -344,7 +347,23 @@ if __name__ == '__main__':
                 settings.change_selected_lang(value_settings["language"][0:3].strip())
 
             elif event_settings.startswith("reset") and sg.popup_ok_cancel(trans["settings"]["conformation"]) == "OK":
-                reset(event_settings)
+                for i, k in all_player():
+                    if event_settings == "reset_name":
+                        w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
+
+                    elif event_settings == "reset_all":
+                        w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
+                        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+                        w[f"{i} {k} info"].update("")
+                        States.team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
+
+                    else:
+                        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+                        w[f"{i} {k} info"].update("")
+                        States.team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
+
+                w["info left"].update(States.info_bar())
+
 
             elif event_settings == "name_key":
                 for i, k in all_player():
@@ -481,7 +500,7 @@ if __name__ == '__main__':
 
                     event_main: int = int(event_main[0]) + int(event_main[1])
 
-                    team_dict[event_main] = set_value
+                    States.team_dict[event_main] = set_value
 
                     w["info left"](States.info_bar())
                     set_value = ""
@@ -495,9 +514,26 @@ if __name__ == '__main__':
 
             w["info left"](States.info_bar())
 
-            
-        elif event_main.startswith("reset"):
+
+        elif event_main in [trans["settings"]["reset_name"], trans["settings"]["reset_all"],
+                            trans["settings"]["reset"]]:
             if sg.popup_ok_cancel(trans["settings"]["conformation_reset"],
                                   title=trans["settings"]["conformation"]) == "OK":
-                reset(event_main)
 
+                for i, k in all_player():
+                    if event_main == trans["settings"]["reset_name"]:
+                        w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
+
+                    elif event_main == trans["settings"]["reset_all"]:
+                        w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
+                        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+                        w[f"{i} {k} info"].update("")
+                        States.team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
+
+
+                    else:
+                        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+                        w[f"{i} {k} info"].update("")
+                        States.team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
+
+                w["info left"](States.info_bar())
