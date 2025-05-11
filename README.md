@@ -71,22 +71,20 @@ Then unpack the tar.gz and run Wolvlist
 
 ## Images
 
-you can change all Images you can find more information in [Information.md](images/information.md) located in images
+all Image file must be jpg or png
+
+### generic folder
+you can change the Images but the names need to match the names in the config.json
+
+### roles folder
+here is a "do what you want zone" you can add, change, remove Images without consequences this will only affect the search bar
 
 ## translation
 If you really bored and know a language that is not yet in the lang.json you can add it
 
-just copy the placeholder down and put the right Translation in there
+just copy the English translation down and put the right Translation in there
 
 | Languages | Supported  |
 |-----------|------------|
 | English   | Completely |
 | German    | Partially  |
-
-I only add german back when I am finished with the Program
-
-## branches 
-There are usually 2 branches, the Master and the dev branch. 
-
-The Master branch should always work, the dev branch should also work, but with unfinished features and errors
-
