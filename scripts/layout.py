@@ -160,7 +160,7 @@ def info_popup() -> None:
     """
     Opens a popup-like window with general information about the program (e.g., version, license, source code location, and more).
     """
-    layout = [[sg.T("This Program is not related with Wolvesville")],
+    layout = [[sg.T("This project is not related, supported or affiliated by Wolvesville")],
               [sg.T("This Program is licensed under the GNU GPL v3")],
               [sg.Button("Read the Full License", key="full")],
               [sg.T("The Source Code can be found on GitHub")],
@@ -182,9 +182,24 @@ def info_popup() -> None:
 
     layout_image = sg.Tab(title="Image", layout=layout)
 
-    tab = sg.TabGroup(layout=[[layout_main], [layout_image]])
+    if settings.check_for_file("LICENSE", do_not_ask=True):
+        with open("LICENSE", "r") as f:
+            license_text = f.read()
 
-    w1 = sg.Window(title="Info", layout=[[tab], [sg.Button("close", key="close")]], keep_on_top=True)
+    else:
+        license_text = ("No License file found\n"
+                        "Please check the GitHub: https://github.com/Platzhalten/Wolvlist/blob/master/LICENSE\n"
+                        "or the GNU GPL 3.0 license: https://www.gnu.org/licenses/gpl-3.0.de.html")
+
+    layout = [[sg.Multiline(license_text, disabled=True, expand_x=True, expand_y=True)],]
+
+    layout_license = sg.Tab(title="License", layout=layout)
+
+    tab = sg.TabGroup(layout=[[layout_main], [layout_image], [layout_license]], expand_x=True, expand_y=True, key="tab")
+
+    w1 = sg.Window(title="Info", layout=[[tab], [sg.Button("close", key="close")]], keep_on_top=True, resizable=True, finalize=True)
+    w1.set_min_size(w1.size)
+
 
     while True:
         event_popup, v = w1.read()
@@ -194,7 +209,11 @@ def info_popup() -> None:
             break
 
         elif event_popup == "full":
-            wb.open(url="https://www.gnu.org/licenses/gpl-3.0")
+            if license_text.startswith("No License"):
+                wb.open(url="https://www.gnu.org/licenses/gpl-3.0")
+
+            else:
+                w1["tab"].Widget.select(2)
 
         elif event_popup == "github":
             wb.open(url="https://github.com/Platzhalten/Wolvlist")
