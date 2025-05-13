@@ -18,10 +18,10 @@ def layout() -> list:
 
     # adding the menu bar
     menutrans = trans["settings"]
-    reset_options = [menutrans["reset_all"], menutrans["reset"], menutrans["reset_name"]]
+    reset_options = [menutrans["reset_all"], menutrans["reset_board"], menutrans["reset_name"]]
 
     menu_def = [[menutrans["generel"],
-                 [menutrans["info"], menutrans["settings"], menutrans["reset"], reset_options, menutrans["exit"]]]]
+                 [menutrans["info"], menutrans["settings"], menutrans["reset_base"], reset_options, menutrans["exit"]]]]
     liste = [[sg.MenuBar(menu_definition=menu_def)]]
 
     # arranging a 4x4 field for every Player and setting the Unchecked image as default
@@ -113,7 +113,7 @@ def layout_settings() -> list:
     game_layout = sg.Frame(title=set_trans["games_settings"], layout=game_layout)
 
     reset_layout = sg.Frame(title=set_trans["reset_base"],
-                            layout=[[sg.Button(set_trans["reset"], key="reset")],
+                            layout=[[sg.Button(set_trans["reset_board"], key="reset")],
                                     [sg.Button(set_trans["reset_name"], key="reset_name")],
                                     [sg.Button(set_trans["reset_all"], key="reset_all")]])
 

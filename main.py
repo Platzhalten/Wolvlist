@@ -439,7 +439,7 @@ if __name__ == '__main__':
             w.close()
             break
 
-        elif event_main == "exit":
+        elif event_main == trans["settings"]["exit"]:
             if sg.popup_ok_cancel(trans["settings"]["conformation_leave"],
                                   title=trans["settings"]["conformation"]) == "OK":
                 w.close()
