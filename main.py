@@ -516,7 +516,7 @@ if __name__ == '__main__':
 
 
         elif event_main in [trans["settings"]["reset_name"], trans["settings"]["reset_all"],
-                            trans["settings"]["reset"]]:
+                            trans["settings"]["reset_board"]]:
             if sg.popup_ok_cancel(trans["settings"]["conformation_reset"],
                                   title=trans["settings"]["conformation"]) == "OK":
 
