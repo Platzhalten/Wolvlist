@@ -61,8 +61,8 @@ class Global:
         self.limiting = []
 
         # Version
-        self.str_version = "1.2.0-beta01"
-        self.version = version.parse(self.str_version)  # v1.2.0-beta01
+        self.str_version = "1.2.0-beta02"
+        self.version = version.parse(self.str_version)
 
         self.checked_version = False
 

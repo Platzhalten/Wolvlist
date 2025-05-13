@@ -87,4 +87,4 @@ just copy the English translation down and put the right Translation in there
 | Languages | Supported  |
 |-----------|------------|
 | English   | Completely |
-| German    | Partially  |
+| German    | Completely |

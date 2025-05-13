@@ -1,5 +1,6 @@
 {
    "de": {
+      "version": "v1.2.0-beta02",
       "language_full_name": "Deutsch",
       "team_selector": {
          "good": "gut",
@@ -21,10 +22,26 @@
          "names": "Namen",
          "change_names": "\u00c4ndern",
          "language": "Sprache",
-         "reset": "Board zur\u00c3\u00bccksetzen",
+         "reset_base": "zurücksetzten",
+         "reset_board": "Board zur\u00c3\u00bccksetzen",
          "reset_frame": "Zur\u00c3\u00bccksetzten",
+         "reset_all": "Alles zurücksetzten",
          "reset_name": "Namen Zur\u00c3\u00bccksetzten",
-         "conformation": "Bist du dir sicher?"
+         "conformation": "Bist du dir sicher?",
+         "conformation_leave": "Willst du das Program wirklich schließen?",
+         "conformation_reset": "Willst du zurücksetzten?",
+         "generel": "General",
+         "info": "Info",
+         "exit": "Schließen",
+
+         "api": {
+            "api_key": "API key",
+            "api_key_safe": "Speichern",
+            "api_setting": "API Einstellungen",
+            "limit_role": "Rollen Rotation",
+            "use_role_rotation": "nutzen",
+            "update_rotation": "aktualiesere Daten"
+      }
       },
       "player": "Spieler",
       "what_voting_role": "Welche voting role ig: ",
