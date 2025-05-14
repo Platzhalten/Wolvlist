@@ -86,6 +86,7 @@
             "api_setting": "API Settings",
             "limit_role": "Role rotation",
             "use_role_rotation": "activate",
+            "include_advanced": "Include Advanced roles",
             "update_rotation": "update Data"
          }
       },
