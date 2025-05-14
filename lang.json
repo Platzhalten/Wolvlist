@@ -1,5 +1,6 @@
 {
    "de": {
+      "version": "v1.2.0-beta02",
       "language_full_name": "Deutsch",
       "team_selector": {
          "good": "gut",
@@ -21,17 +22,33 @@
          "names": "Namen",
          "change_names": "\u00c4ndern",
          "language": "Sprache",
-         "reset": "Board zur\u00c3\u00bccksetzen",
+         "reset_base": "zurücksetzten",
+         "reset_board": "Board zur\u00c3\u00bccksetzen",
          "reset_frame": "Zur\u00c3\u00bccksetzten",
+         "reset_all": "Alles zurücksetzten",
          "reset_name": "Namen Zur\u00c3\u00bccksetzten",
-         "conformation": "Bist du dir sicher?"
+         "conformation": "Bist du dir sicher?",
+         "conformation_leave": "Willst du das Program wirklich schließen?",
+         "conformation_reset": "Willst du zurücksetzten?",
+         "generel": "General",
+         "info": "Info",
+         "exit": "Schließen",
+
+         "api": {
+            "api_key": "API key",
+            "api_key_safe": "Speichern",
+            "api_setting": "API Einstellungen",
+            "limit_role": "Rollen Rotation",
+            "use_role_rotation": "nutzen",
+            "update_rotation": "aktualiesere Daten"
+      }
       },
       "player": "Spieler",
       "what_voting_role": "Welche voting role ig: ",
       "left": "\u00fcbrig"
    },
    "en": {
-      "version": "v1.1.0-beta01",
+      "version": "v1.2.0-beta02",
       "language_full_name": "english",
       "team_selector": {
          "good": "good",
@@ -53,14 +70,25 @@
          "names": "names",
          "change_names": "Change the Names",
          "language": "language",
-         "reset": "reset the board",
-         "reset_frame": "reset",
+         "reset_board": "reset the board",
+         "reset_base": "reset",
          "reset_name": "reset the names",
          "reset_all": "reset all",
          "conformation": "Are you sure?",
+         "conformation_leave": "Are you sure you want to end the program?",
+         "conformation_reset": "Are you sure you want to reset?",
          "generel": "General",
          "info": "Info",
-         "exit": "exit"
+         "exit": "exit",
+         "api": {
+            "api_key": "API key",
+            "api_key_safe": "safe",
+            "api_setting": "API Settings",
+            "limit_role": "Role rotation",
+            "use_role_rotation": "activate",
+            "include_advanced": "Include Advanced roles",
+            "update_rotation": "update Data"
+         }
       },
       "player": "Player",
       "what_voting_role": "What Voting role is ig",
