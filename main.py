@@ -331,6 +331,20 @@ if __name__ == '__main__':
             w1[changing].update(visible=True)
             States.last_selected = changing
 
+        def add_limiting(changing: str, include_advanced: bool):
+            States.limiting.append(States.role_string_parsing(changing))
+
+            if include_advanced:
+                if changing == "red-lady":
+                    changing = "harlot"
+
+                if changing not in advanced_roles:
+                    advanced_roles[changing] = []
+
+
+                for k in advanced_roles[changing]:
+                    States.limiting.append(States.role_string_parsing(k))
+
         w1 = sg.Window(title=trans["settings"]["settings"], layout=layout_settings())
 
         while True:
@@ -383,11 +397,18 @@ if __name__ == '__main__':
 
             elif event_settings == "activator" and value_settings["activator"]:
                 number = 0
+                include_advanced = False
+                advanced_roles = []
+
+                if value_settings["advanced_roles"]:
+                    include_advanced = True
+                    advanced_roles = settings.get_setting("config.json")["advanced_role"]
 
                 for i in States.rotation[value_settings["dropie"]]:
 
                     if isinstance(i, str):
-                        States.limiting.append(States.role_string_parsing(i))
+                        add_limiting(i, include_advanced)
+
                     elif isinstance(i, list):
                         for k in range(len(i)):
                             radio_key = f"{value_settings['dropie']}_{number}_{k}_radio"
@@ -395,10 +416,10 @@ if __name__ == '__main__':
                             if radio_key in value_settings and value_settings[radio_key]:
                                 if len(i[k]) <= 2:
                                     for y in i[k]:
-                                        States.limiting.append(States.role_string_parsing(y))
-                                else:
-                                    States.limiting.append(States.role_string_parsing(i[k]))
+                                        add_limiting(y, include_advanced)
 
+                                else:
+                                    add_limiting(i[k], include_advanced)
                         number += 1
 
                 w["role_picker"].update(values=States.limiting)
