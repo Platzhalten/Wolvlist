@@ -290,21 +290,23 @@ def all_player():
             yield colum, row
 
 
-def reset(reseting: str):
-    reseting = reseting.replace(" ", "-")
-
+def reset(reseting: str = None) -> None:
+    """
+    Reset the board
+    :param reseting: must be one of: name, all, info, if None info is assumed
+    :return: None
+    """
     for i, k in all_player():
-        if reseting == "reset_name":
+        if reseting == "name":
+            w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
+            continue
+
+        elif reseting == "all":
             w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
 
-        elif reseting == "reset_all":
-            w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
-            w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
-            w[f"{i} {k} info"].update("")
-
-        else:
-            w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
-            w[f"{i} {k} info"].update("")
+        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+        w[f"{i} {k} info"].update("")
+        States.team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
 
     w["info left"].update(get_unchecked())
 
@@ -360,23 +362,14 @@ if __name__ == '__main__':
                 settings.change_selected_lang(value_settings["language"][0:3].strip())
 
             elif event_settings.startswith("reset") and sg.popup_ok_cancel(trans["settings"]["conformation"]) == "OK":
-                for i, k in all_player():
-                    if event_settings == "reset_name":
-                        w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
+                if event_settings == "reset_name":
+                    reset("name")
 
-                    elif event_settings == "reset_all":
-                        w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
-                        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
-                        w[f"{i} {k} info"].update("")
-                        States.team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
+                elif event_settings == "reset_all":
+                    reset("all")
 
-                    else:
-                        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
-                        w[f"{i} {k} info"].update("")
-                        States.team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
-
-                w["info left"].update(States.info_bar())
-
+                else:
+                    reset("info")
 
             elif event_settings == "name_key":
                 for i, k in all_player():
@@ -536,24 +529,15 @@ if __name__ == '__main__':
 
 
         elif event_main in [trans["settings"]["reset_name"], trans["settings"]["reset_all"],
-                            trans["settings"]["reset_board"]]:
-            if sg.popup_ok_cancel(trans["settings"]["conformation_reset"],
-                                  title=trans["settings"]["conformation"]) == "OK":
-
-                for i, k in all_player():
-                    if event_main == trans["settings"]["reset_name"]:
-                        w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
-
-                    elif event_main == trans["settings"]["reset_all"]:
-                        w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
-                        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
-                        w[f"{i} {k} info"].update("")
-                        States.team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
+                            trans["settings"]["reset_board"]] and sg.popup_ok_cancel(trans["settings"]["conformation_reset"],
+                                                                                     title=trans["settings"]["conformation"]) == "OK":
 
 
-                    else:
-                        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
-                        w[f"{i} {k} info"].update("")
-                        States.team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
+            if event_main == trans["settings"]["reset_name"]:
+                reset("name")
 
-                w["info left"](States.info_bar())
+            elif event_main == trans["settings"]["reset_all"]:
+                reset("all")
+
+            else:
+                reset("info")
