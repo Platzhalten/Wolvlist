@@ -22,14 +22,6 @@ from packaging import version
 from scripts import settings
 from scripts.layout import layout, info_popup, role_images_finder, layout_settings
 
-# TODO: Adding a way to change themes
-#
-# maybe add the following:
-
-# light: Reddit, LightGrey, LightBlue
-# dark: DarkGrey11 (Default), PythonPlus, Topanga
-# darkest: NeonYellow1, NeonBlue1, NeonGreen1
-# other: DarkRed, HotDogStand, BrightColors
 sg.theme_global("DarkGrey11")
 
 
@@ -182,8 +174,10 @@ class Global:
     def info_bar(self) -> str:
         if self.current_info == "remaining":
             return get_unchecked()
+
         elif self.current_info == "discovered":
             return get_checked()
+
         else:
             return "UNKNOWN TYPE"
 
@@ -253,6 +247,11 @@ def get_unchecked() -> str:
 
 
 def get_checked(separator: str = "|") -> str:
+    """
+    Gets all the players whose team status is "checked".
+    :param separator: The separator between roles.
+    :return: a string with all checked players and there role (e.g., "1 3 Good | 2 Evil | 5 Doctor)
+    """
     team_trans = trans["team_selector"]
 
     checked = ""
