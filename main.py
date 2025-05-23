@@ -313,7 +313,7 @@ if __name__ == '__main__':
     for i in image_path.values():
         settings.check_for_file(path=i)
 
-    main_window = sg.Window(title="werville", layout=layout(), finalize=True, resizable=True)
+    main_window = sg.Window(title="Wolvlist", layout=layout(), finalize=True, resizable=True)
     main_window.set_min_size(main_window.size)
 
     States.team_dict.fromkeys(range(1, 17), team["unchecked"])
