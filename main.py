@@ -295,17 +295,17 @@ def reset(reseting: str = None) -> None:
     """
     for i, k in all_player():
         if reseting == "name":
-            w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
+            main_window[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
             continue
 
         elif reseting == "all":
-            w[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
+            main_window[f"{i} {k} frame"].update(f"{i + k}. {trans["player"]}")
 
-        w[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
-        w[f"{i} {k} info"].update("")
+        main_window[f"{i} {k} but"].update(image_source=get_image_path(image=team["unchecked"]))
+        main_window[f"{i} {k} info"].update("")
         States.team_dict = dict.fromkeys(range(1, 17), team["unchecked"])
 
-    w["info left"].update(get_unchecked())
+    main_window["info left"].update(get_unchecked())
 
 
 if __name__ == '__main__':
@@ -313,8 +313,8 @@ if __name__ == '__main__':
     for i in image_path.values():
         settings.check_for_file(path=i)
 
-    w = sg.Window(title="werville", layout=layout(), finalize=True, resizable=True)
-    w.set_min_size(w.size)
+    main_window = sg.Window(title="werville", layout=layout(), finalize=True, resizable=True)
+    main_window.set_min_size(main_window.size)
 
     States.team_dict.fromkeys(range(1, 17), team["unchecked"])
 
@@ -325,11 +325,11 @@ if __name__ == '__main__':
         """
 
         def change_selected_limiter(changing: str):
-            w1[States.last_selected].update(visible=False)
-            w1[changing].update(visible=True)
+            settings_window[States.last_selected].update(visible=False)
+            settings_window[changing].update(visible=True)
             States.last_selected = changing
 
-        def add_limiting(changing: str, include_advanced: bool):
+        def add_limiting(changing, include_advanced: bool):
             States.limiting.append(States.role_string_parsing(changing))
 
             if include_advanced:
@@ -343,15 +343,15 @@ if __name__ == '__main__':
                 for k in advanced_roles[changing]:
                     States.limiting.append(States.role_string_parsing(k))
 
-        w1 = sg.Window(title=trans["settings"]["settings"], layout=layout_settings())
+        settings_window = sg.Window(title=trans["settings"]["settings"], layout=layout_settings())
 
         while True:
-            event_settings, value_settings = w1.read()
+            event_settings, value_settings = settings_window.read()
 
             event_settings: str = event_settings
 
             if event_settings is None:
-                w1.close()
+                settings_window.close()
                 return False
 
             # General Settings
@@ -370,7 +370,7 @@ if __name__ == '__main__':
 
             elif event_settings == "name_key":
                 for i, k in all_player():
-                    w[f"{i} {k} frame"](value_settings[f"{i + k} name"])
+                    main_window[f"{i} {k} frame"](value_settings[f"{i + k} name"])
 
             # API settings
 
@@ -381,8 +381,8 @@ if __name__ == '__main__':
                 api = States.enable_api(value_settings["API_key"])
 
                 if api:
-                    w1["dropie"].update(disabled=False)
-                    w1["activator"].update(disabled=False)
+                    settings_window["dropie"].update(disabled=False)
+                    settings_window["activator"].update(disabled=False)
 
             elif event_settings == "activator" and value_settings["activator"]:
                 number = 0
@@ -411,16 +411,16 @@ if __name__ == '__main__':
                                     add_limiting(i[k], include_advanced)
                         number += 1
 
-                w["role_picker"].update(values=States.limiting)
+                main_window["role_picker"].update(values=States.limiting)
 
             elif event_settings == "activator" and not value_settings["activator"]:
                 States.limiting = []
-                w["role_picker"].update(role_images_finder())
+                main_window["role_picker"].update(role_images_finder())
 
             elif event_settings == "update":
                 States.API.update_rotation()
                 States.role_limiter()
-                w1.close()
+                settings_window.close()
 
                 return True
 
@@ -452,16 +452,16 @@ if __name__ == '__main__':
 
     while True:
 
-        event_main, value_main = w.read()
+        event_main, value_main = main_window.read()
 
         if event_main is None:
-            w.close()
+            main_window.close()
             break
 
         elif event_main == trans["settings"]["exit"]:
             if sg.popup_ok_cancel(trans["settings"]["conformation_leave"],
                                   title=trans["settings"]["conformation"]) == "OK":
-                w.close()
+                main_window.close()
                 break
 
         event_main: str = event_main
@@ -482,7 +482,7 @@ if __name__ == '__main__':
             else:
                 role_list = searcher(search_list=role_images_finder(), filter=value_main["search_bar"])
 
-            w["role_picker"].update(role_list)
+            main_window["role_picker"].update(role_list)
 
 
         elif event_main[-3:] == "but":
@@ -513,7 +513,7 @@ if __name__ == '__main__':
                 image = get_image_path(image=set_value)
 
                 if image:
-                    w[event_main].update(image_source=image)
+                    main_window[event_main].update(image_source=image)
 
                     event_main = event_main.split(" ")
 
@@ -521,7 +521,7 @@ if __name__ == '__main__':
 
                     States.team_dict[event_main] = set_value
 
-                    w["info left"](States.info_bar())
+                    main_window["info left"](States.info_bar())
                     set_value = ""
 
                    
@@ -531,7 +531,7 @@ if __name__ == '__main__':
             else:
                 States.current_info = "remaining"
 
-            w["info left"](States.info_bar())
+            main_window["info left"](States.info_bar())
 
 
         elif event_main in [trans["settings"]["reset_name"], trans["settings"]["reset_all"],
