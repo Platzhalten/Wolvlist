@@ -1,16 +1,5 @@
 {
-  "language": "en",
-  "api_key": 0,
-  "api_key_is_valid": false,
-  "paths": {
-    "generic": {
-      "dead": "images/generic/dead.png",
-      "evil": "images/generic/evil.png",
-      "good": "images/generic/good.png",
-      "unchecked": "images/generic/unchecked.png",
-      "unknown": "images/generic/unknown.png"
-    }
-  },
+   "language": "en",
    "theme": "DarkGrey11",
    "api_key": 0,
    "api_key_is_valid": false,
