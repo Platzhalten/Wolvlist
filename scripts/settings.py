@@ -29,6 +29,8 @@ def get_setting(path: str, setting: str = None) -> dict | str:
         except KeyError:
             return {}
 
+    return {}
+
 
 def set_settings(path: str, setting: str, value: any) -> None:
     """
