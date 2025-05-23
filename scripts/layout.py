@@ -20,7 +20,7 @@ def layout() -> list:
     menutrans = trans["settings"]
     reset_options = [menutrans["reset_all"], menutrans["reset_board"], menutrans["reset_name"]]
 
-    menu_def = [[menutrans["generel"],
+    menu_def = [[menutrans["general"],
                  [menutrans["info"], menutrans["settings"], menutrans["reset_base"], reset_options, menutrans["exit"]]]]
     liste = [[sg.MenuBar(menu_definition=menu_def)]]
 
@@ -96,7 +96,7 @@ def layout_settings() -> list:
 
     set_trans = trans["settings"]
 
-    # General Tab
+    # Name Tab
     liste = []
     for i in range(1,17):
         liste.append([sg.Input(f"{i}. {trans["player"]}", key=f"{i} name")])
@@ -105,17 +105,16 @@ def layout_settings() -> list:
 
     name_layout = sg.Frame(title=set_trans["names"], layout=liste)
 
+
+    # Appearance Tab
+    theme_layout = sg.Frame(title="Test", layout=[[sg.Button("Open Theme Preview", key="theme_preview")]])
+
+
     language, selected = settings.get_available_languages()
 
-    game_layout = [[sg.T(set_trans["language"])],
-                   [sg.Combo(key="language", values=language, default_value=selected, enable_events=True)]]
-
-    game_layout = sg.Frame(title=set_trans["games_settings"], layout=game_layout)
-
-    reset_layout = sg.Frame(title=set_trans["reset_base"],
-                            layout=[[sg.Button(set_trans["reset_board"], key="reset")],
-                                    [sg.Button(set_trans["reset_name"], key="reset_name")],
-                                    [sg.Button(set_trans["reset_all"], key="reset_all")]])
+    language_layout = sg.Frame(title=set_trans["language_settings"],
+                               layout=[[sg.T(set_trans["language"])],
+                                       [sg.Combo(key="language", values=language, default_value=selected, enable_events=True)]])
 
     # Api Tab
     api_key = False
@@ -148,7 +147,8 @@ def layout_settings() -> list:
                                       role_list])
 
     return [
-        [sg.TabGroup(layout=[[sg.Tab(title=set_trans["generel"], layout=[[name_layout], [game_layout, reset_layout]]),
+        [sg.TabGroup(layout=[[sg.Tab(title=set_trans["name_settings"], layout=[[name_layout]]),
+                              sg.Tab(title=set_trans["appearance_settings"], layout=[[language_layout, theme_layout]]),
                               sg.Tab(title=set_api["api_setting"], layout=[[api_key_layout], [role_selection]],
                                      disabled=States.request_available == 0)
                               ]])]]

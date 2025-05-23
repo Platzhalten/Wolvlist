@@ -22,9 +22,6 @@ from packaging import version
 from scripts import settings
 from scripts.layout import layout, info_popup, role_images_finder, layout_settings
 
-sg.theme_global("DarkGrey11")
-
-
 class Global:
 
     def __init__(self):
@@ -427,6 +424,15 @@ if __name__ == '__main__':
 
                 return True
 
+            elif event_settings == "theme_preview":
+                if sg.popup_ok_cancel(trans["settings"]["open_theme_preview"], title=trans["settings"]["conformation"]) == "Cancel":
+                    continue
+
+                selected_theme = sg.theme_previewer(scrollable=True)
+                if selected_theme:
+                    settings.set_settings("config.json", setting="theme", value=selected_theme)
+
+                    sg.popup_ok(trans["settings"]["needs_restarting"], title=trans["settings"]["info"])
 
     def searcher(search_list: list[str], filter: str) -> list[str]:
         """
