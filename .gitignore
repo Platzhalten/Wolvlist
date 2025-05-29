@@ -5,4 +5,5 @@ README.md
 /build/
 /.idea/
 /temp_script/
-config.json
+/config.json
+/main.spec

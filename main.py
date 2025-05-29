@@ -484,7 +484,6 @@ if __name__ == '__main__':
 
             main_window["role_picker"].update(role_list)
 
-
         elif event_main[-3:] == "but":
             set_value = ""
 

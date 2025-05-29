@@ -107,6 +107,8 @@ def layout_settings() -> list:
 
 
     # Appearance Tab
+    restart_layout = sg.Frame(title=set_trans["info"], layout=[[sg.T(set_trans["needs_restarting"])]])
+
     theme_layout = sg.Frame(title="Test", layout=[[sg.Button("Open Theme Preview", key="theme_preview")]])
 
 
@@ -148,7 +150,7 @@ def layout_settings() -> list:
 
     return [
         [sg.TabGroup(layout=[[sg.Tab(title=set_trans["name_settings"], layout=[[name_layout]]),
-                              sg.Tab(title=set_trans["appearance_settings"], layout=[[language_layout, theme_layout]]),
+                              sg.Tab(title=set_trans["appearance_settings"], layout=[[restart_layout], [language_layout, theme_layout]]),
                               sg.Tab(title=set_api["api_setting"], layout=[[api_key_layout], [role_selection]],
                                      disabled=States.request_available == 0)
                               ]])]]
