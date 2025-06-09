@@ -22,6 +22,7 @@ from packaging import version
 from scripts import settings
 from scripts.layout import layout, info_popup, role_images_finder, layout_settings
 
+
 class Global:
 
     def __init__(self):
@@ -112,7 +113,6 @@ class Global:
 
         return True
 
-
     def double_click(self, button):
         current_time = time()
         if self.last_click_button == button and (current_time - self.last_click_time) <= 0.2:
@@ -134,7 +134,6 @@ class Global:
         group_number = 0
         if selected is None:
             selected = self.last_selected
-
 
         for k in self.rotation.keys():
             for item in self.rotation[k]:
@@ -183,7 +182,6 @@ class Global:
 
 
 States = Global()
-
 
 trans = settings.get_language()
 team = trans["team_selector"]
@@ -281,6 +279,7 @@ def get_checked(separator: str = "|") -> str:
 
     return checked
 
+
 def all_player():
     for colum in range(1, 17, 4):
         for row in range(0, 4):
@@ -339,11 +338,13 @@ if __name__ == '__main__':
                 if changing not in advanced_roles:
                     advanced_roles[changing] = []
 
-
                 for k in advanced_roles[changing]:
                     States.limiting.append(States.role_string_parsing(k))
 
-        settings_window = sg.Window(title=trans["settings"]["settings"], layout=layout_settings())
+        settings_window = sg.Window(title=trans["settings"]["settings"], layout=layout_settings(), finalize=True)
+
+        for i in States.limiting:
+            settings_window[f"{i}_include"].update(True)
 
         while True:
             event_settings, value_settings = settings_window.read()
@@ -425,7 +426,8 @@ if __name__ == '__main__':
                 return True
 
             elif event_settings == "theme_preview":
-                if sg.popup_ok_cancel(trans["settings"]["open_theme_preview"], title=trans["settings"]["conformation"]) == "Cancel":
+                if sg.popup_ok_cancel(trans["settings"]["open_theme_preview"],
+                                      title=trans["settings"]["conformation"]) == "Cancel":
                     continue
 
                 selected_theme = sg.theme_previewer(scrollable=True)
@@ -433,6 +435,41 @@ if __name__ == '__main__':
                     settings.set_settings("config.json", setting="theme", value=selected_theme)
 
                     sg.popup_ok(trans["settings"]["needs_restarting"], title=trans["settings"]["info"])
+
+            # Limiting Tab
+
+            if event_settings.endswith("_include"):
+
+                event_settings = event_settings.split("_")
+
+                if len(event_settings) == 2:
+                    event_settings = event_settings[0]
+
+                    if not event_settings in States.limiting:
+                        States.limiting.append(event_settings)
+
+                    else:
+                        States.limiting.remove(event_settings)
+
+                elif len(event_settings) == 3:
+                    event_settings = event_settings[0]
+
+                    if not event_settings in States.limiting:
+                        States.limiting.append(event_settings)
+
+                        settings_window[f"{event_settings}_include"].update(True)
+
+                    else:
+                        States.limiting.remove(event_settings)
+
+                        settings_window[f"{event_settings}_include"].update(False)
+
+                if States.limiting:
+                    main_window["role_picker"].update(States.limiting)
+
+                else:
+                    main_window["role_picker"].update(role_images_finder())
+
 
     def searcher(search_list: list[str], filter: str) -> list[str]:
         """
@@ -507,7 +544,6 @@ if __name__ == '__main__':
                 else:
                     set_value = None
 
-
             if set_value:
                 image = get_image_path(image=set_value)
 
@@ -523,7 +559,7 @@ if __name__ == '__main__':
                     main_window["info left"](States.info_bar())
                     set_value = ""
 
-                   
+
         elif event_main == "switcher":
             if States.current_info == "remaining":
                 States.current_info = "discovered"
@@ -534,9 +570,9 @@ if __name__ == '__main__':
 
 
         elif event_main in [trans["settings"]["reset_name"], trans["settings"]["reset_all"],
-                            trans["settings"]["reset_board"]] and sg.popup_ok_cancel(trans["settings"]["conformation_reset"],
-                                                                                     title=trans["settings"]["conformation"]) == "OK":
-
+                            trans["settings"]["reset_board"]] and sg.popup_ok_cancel(
+            trans["settings"]["conformation_reset"],
+            title=trans["settings"]["conformation"]) == "OK":
 
             if event_main == trans["settings"]["reset_name"]:
                 reset("name")

@@ -32,6 +32,7 @@
          "conformation_reset": "Willst du zurücksetzten?",
          "name_settings": "Namen",
          "appearance_settings": "Ausssehen",
+         "limiting_settings": "Rollen",
          "info": "Info",
          "exit": "Schließen",
 
@@ -81,6 +82,8 @@
          "general": "general",
          "name_settings": "names",
          "appearance_settings": "Appearance",
+         "theme_selector": "Theme Selector",
+         "limiting_settings": "Roles",
          "open_theme_preview": "This will open a list with all available Themes, press the OK button to select the Theme",
          "language_settings": "Language Settings",
          "needs_restarting": "The Program need to be restarted to take effect.",
@@ -94,6 +97,14 @@
             "use_role_rotation": "activate",
             "include_advanced": "Include Advanced roles",
             "update_rotation": "update Data"
+         },
+         "limiting_tabs": {
+            "village": "Village",
+            "werewolf": "Werewolf",
+            "solo": "Solo",
+            "voting": "Voting",
+            "special": "Special",
+            "random": "Random"
          }
       },
       "player": "Player",
