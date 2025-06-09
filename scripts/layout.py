@@ -94,6 +94,32 @@ def layout_settings() -> list:
     """
     from main import trans, States
 
+    images = role_images_finder(full_path=True)
+    images_list = list(images.keys())
+    limiting_dict = {}
+
+    def limiting_search_frame(role: str, justification: int = 28):
+        return sg.Frame(title="",
+                        key=f"{role}_include_frame",
+                        layout=[[sg.Button(image_filename=images[role],
+                                           image_subsample=2,
+                                           key=f"{role}_but_include"),
+                                 sg.Column(layout=[[sg.T(role)],
+                                                   [sg.Checkbox(text="Include".ljust(justification, " "),
+                                                                key=f"{role}_include",
+                                                                enable_events=True)]])]])
+
+    def appender(appending_list: list, stuff: any) -> None:
+        try:
+            if len(appending_list[-1]) == 1:
+                appending_list[-1].append(limiting_search_frame(stuff))
+
+            else:
+                appending_list.append([limiting_search_frame(stuff)])
+
+        except IndexError:
+            appending_list.append([limiting_search_frame(stuff)])
+
     set_trans = trans["settings"]
 
     # Name Tab
@@ -109,7 +135,7 @@ def layout_settings() -> list:
     # Appearance Tab
     restart_layout = sg.Frame(title=set_trans["info"], layout=[[sg.T(set_trans["needs_restarting"])]])
 
-    theme_layout = sg.Frame(title="Test", layout=[[sg.Button("Open Theme Preview", key="theme_preview")]])
+    theme_layout = sg.Frame(title=set_trans["theme_selector"], layout=[[sg.Button("Open Theme Preview", key="theme_preview")]])
 
 
     language, selected = settings.get_available_languages()
@@ -117,6 +143,36 @@ def layout_settings() -> list:
     language_layout = sg.Frame(title=set_trans["language_settings"],
                                layout=[[sg.T(set_trans["language"])],
                                        [sg.Combo(key="language", values=language, default_value=selected, enable_events=True)]])
+
+    # Limiting Tab
+
+    for i in images_list:
+
+        i: str = i
+
+        role_path = images[i].split("/")[:-1]
+
+        if role_path[-1] in limiting_dict.keys():
+            appender(limiting_dict[role_path[-1]], i)
+
+        else:
+            limiting_dict[role_path[-1]] = []
+            appender(limiting_dict[role_path[-1]], i)
+
+    tab = set_trans["limiting_tabs"]
+
+    tab_layout = []
+
+    for i in limiting_dict.keys():
+        if i not in tab:
+            tab_layout.append(sg.Tab(title=i, layout=[[sg.Column(layout=limiting_dict[i], scrollable=True, size=(500, 600))]]))
+            continue
+
+        tab_layout.append(sg.Tab(title=tab[i], layout=[[sg.Column(layout=limiting_dict[i], scrollable=True, size=(500, 600))]]))
+
+
+
+    limiting_layout = sg.TabGroup(layout=[tab_layout])
 
     # Api Tab
     api_key = False
@@ -151,6 +207,7 @@ def layout_settings() -> list:
     return [
         [sg.TabGroup(layout=[[sg.Tab(title=set_trans["name_settings"], layout=[[name_layout]]),
                               sg.Tab(title=set_trans["appearance_settings"], layout=[[restart_layout], [language_layout, theme_layout]]),
+                              sg.Tab(title=set_trans["limiting_settings"], layout=[[limiting_layout]]),
                               sg.Tab(title=set_api["api_setting"], layout=[[api_key_layout], [role_selection]],
                                      disabled=States.request_available == 0)
                               ]])]]
