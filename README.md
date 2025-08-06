@@ -8,6 +8,9 @@
 >
 > The new URL: https://codeberg.org/Platzhalten/Wolvlist
 
+> [!NOTE]
+> I stoped working on it but there still some thinks i wanted too add so maybe in the future i start working on it again
+> 
 ## how to run 
 
 double click to mark someone as dead
