@@ -3,14 +3,7 @@
 > [!Important]
 > this project is not related, supported or affiliated by Wolvesville
 
-> [!NOTE]
-> This Project is switching to Codeberg and will recive rarely updates on Github
->
-> The new URL: https://codeberg.org/Platzhalten/Wolvlist
 
-> [!NOTE]
-> I stoped working on it but there still some thinks i wanted too add so maybe in the future i start working on it again
-> 
 ## how to run 
 
 double click to mark someone as dead
@@ -91,3 +84,11 @@ just copy the English translation down and put the right Translation in there
 |-----------|------------|
 | English   | Completely |
 | German    | Completely |
+
+## things I want to add/change
+these are roughly in order
+
+- the theme changer doesnt work atm
+- add direct detective info
+- update the role selector
+- manage/change role icons in app
